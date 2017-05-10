@@ -364,17 +364,17 @@
 </blockquote>
 <hr>
 <h2 id="安装hexo，开发第一个博客"><a href="#安装hexo，开发第一个博客" class="headerlink" title="安装hexo，开发第一个博客"></a>安装hexo，开发第一个博客</h2><p>###1. github创建仓库</p>
-<p>登陆github，点击右上角+号，点击new repository;<br><img src="./1494393577495.png" alt="Alt text"></p>
-<p><strong>注意：</strong>这里的Repository Name一定要是你的  <font color="red">&lt;用户名&gt;.github.io</font><br><img src="./1494393654263.png" alt="Alt text"></p>
+<p>登陆github，点击右上角+号，点击new repository;<br><img src="http://wx1.sinaimg.cn/thumb150/00617eZdgy1ffgaro9w08j308f06874a.jpg" alt="Alt text"></p>
+<p><strong>注意：</strong>这里的Repository Name一定要是你的  <font color="red">&lt;用户名&gt;.github.io</font><br><img src="http://wx3.sinaimg.cn/thumb150/00617eZdgy1ffgarslskbj30qn0gpdhh.jpg" alt="Alt text"></p>
 <hr>
 <p>###2. 配置github仓库公钥<br>打开git界面，第一次登陆的话要设定用户<br>git config –global user.name “yourname”<br>git config –global user.email “yourEmail”</p>
 <p>比如：git config –global user.name “yezi12138”<br>git config –global user.email “xxxxxxx@qq.com”</p>
 <p><strong>生成SSH公钥：</strong> ssh-keygen -t rsa -C “your_email@youremail.com”<br><strong>查看SSH公钥：</strong>  cat ~/.ssh/id_rsa.pub</p>
-<p>点击settings，Deploy keys  设置好公钥<br><img src="./1494395327172.png" alt="Alt text"></p>
+<p>点击settings，Deploy keys  设置好公钥<br><img src="http://wx2.sinaimg.cn/thumb150/00617eZdgy1ffgarv2zxkj30sj0fhwgm.jpg" alt="Alt text"></p>
 <hr>
 <p>##3.安装hexo，开发第一个博客</p>
 <p>在自己认为合适的地方创建一个文件夹，这里我以E：/text 为例子讲解<br>打开电脑的命令行工具  （FN+R 输入cmd）<br><strong>切换到目录下</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd /d/text</div></pre></td></tr></table></figure></p>
-<p><img src="./1494396146051.png" alt="Alt text"></p>
+<p><img src="./http://wx4.sinaimg.cn/thumb150/00617eZdgy1ffgarpn8nfj30r305mdfu.jpg" alt="Alt text"></p>
 <p><strong>安装Hexo</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-cli -g</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo --save</div></pre></td></tr></table></figure>
@@ -386,7 +386,7 @@
 <blockquote>
 <p>   INFO Hexo is running at <a href="http://0.0.0.0:4000/" target="_blank" rel="external">http://0.0.0.0:4000/</a>. Press Ctrl+C to stop.</p>
 </blockquote>
-<p>在浏览器中打开<a href="http://localhost:4000/，你将会看到：" target="_blank" rel="external">http://localhost:4000/，你将会看到：</a><br><img src="./1494395962270.png" alt="Alt text"></p>
+<p>在浏览器中打开<a href="http://localhost:4000/，你将会看到：" target="_blank" rel="external">http://localhost:4000/，你将会看到：</a><br><img src="http://wx1.sinaimg.cn/thumb150/00617eZdgy1ffgas3fjxij311y0lcqk5.jpg" alt="Alt text"></p>
 <p>到目前为止，Hexo在本地的配置已经全都结束了.</p>
 <hr>
 <p>##将博客上传到github</p>
@@ -394,7 +394,7 @@
 <blockquote>
 <p>type: git<br>repo: git@github.com:gdutxiaoxu/gdutxiaoxu.github.io.git<br> branch: master</p>
 </blockquote>
-<p><font color="red">repo里面的地址是你仓库的SSH：</font><br><img src="./1494397694247.png" alt="Alt text"></p>
+<p><font color="red">repo里面的地址是你仓库的SSH：</font><br><img src="http://wx1.sinaimg.cn/thumb150/00617eZdgy1ffgartppimj30sh05ewf4.jpg" alt="Alt text"></p>
 <p><strong>注意：</strong>type 、repo这些属性后面有一个空格</p>
 <p><strong>重新部署发布</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo g</div></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo d</div></pre></td></tr></table></figure>
@@ -411,9 +411,9 @@
 <p>Permission denied (publickey).<br>fatal: Could not read from remote repository.<br>Please make sure you have the correct access rights<br>and the repository exists.</p>
 </blockquote>
 <p>则是因为没有设置好public key所致，需要重新设置好key</p>
-<p>成功之后<br><img src="./1494398350474.png" alt="Alt text"></p>
+<p>成功之后<br><img src="http://wx1.sinaimg.cn/thumb150/00617eZdgy1ffgartueggj30ew04pq3n.jpg" alt="Alt text"></p>
 <p><strong>输入：</strong><a href="https://yourName.github.io" target="_blank" rel="external">https://yourName.github.io</a>  就可以看到你部署的博客了</p>
-<p><img src="./1494398912467.png" alt="Alt text"></p>
+<p><img src="http://wx3.sinaimg.cn/thumb150/00617eZdgy1ffgasariw1j311i0jlq5k.jpg" alt="Alt text"></p>
 <hr>
 <p>##更换next主题</p>
 <p><strong>next使用文档：</strong><a href="http://theme-next.iissnan.com/" target="_blank" rel="external">http://theme-next.iissnan.com/</a></p>
