@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="js,学习笔记," />
+  <meta name="keywords" content="-排序算法," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="工厂模式VS构造函数 什么是工厂模式？简单来说，如果我们要使用同一个接口创建很多个对象，我们就会想到用函数传递参数的方法： function createPerson(name,age,job){     var o = new Object();     o.name = name;     o.age = age;     o.job = job;     o.sayName = functi">
-<meta name="keywords" content="js,学习笔记">
+<meta name="description" content="归并排序 最近学了一个新的排序方法，分享给大家 原理：利用递归原理，把一个数组逐渐分割成两个很小的单位，然后进行比较，返回比较后的数组，再往上递归回去。比如一个数组a[1,3,2,7,5]1 第一次将数组分为left=[1,3],right=[2,7,5]2 第二次递归将[1,3]分为[1],[3],这是已经是最小单位，然后进行比较1，3创建一个新的数组result[]，将小的压进result，然">
+<meta name="keywords" content="-排序算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="工厂模式VS构造函数">
-<meta property="og:url" content="http://yoursite.com/2017/05/11/工厂模式VS构造函数/index.html">
+<meta property="og:title" content="归并排序">
+<meta property="og:url" content="http://yoursite.com/2017/05/24/归并排序/index.html">
 <meta property="og:site_name" content="yezi">
-<meta property="og:description" content="工厂模式VS构造函数 什么是工厂模式？简单来说，如果我们要使用同一个接口创建很多个对象，我们就会想到用函数传递参数的方法： function createPerson(name,age,job){     var o = new Object();     o.name = name;     o.age = age;     o.job = job;     o.sayName = functi">
-<meta property="og:updated_time" content="2017-05-11T06:40:36.610Z">
+<meta property="og:description" content="归并排序 最近学了一个新的排序方法，分享给大家 原理：利用递归原理，把一个数组逐渐分割成两个很小的单位，然后进行比较，返回比较后的数组，再往上递归回去。比如一个数组a[1,3,2,7,5]1 第一次将数组分为left=[1,3],right=[2,7,5]2 第二次递归将[1,3]分为[1],[3],这是已经是最小单位，然后进行比较1，3创建一个新的数组result[]，将小的压进result，然">
+<meta property="og:updated_time" content="2017-05-24T01:22:49.579Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="工厂模式VS构造函数">
-<meta name="twitter:description" content="工厂模式VS构造函数 什么是工厂模式？简单来说，如果我们要使用同一个接口创建很多个对象，我们就会想到用函数传递参数的方法： function createPerson(name,age,job){     var o = new Object();     o.name = name;     o.age = age;     o.job = job;     o.sayName = functi">
+<meta name="twitter:title" content="归并排序">
+<meta name="twitter:description" content="归并排序 最近学了一个新的排序方法，分享给大家 原理：利用递归原理，把一个数组逐渐分割成两个很小的单位，然后进行比较，返回比较后的数组，再往上递归回去。比如一个数组a[1,3,2,7,5]1 第一次将数组分为left=[1,3],right=[2,7,5]2 第二次递归将[1,3]分为[1],[3],这是已经是最小单位，然后进行比较1，3创建一个新的数组result[]，将小的压进result，然">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/11/工厂模式VS构造函数/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/24/归并排序/"/>
 
 
 
 
 
-  <title>工厂模式VS构造函数 | yezi</title>
+  <title>归并排序 | yezi</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -263,7 +263,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/11/工厂模式VS构造函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/24/归并排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yezi">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">工厂模式VS构造函数</h1>
+          <h1 class="post-title" itemprop="name headline">归并排序</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-11T14:27:46+08:00">
-                2017-05-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-24T09:21:54+08:00">
+                2017-05-24
               </time>
             
 
@@ -310,7 +310,7 @@
 
           
           
-             <span id="/2017/05/11/工厂模式VS构造函数/" class="leancloud_visitors" data-flag-title="工厂模式VS构造函数">
+             <span id="/2017/05/24/归并排序/" class="leancloud_visitors" data-flag-title="归并排序">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -338,75 +338,99 @@
       
 
       
-        <h1 id="工厂模式VS构造函数"><a href="#工厂模式VS构造函数" class="headerlink" title="工厂模式VS构造函数"></a>工厂模式VS构造函数</h1><hr>
-<h3 id="什么是工厂模式？"><a href="#什么是工厂模式？" class="headerlink" title="什么是工厂模式？"></a>什么是工厂模式？</h3><p>简单来说，如果我们要使用同一个接口创建很多个对象，我们就会想到用函数传递参数的方法：</p>
-<pre><code>function createPerson(name,age,job){
-    var o = new Object();
-    o.name = name;
-    o.age = age;
-    o.job = job;
-    o.sayName = function(){
-        alert(this.name);
-    };
-    return o;
-}
-var person1 = createPerson(&quot;yezi&quot;,22,&quot;web&quot;);
-var person2 = createPerson(&quot;join&quot;,39,&quot;designer&quot;);
-</code></pre><p> 这种方式虽然可以无数次调用，却没办法解决对象识别的问题（即怎样知道一个对象的类型）。随着js发展，有一个新的模式可以解决这个问题。</p>
-<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>使用构造函数重写上面的例子：</p>
-<pre><code>function Person(name,age,job){
-    this.name = name;
-    this.age = age;
-    this.job = job;
-    this.sayName = function(){
-        alert(this.name);
-    };
-}
-var person1 = new Person(&quot;yezi&quot;,22,&quot;web&quot;);
-var person2 = new Person(&quot;join&quot;,39,&quot;designer&quot;);
-</code></pre><p>在这个例子中我们注意到一下几个不同点：</p>
-<ul>
-<li>没有显示创建对象  //var o = new Object()</li>
-<li>直接将属性和方法赋给了this对象</li>
-<li>没有return语句</li>
-</ul>
-<p>要创建Person的新实例，必须要使用new操作符，以这种方式调用构造函数实际上会经历一下4个步骤：</p>
-<ol>
-<li>创建一个新对象</li>
-<li>将构造函数的作用于给新对象（因此this指向了这个新对象）</li>
-<li>执行构造函数的代码</li>
-<li>返回新对象</li>
-</ol>
-<p>总的来说构造函数隐形地创建了新对象，并且会继承一个属性 <strong>constructor</strong></p>
-<p>我们可以用constructor来判断实例的类型</p>
-<pre><code>alert（person1.constructor == Person） //true
-alert（person2.constructor == Person） //true
-</code></pre><h3 id="将构造函数当作函数"><a href="#将构造函数当作函数" class="headerlink" title="将构造函数当作函数"></a>将构造函数当作函数</h3><p>构造函数和其他函数唯一区别，就是调用方式不同。不过，构造函数毕竟也是函数。任何情况，只要通过new操作符来调用，那它就可以作为构造函数；而任何函数，如果不通过new操作符来调用，那它和别的普通函数也不会有什么不同。例如之前的例子可以这样调用：</p>
-<pre><code>//当作构造函数使用
-var person1 = new Person(&quot;yezi&quot;,22,&quot;web&quot;);
-person.sayName（）;//&quot;yezi&quot;
+        <h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><hr>
+<p>最近学了一个新的排序方法，分享给大家</p>
+<h2 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h2><p>利用递归原理，把一个数组逐渐分割成两个很小的单位，然后进行比较，返回比较后的数组，再往上递归回去。<br><strong>比如一个数组a[1,3,2,7,5]</strong><br>1 第一次将数组分为left=[1,3],right=[2,7,5]<br>2 第二次递归将[1,3]分为[1],[3],这是已经是最小单位，然后进行比较1，3<br>创建一个新的数组result[]，将小的压进result，然后将left数组为空，进行下一步，把right的数值压进result，最后返回result<br>3 第三次递归将[2,7,5]分为[2,7],[5]<br>4 第四次递归将[2,7]分为[2],[7],然后重新比较，返回result<br>5 回到上一层，这是比较的是[2,7]和[5],因为2&lt;5，将2压进result，再次比较7和5，jiang 5压进，这个时候right为空，进行下一步，把left剩余数值压进result，返回result=[2，5，7]<br>6 返回上一层，这时候比较的是left=[1,3],right=[2,5,7]，同理最后返回[1,2,3,5,7]，排序成功</p>
+<font color="red">不清楚的朋友可以自己按代码一步一步走下去感受一下步骤</font>
 
-//当作普通函数使用
-Person(&quot;yezi&quot;,22,&quot;web&quot;); //添加到window对象
-window.sayName（）;//&quot;yezi&quot;
+<h2 id="下面是我测试的代码"><a href="#下面是我测试的代码" class="headerlink" title="下面是我测试的代码"></a>下面是我测试的代码</h2><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;sort&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
 
-//在另一个对象的作用域中使用
-var o = new Object();
-Person.call(o,&quot;yezi&quot;,22,&quot;web&quot;);
-o.sayName();//&quot;yezi&quot;
-</code></pre><h3 id="顺便一提"><a href="#顺便一提" class="headerlink" title="顺便一提:"></a>顺便一提:</h3><h4 id="使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）"><a href="#使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）" class="headerlink" title="使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）"></a>使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）</h4><pre><code>alert（person1.sayName == person2.sayName） //false
-</code></pre><p>对于多个实例共享的函数，建议把函数写在类型的原型链中</p>
-<pre><code>function Person(name,age,job){
-    this.name = name;
-    this.age = age;
-    this.job = job;
-    Person.prototype.sayName = function(){
-        alert(this.name);
-    };
-}
+&lt;/body&gt;
+&lt;script&gt;
+    window.onload = function(){
 
-alert（person1.sayName == person2.sayName） //true
-</code></pre>
+        //创建测试用的随机数组
+        var textArray = (function(){
+            var arr =new Array(10000).join(&quot;,&quot;).split(&quot;,&quot;);
+            //如果是arr =new Array(100),虽然长度为100，可是里面没有元素的
+            arr=arr.map(function(item){
+                return Math.floor(Math.random()*10000);
+            })
+            return arr;
+        })();
+        console.log(textArray);
+        var durantion1 = text1(textArray);
+        var durantion2 = text2(textArray);
+        console.log(&quot;归并排序:&quot;+durantion1);
+        console.log(&quot;冒泡排序:&quot;+durantion2);
+
+        //归并排序
+        function MergeSort (arr){
+            if(!(arr instanceof Array)){return;}
+            var len = arr.length;
+            if(len&lt;2) return arr;
+            var middle = Math.floor(len/2),
+            left = arr.slice(0,middle),
+            right = arr.slice(middle);
+            return sort(MergeSort (left),MergeSort (right));
+            function sort(left,right){
+                var result = [];
+                while(left.length&amp;&amp;right.length){
+                    if(left[0]&lt;=right[0]){
+                        result.push(left.shift());
+                    }else{
+                        result.push(right.shift());
+                    }
+                }
+                while(left.length){
+                    result.push(left.shift());
+                }
+                while(right.length){
+                    result.push(right.shift());
+                }
+                return result;
+            }
+        }
+
+        //冒泡排序
+        function BubleSort(arr){
+            var len = arr.length;
+            for(var i=0;i&lt;len;i++){
+                for(var j=0;j&lt;len-1-i;j++){
+                    if(arr[j]&gt;arr[j+1]){
+                        var temp = arr[j+1];
+                        arr[j+1] = arr[j];
+                        arr[j] = temp;
+                    }
+                }
+            }
+            return arr;
+        }
+
+        //测试算法时间
+        function text1(textArray){
+            var start = new Date().getTime();
+            MergeSort(textArray);
+            var end = new Date().getTime();//接受时间
+            return (end - start)+&quot;ms&quot;;//返回函数执行需要时间
+        }
+        function text2(textArray){
+            var start = new Date().getTime();
+            BubleSort(textArray);
+            var end = new Date().getTime();//接受时间
+            return (end - start)+&quot;ms&quot;;//返回函数执行需要时间
+        }
+    }
+&lt;/script&gt;
+&lt;/html&gt;
+</code></pre><p>  这次测试我用冒泡排序来比较，在比较小的数组下，归并和冒泡几乎没什么差别，测试了下在1000空间下差别是大概7ms之间，到10000空间的时候，归并排序就比冒泡排序快10倍以上</p>
+
       
     </div>
 
@@ -435,9 +459,7 @@ alert（person1.sayName == person2.sayName） //true
       
         <div class="post-tags">
           
-            <a href="/tags/js/" rel="tag"># js</a>
-          
-            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+            <a href="/tags/排序算法/" rel="tag"># -排序算法</a>
           
         </div>
       
@@ -450,8 +472,8 @@ alert（person1.sayName == person2.sayName） //true
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/10/用hexo开发博客教程/" rel="next" title="用hexo开发博客教程">
-                <i class="fa fa-chevron-left"></i> 用hexo开发博客教程
+              <a href="/2017/05/17/搭建vue音乐播放器（1）/" rel="next" title="搭建vue音乐播放器（1）">
+                <i class="fa fa-chevron-left"></i> 搭建vue音乐播放器（1）
               </a>
             
           </div>
@@ -459,10 +481,6 @@ alert（person1.sayName == person2.sayName） //true
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/16/npm-publish发布插件/" rel="prev" title="npm publish发布插件">
-                npm publish发布插件 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -582,7 +600,7 @@ alert（person1.sayName == person2.sayName） //true
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工厂模式VS构造函数"><span class="nav-number">1.</span> <span class="nav-text">工厂模式VS构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是工厂模式？"><span class="nav-number">1.0.1.</span> <span class="nav-text">什么是工厂模式？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造函数"><span class="nav-number">1.0.2.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将构造函数当作函数"><span class="nav-number">1.0.3.</span> <span class="nav-text">将构造函数当作函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#顺便一提"><span class="nav-number">1.0.4.</span> <span class="nav-text">顺便一提:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#归并排序"><span class="nav-number">1.</span> <span class="nav-text">归并排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理："><span class="nav-number">1.1.</span> <span class="nav-text">原理：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下面是我测试的代码"><span class="nav-number">1.2.</span> <span class="nav-text">下面是我测试的代码</span></a></li></ol></li></ol></div>
             
 
           </div>
