@@ -263,6 +263,229 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/08/客户端检测/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/08/客户端检测/" itemprop="url">客户端检测</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-08T17:37:44+08:00">
+                2017-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/08/客户端检测/" class="leancloud_visitors" data-flag-title="客户端检测">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="客户端检测手段"><a href="#客户端检测手段" class="headerlink" title="客户端检测手段"></a>客户端检测手段</h1><hr>
+<p>检测手段是通过检测用户代理字符串来判断相应的客户端。</p>
+<blockquote>
+<ul>
+<li>首先检测opera,opera有专属的属性window.opera.version</li>
+<li>然后检测webkit内核的浏览器，检测唯一字符串AppleWebKit,如果在这基础上有chrome字符，则是chrome浏览器，否则是safari</li>
+<li>接着检测引擎是khtml，即konq浏览器</li>
+<li>最后检测ie，唯一字符串是MSIE</li>
+</ul>
+</blockquote>
+<h2 id="chrome代理字符串"><a href="#chrome代理字符串" class="headerlink" title="chrome代理字符串"></a>chrome代理字符串</h2><h4 id="Mozilla-5-0-Windows-NT-10-0-WOW64-AppleWebKit-537-36-KHTML-like-Gecko-Chrome-58-0-3029-110-Safari-537-36"><a href="#Mozilla-5-0-Windows-NT-10-0-WOW64-AppleWebKit-537-36-KHTML-like-Gecko-Chrome-58-0-3029-110-Safari-537-36" class="headerlink" title="Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"></a>Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36</h4><h2 id="firefox代理字符串"><a href="#firefox代理字符串" class="headerlink" title="firefox代理字符串"></a>firefox代理字符串</h2><h4 id="Mozilla-5-0-Windows-NT-10-0-WOW64-rv-53-0-Gecko-20100101-Firefox-53-0"><a href="#Mozilla-5-0-Windows-NT-10-0-WOW64-rv-53-0-Gecko-20100101-Firefox-53-0" class="headerlink" title="Mozilla/5.0 (Windows NT 10.0; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0"></a>Mozilla/5.0 (Windows NT 10.0; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0</h4><h2 id="opera代理字符串（最新移除了window-opera属性，所以要对最新的opera要判断字符串OPR）"><a href="#opera代理字符串（最新移除了window-opera属性，所以要对最新的opera要判断字符串OPR）" class="headerlink" title="opera代理字符串（最新移除了window.opera属性，所以要对最新的opera要判断字符串OPR）"></a>opera代理字符串（最新移除了window.opera属性，所以要对最新的opera要判断字符串OPR）</h2><h4 id="Mozilla-5-0-Windows-NT-10-0-WOW64-AppleWebKit-537-36-KHTML-like-Gecko-Chrome-58-0-3029-110-Safari-537-36-OPR-45-0-2552-888"><a href="#Mozilla-5-0-Windows-NT-10-0-WOW64-AppleWebKit-537-36-KHTML-like-Gecko-Chrome-58-0-3029-110-Safari-537-36-OPR-45-0-2552-888" class="headerlink" title="Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 OPR/45.0.2552.888"></a>Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 OPR/45.0.2552.888</h4><h2 id="IE（11版本一下）代理字符串"><a href="#IE（11版本一下）代理字符串" class="headerlink" title="IE（11版本一下）代理字符串"></a>IE（11版本一下）代理字符串</h2><h4 id="Mozilla-5-0-compatible-MSIE-10-0-Windows-NT-6-2-Trident-6-0"><a href="#Mozilla-5-0-compatible-MSIE-10-0-Windows-NT-6-2-Trident-6-0" class="headerlink" title="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)"></a>Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)</h4><h2 id="IE11代理字符串"><a href="#IE11代理字符串" class="headerlink" title="IE11代理字符串"></a>IE11代理字符串</h2><h4 id="Mozilla-5-0-Windows-NT-6-3-Trident-7-0-rv-11-0-like-Gecko"><a href="#Mozilla-5-0-Windows-NT-6-3-Trident-7-0-rv-11-0-like-Gecko" class="headerlink" title="Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko"></a>Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko</h4><h2 id="edge代理字符串"><a href="#edge代理字符串" class="headerlink" title="edge代理字符串"></a>edge代理字符串</h2><h4 id="Mozilla-5-0-Windows-NT-10-0-Win64-x64-AppleWebKit-537-36-KHTML-like-Gecko-Chrome-51-0-2704-79-Safari-537-36-Edge-14-14393"><a href="#Mozilla-5-0-Windows-NT-10-0-Win64-x64-AppleWebKit-537-36-KHTML-like-Gecko-Chrome-51-0-2704-79-Safari-537-36-Edge-14-14393" class="headerlink" title="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393"></a>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393</h4><hr>
+<p>代码如下：</p>
+<pre><code>&lt;script&gt;
+    window.onload = function(){
+        var client = (function(){
+            var engine = {
+            //呈现引擎
+            ie:0,
+            gecko:0,
+            webkit:0,
+            khtml:0,
+            opera:0,
+            ver:null
+        }
+
+        var browser = {
+            ie:0,
+            firefox:0,
+            safari:0,
+            konq:0,
+            opera:0,
+            chrome:0,
+            ver:null,
+            edge:0
+        }
+        return {
+            engine:engine,
+            browser:browser
+        };
+    })()
+    var engine = client.engine;
+    var browser = client.browser;
+    var ua = navigator.userAgent;
+    console.log(ua);
+    if(window.opera){  /*最新版opera移除了这个属性 Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 OPR/45.0.2552.888*/
+        engine.ver = window.opera.version();
+        engine.opera = browser.opera = parseFloat(engine.ver)
+    }else if(/OPR\/(\S+)/.test(ua)){
+        engine.ver = RegExp[&quot;$1&quot;];
+        engine.opera = browser.opera = parseFloat(engine.ver)
+    }else if(/AppleWebKit\/(\S+)/.test(ua)){
+        engine.ver = RegExp[&quot;$1&quot;];
+        engine.webkit = parseFloat(engine.ver)
+        //确定是chrome还是safari还是edge
+        if(/Edge\/(\S+)/.test(ua)){
+            browser.ver = RegExp[&quot;$1&quot;];
+            browser.edge = parseFloat(browser.ver);
+        }else if(/Chrome\/(\S+)/.test(ua)){
+            browser.ver = RegExp[&quot;$1&quot;];
+            browser.chrome = parseFloat(browser.ver);
+        }else if(/Version\/(\S+)/.test(ua)){
+            browser.ver = RegExp[&quot;$1&quot;];
+            browser.safari = parseFloat(browser.ver);
+        }else{
+            var safariVersion = 1;
+            if(engine.webkit&lt;100){
+                safariVersion = 1;
+            }else if(engine.webkit&lt;312){
+                safariVersion = 1.2;
+            }else if(engine.webkit&lt;412){
+                safariVersion = 1.3;
+            }else {
+                safariVersion = 2;
+            }
+
+            browser.safari = browser.ver = safariVersion;
+        }
+    }else if(/KHTML\/(\S+)/.test(ua)||/Konqueror\/([^;]+)/.test(ua)){
+        engine.ver = RegExp[&quot;$1&quot;];
+        engine.khlmt =  browser.konq = parseFloat(engine.ver)
+    }else if(/rv:([^\)]+)\) Gecko\/\d{8}/.test(ua)){
+engine.ver = RegExp[&quot;$1&quot;];
+engine.gecko = parseFloat(engine.ver)
+        //确定是不是firefox
+        if(/Firefox\/(\S+)/.test(ua)){
+            browser.ver = RegExp[&quot;$1&quot;];
+            browser.firefox = parseFloat(browser.ver);
+        }
+    }else if(/MSIE ([^;]+)/.test(ua)){
+        engine.ver = RegExp[&quot;$1&quot;];
+        engine.ie =  browser.ie  = parseFloat(engine.ver)
+    }else if(/Trident\/([^;]+)/.test(ua)){
+        engine.ver = 11.0;
+        engine.ie =  browser.ie  = parseFloat(engine.ver)
+    }
+    console.log(engine);
+    console.log(browser)
+}
+&lt;/script&gt;
+</code></pre><hr>
+<p>上面是我个人测试常用电脑浏览器的手段，如果要更加详细的检查手段，可以查阅下面的网址<br>github上的客户端检查测代码（<a href="https://github.com/hotoo/detector）" target="_blank" rel="external">https://github.com/hotoo/detector）</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/02/搭建vue音乐播放器（2）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1412,7 +1635,7 @@ alert（person1.sayName == person2.sayName） //true
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1425,7 +1648,7 @@ alert（person1.sayName == person2.sayName） //true
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
