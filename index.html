@@ -490,6 +490,38 @@ http.createServer(function(req, res){
 <li>如果color = true，输出格式将会以ansi颜色编码，通常用于在终端显示更漂亮的效果。<br><font color="red">注意：</font>特别要指出的是，util.inspect并不会简单地直接把对象转换为字符串，即使对该对象定义了toString方法也不会调用</li>
 </ol>
 <h4 id="Q：form的enctype-”multipart-form-data”？"><a href="#Q：form的enctype-”multipart-form-data”？" class="headerlink" title="Q：form的enctype=”multipart/form-data”？"></a>Q：form的enctype=”multipart/form-data”？</h4><p>是设置表单的MIME编码。默认情况，这个编码格式是application/x-www-form-urlencoded，不能用于文件上传；只有使用了multipart/form-data，才能完整的传递文件数据</p>
+<h3 id="上传代码解析"><a href="#上传代码解析" class="headerlink" title="上传代码解析"></a>上传代码解析</h3><pre><code>    function upload(response, request){
+  console.log(&quot;Request handler &apos;upload&apos; was called.&quot;);
+
+  var form =new formidable.IncomingForm();
+  console.log(&quot;about to parse&quot;);
+  form.uploadDir=&quot;./public&quot;;//必须设置
+  form.parse(request,function(error, fields, files){
+    console.log(&quot;parsing done&quot;);
+    console.log(files);
+    fs.renameSync(files.upload.path,&quot;./public/1.jpg&quot;);
+    response.writeHead(200,{&quot;Content-Type&quot;:&quot;text/html&quot;});
+    response.write(&quot;received image:&lt;br/&gt;&quot;);
+    response.write(`&lt;img src=&apos;/show&apos; /&gt;`);
+    response.end();
+  });
+}
+</code></pre><p>//设置上传的目录位置</p>
+<blockquote>
+<p>form.uploadDir=”./public”;</p>
+</blockquote>
+<p>//更改文件的名字</p>
+<blockquote>
+<p>fs.renameSync(files.upload.path,”./public/1.jpg”) </p>
+</blockquote>
+<p>//这段无法显示图片</p>
+<blockquote>
+<p>response.write(<code>&lt;img src=&#39;./public/1.jpg&#39; /&gt;</code>);</p>
+</blockquote>
+<p>//如果直接写相对路径或者绝对路径无法显示，原因不明（Q,Q）</p>
+<blockquote>
+<p>response.write(<code>&lt;img src=&#39;/show&#39; /&gt;</code>);</p>
+</blockquote>
 <hr>
 <p>接下来就按照教程继续下去就行，我就不累赘（<a href="http://ourjs.com/detail/529ca5950cb6498814000005）" target="_blank" rel="external">http://ourjs.com/detail/529ca5950cb6498814000005）</a></p>
 
