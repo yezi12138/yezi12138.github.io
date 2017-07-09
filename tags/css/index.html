@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="-node," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -90,17 +90,15 @@
 
 
 
-<meta name="description" content="node+vue实现记住密码功能 首先要引入依赖 var session = require(&amp;apos;express-session&amp;apos;); var cookieParser = require(&amp;apos;cookie-parser&amp;apos;); var MongoStore = require(&amp;apos;connect-mongo&amp;apos;)(session);//用来将se">
-<meta name="keywords" content="-node">
-<meta property="og:type" content="article">
-<meta property="og:title" content="node保存登陆信息">
-<meta property="og:url" content="http://yoursite.com/2017/06/17/node保存登陆信息/index.html">
+<meta name="description" content="personal develop">
+<meta property="og:type" content="website">
+<meta property="og:title" content="yezi">
+<meta property="og:url" content="http://yoursite.com/tags/css/index.html">
 <meta property="og:site_name" content="yezi">
-<meta property="og:description" content="node+vue实现记住密码功能 首先要引入依赖 var session = require(&amp;apos;express-session&amp;apos;); var cookieParser = require(&amp;apos;cookie-parser&amp;apos;); var MongoStore = require(&amp;apos;connect-mongo&amp;apos;)(session);//用来将se">
-<meta property="og:updated_time" content="2017-06-21T07:53:07.943Z">
+<meta property="og:description" content="personal develop">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="node保存登陆信息">
-<meta name="twitter:description" content="node+vue实现记住密码功能 首先要引入依赖 var session = require(&amp;apos;express-session&amp;apos;); var cookieParser = require(&amp;apos;cookie-parser&amp;apos;); var MongoStore = require(&amp;apos;connect-mongo&amp;apos;)(session);//用来将se">
+<meta name="twitter:title" content="yezi">
+<meta name="twitter:description" content="personal develop">
 
 
 
@@ -128,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/17/node保存登陆信息/"/>
+  <link rel="canonical" href="http://yoursite.com/tags/css/"/>
 
 
 
 
 
-  <title>node保存登陆信息 | yezi</title>
+  <title>标签: -css | yezi</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -169,7 +167,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left  ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -253,234 +251,44 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/17/node保存登陆信息/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
+  <div id="posts" class="posts-collapse">
+    <div class="collection-title">
+      <h1>-css<small>标签</small>
+      </h1>
+    </div>
 
     
-      <header class="post-header">
+      
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">node保存登陆信息</h1>
-        
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2017/07/10/backdrop-filter/" itemprop="url">
               
-                <span class="post-meta-item-text">发表于</span>
+                <span itemprop="name">backdrop-filter</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-17T20:18:58+08:00">
-                2017-06-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/06/17/node保存登陆信息/" class="leancloud_visitors" data-flag-title="node保存登陆信息">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="node-vue实现记住密码功能"><a href="#node-vue实现记住密码功能" class="headerlink" title="node+vue实现记住密码功能"></a>node+vue实现记住密码功能</h1><hr>
-<p>首先要引入依赖</p>
-<pre><code>var session = require(&apos;express-session&apos;);
-var cookieParser = require(&apos;cookie-parser&apos;);
-var MongoStore = require(&apos;connect-mongo&apos;)(session);//用来将session添加到mongodb数据库，实现长时间保存
-</code></pre><p>使用session（在build\dev-server.js）</p>
-<pre><code>app.use(cookieParser());
-   app.use(session({
-     secret:&apos;secret&apos;,
-     resave:true, // don&apos;t save session if unmodified
-     saveUninitialized:false,// don&apos;t create session until something stored
-     cookie:{
-       maxAge:1000*60*10 //过期时间设置(单位毫秒)
-     },
-     store: new MongoStore({   //创建新的mongodb数据库
-           host: &apos;localhost&apos;,    //数据库的地址，本机的话就是127.0.0.1，也可以是网络主机
-           port: 27017,          //数据库的端口号
-           db: &apos;test&apos;        //数据库的名称。
-         })
-   }));
-</code></pre><h3 id="这样子的代码有一个报错："><a href="#这样子的代码有一个报错：" class="headerlink" title="这样子的代码有一个报错："></a>这样子的代码有一个报错：</h3><blockquote>
-<p>Error: Connection strategy not found MongoDB</p>
-</blockquote>
-<p>解决方法是store里面要有url，不知道是不是版本问题：</p>
-<pre><code>store: new MongoStore({   //创建新的mongodb数据库
-    url: &apos;mongodb://localhost/test&apos; 
-  })
-</code></pre><h3 id="再次有一个报错："><a href="#再次有一个报错：" class="headerlink" title="再次有一个报错："></a>再次有一个报错：</h3><blockquote>
-<p> Cannot set property ‘user’ of undefined</p>
-</blockquote>
-<p>百度了一下原因是要把sesson的配置放在路由之前。</p>
-<pre><code>app.use(cookieParser());
-app.use(session({
-  ~
-}));
-app.use(api) //使用路由
-</code></pre><h3 id="增加一个路由，用来返回session的值"><a href="#增加一个路由，用来返回session的值" class="headerlink" title="增加一个路由，用来返回session的值"></a>增加一个路由，用来返回session的值</h3><pre><code>router.get(&apos;/auth&apos;,(req,res) =&gt; {
-    if(req.session.user){
-        res.send(req.session.user)
-    }
-});
-</code></pre><h4 id="在index主页下增加方法，用来获取用户信息"><a href="#在index主页下增加方法，用来获取用户信息" class="headerlink" title="在index主页下增加方法，用来获取用户信息"></a>在index主页下增加方法，用来获取用户信息</h4><pre><code>/*************************************************
-获取登录信息
-@ 允许自动登录则返回登陆状态码 1
-@ 不允许则返回登陆状态码 2
-**************************************************/
-router.get(&apos;/auth&apos;,(req,res) =&gt; {
-    let token = {
-        account: req.session.user,
-        loginCode:req.session.loginCode
-}
-if(token){
-    res.send(token)
-}
-});
-</code></pre><h4 id="添加自动登录的函数"><a href="#添加自动登录的函数" class="headerlink" title="添加自动登录的函数"></a>添加自动登录的函数</h4><pre><code>autoLogin(){
-    this.$http.get(&apos;/auth&apos;).then((res) =&gt; {
-      // console.log(res.data)
-      var token = res.data;
-      if(token &amp;&amp; token.loginCode === 1){
-        this.account = token.account;
-        this.isLogin = true;
-      }else{
-        this.account = token.account;
-        this.isLogin = false;
-      }
-    })
-  }
-</code></pre><h4 id="在页面创建时候判断是否自动登录"><a href="#在页面创建时候判断是否自动登录" class="headerlink" title="在页面创建时候判断是否自动登录"></a>在页面创建时候判断是否自动登录</h4><pre><code>created(){
-  this.autoLogin();
-}
-</code></pre><p>这样就可以在页面创建时候验证用户信息，实现免登录。</p>
-
-      
-    </div>
-
-    <div>
-      
+            </a>
         
+      </h2>
 
-      
-    </div>
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2017-07-10T00:22:48+08:00"
+              content="2017-07-10" >
+          07-10
+        </time>
+      </div>
 
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/node/" rel="tag"># -node</a>
-          
-        </div>
-      
-
-      
-        
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/06/13/mongodb安装和使用/" rel="next" title="mongodb安装和使用">
-                <i class="fa fa-chevron-left"></i> mongodb安装和使用
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/10/backdrop-filter/" rel="prev" title="backdrop-filter">
-                backdrop-filter <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
-      
-    </div>
+    
   </div>
+
+  
 
 
           </div>
@@ -488,10 +296,6 @@ if(token){
 
 
           
-  <div class="comments" id="comments">
-    
-  </div>
-
 
         </div>
         
@@ -511,17 +315,8 @@ if(token){
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -574,22 +369,6 @@ if(token){
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#node-vue实现记住密码功能"><span class="nav-number">1.</span> <span class="nav-text">node+vue实现记住密码功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#这样子的代码有一个报错："><span class="nav-number">1.0.1.</span> <span class="nav-text">这样子的代码有一个报错：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#再次有一个报错："><span class="nav-number">1.0.2.</span> <span class="nav-text">再次有一个报错：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加一个路由，用来返回session的值"><span class="nav-number">1.0.3.</span> <span class="nav-text">增加一个路由，用来返回session的值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在index主页下增加方法，用来获取用户信息"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">在index主页下增加方法，用来获取用户信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加自动登录的函数"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">添加自动登录的函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在页面创建时候判断是否自动登录"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">在页面创建时候判断是否自动登录</span></a></li></ol></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -717,10 +496,6 @@ if(token){
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
 
   
 
