@@ -263,6 +263,228 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/20/node爬虫/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/20/node爬虫/" itemprop="url">node爬虫</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-20T20:32:25+08:00">
+                2017-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/20/node爬虫/" class="leancloud_visitors" data-flag-title="node爬虫">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="node爬虫"><a href="#node爬虫" class="headerlink" title="node爬虫"></a>node爬虫</h1><hr>
+<p>为了获取豆瓣书籍的数据，上网学习了怎么用node写一个爬虫，爬豆瓣网站信息</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>先新建一个文件夹 起名 node爬虫<br>然后进入cmd，执行</p>
+<blockquote>
+<p>npm init // 初始化项目</p>
+</blockquote>
+<p>安装对应依赖</p>
+<blockquote>
+<p>npm install express cheerio superagent –save</p>
+</blockquote>
+<p>新建一个主文件 index.js<br>项目结构如下<br><img src="http://wx4.sinaimg.cn/mw690/a359ab18gy1fhqmh7md4jj205p030jra.jpg" alt="pic2"></p>
+<hr>
+<h2 id="编写index-js"><a href="#编写index-js" class="headerlink" title="编写index.js"></a>编写index.js</h2><pre><code>var express = require(&apos;express&apos;)
+var cheerio = require(&apos;cheerio&apos;)
+var superagent = require(&apos;superagent&apos;)
+
+var app = express()
+
+app.get(&apos;/&apos;, function (req, res, next) {
+  superagent.get(&apos;https://book.douban.com/&apos;)
+  .end(function (err, sres) {
+    if (err) {
+      return next(err)
+    }
+    // 这里的$和jq操作类似
+    var $ = cheerio.load(sres.text)
+    var books = getData(&apos;.books-express&apos;, $)
+    // 可以把上面代码注释，把下面注释去掉，获取不同数据
+    // var books = getData(&apos;.popular-books&apos;, $)
+    res.send(JSON.stringify(books))
+  });
+});
+app.listen(3000, function () {
+  console.log(&apos;app is listening at port 3000&apos;);
+});
+</code></pre><p>主要函数</p>
+<pre><code>function getData (className,$) {
+  var books = {}
+  $(className).each(function (idx, element) {
+    var $el = cheerio.load(element)
+    var section = []
+    var book = {}
+    var lis = $el(&apos;ul li&apos;).each(function(i, elem) {
+        // 这里实验所以只取前6个数据
+      if (i&gt;=6) {
+        return
+      }
+      book = {
+        img: $(this).find(&apos;.cover a img&apos;).attr(&apos;src&apos;),
+        title: $(this).find(&apos;a&apos;).attr(&apos;title&apos;),
+        rating: $(this).find(&apos;.info .average-rating&apos;).text().replace(/[\r\n]/g, &quot;&quot;),
+        author: $(this).find(&apos;.info .author:first-child&apos;).text().replace(/[\r\n]/g, &quot;&quot;),
+        classification: $(this).find(&apos;.info .book-list-classification&apos;).text().replace(/[\r\n]/g, &quot;&quot;),
+        reviews: $(this).find(&apos;.info .reviews&apos;).text().replace(/[\r\n]/g, &quot;&quot;).split(&apos;(&apos;)[0],
+        reviewer: $(this).find(&apos;.info .reviews a&apos;).text().replace(/[\r\n]/g, &quot;&quot;)
+      }
+      section.push(book)
+    })
+    books[$(this).find(&apos;h2 span:first-child&apos;).text()] = section
+    })
+    return books
+}
+</code></pre><h3 id="注意：必须要用-this-find把内容限定在每一个li内部检索，不然会检索到其他部分内容，造成内容重叠或者缺失"><a href="#注意：必须要用-this-find把内容限定在每一个li内部检索，不然会检索到其他部分内容，造成内容重叠或者缺失" class="headerlink" title="注意：必须要用$(this).find把内容限定在每一个li内部检索，不然会检索到其他部分内容，造成内容重叠或者缺失"></a><font color="red">注意：</font>必须要用$(this).find把内容限定在每一个li内部检索，不然会检索到其他部分内容，造成内容重叠或者缺失</h3><h3 id="同时用replace-r-n-g-“”-是为了去除文本中的-n换行符"><a href="#同时用replace-r-n-g-“”-是为了去除文本中的-n换行符" class="headerlink" title="同时用replace(/[\r\n]/g, “”)是为了去除文本中的\n换行符"></a>同时用replace(/[\r\n]/g, “”)是为了去除文本中的\n换行符</h3><hr>
+<h2 id="最后获取到的数据如下"><a href="#最后获取到的数据如下" class="headerlink" title="最后获取到的数据如下"></a>最后获取到的数据如下</h2><blockquote>
+<p>{“新书速递”:[{“img”:”<a href="https://img3.doubanio.com/lpic/s29478140.jpg&quot;,&quot;title&quot;:&quot;不疯魔不成活&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img3.doubanio.com/lpic/s29478140.jpg&quot;,&quot;title&quot;:&quot;不疯魔不成活&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” 微笑的猫 “,”classification”:””,”reviews”:””,”reviewer”:””},{“img”:”<a href="https://img1.doubanio.com/lpic/s29471397.jpg&quot;,&quot;title&quot;:&quot;六神磊磊读唐诗&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img1.doubanio.com/lpic/s29471397.jpg&quot;,&quot;title&quot;:&quot;六神磊磊读唐诗&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” 六神磊磊 “,”classification”:””,”reviews”:””,”reviewer”:””},{“img”:”<a href="https://img3.doubanio.com/lpic/s29460644.jpg&quot;,&quot;title&quot;:&quot;隐性逻辑&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img3.doubanio.com/lpic/s29460644.jpg&quot;,&quot;title&quot;:&quot;隐性逻辑&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” [德] 卡尔·诺顿 “,”classification”:””,”reviews”:””,”reviewer”:””},{“img”:”<a href="https://img3.doubanio.com/lpic/s29498174.jpg&quot;,&quot;title&quot;:&quot;权力脸谱&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img3.doubanio.com/lpic/s29498174.jpg&quot;,&quot;title&quot;:&quot;权力脸谱&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” 铲史官 “,”classification”:””,”reviews”:””,”reviewer”:””},{“img”:”<a href="https://img1.doubanio.com/lpic/s29498208.jpg&quot;,&quot;title&quot;:&quot;父母：挑战&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img1.doubanio.com/lpic/s29498208.jpg&quot;,&quot;title&quot;:&quot;父母：挑战&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” [美] 鲁道夫•德雷克斯 “,”classification”:””,”reviews”:””,”reviewer”:””},{“img”:”<a href="https://img3.doubanio.com/lpic/s29490136.jpg&quot;,&quot;title&quot;:&quot;π的杀人魔法&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img3.doubanio.com/lpic/s29490136.jpg&quot;,&quot;title&quot;:&quot;π的杀人魔法&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” 墨殇 “,”classification”:””,”reviews”:””,”reviewer”:””}]}</p>
+</blockquote>
+<hr>
+<h2 id="把数据写入文件"><a href="#把数据写入文件" class="headerlink" title="把数据写入文件"></a>把数据写入文件</h2><p>引入新的包： </p>
+<blockquote>
+<p> var fs = require(‘fs’)</p>
+</blockquote>
+<p>添加新的函数：</p>
+<pre><code>function writeFile(file, data){  
+// appendFile，如果文件不存在，会自动创建新文件  
+// 如果用writeFile，那么会删除旧文件，直接写新文件  
+fs.appendFile(file, data, function(err){
+    if (err) {
+      console.log(&quot;fail &quot; + err)
+    } else {
+      console.log(&quot;写入文件ok&quot;)
+    }
+})
+</code></pre><p>}</p>
+<p>更新主函数：</p>
+<pre><code>app.get(&apos;/&apos;, function (req, res, next) {
+  superagent.get(&apos;https://book.douban.com/&apos;)
+  .end(function (err, sres) {
+    if (err) {
+      return next(err)
+    }
+    var $ = cheerio.load(sres.text)
+    var books = getData(&apos;.books-express&apos;, $)
+    // var books = getData(&apos;.popular-books&apos;, $)
+    res.send(JSON.stringify(books))
+
+    // 添加如下代码
+    writeFile(&apos;C:\\Users\\Administrator\\Desktop\\node爬虫\\data.txt&apos;, JSON.stringify(books))
+  });
+});
+</code></pre><p>这样就可以把数据写入本地文件<br><img src="http://wx1.sinaimg.cn/mw690/a359ab18gy1fhqmh7lnrmj20fz04tglz.jpg" alt="pic1"><br><img src="http://wx2.sinaimg.cn/mw690/a359ab18gy1fhqmh7ink6j207m055dfu.jpg" alt="pic3"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/19/H5上传图片/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2129,167 +2351,6 @@ indicator.addEventListener(&apos;touchmove&apos;, (event) =&gt; {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/16/npm-publish发布插件/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/05/16/npm-publish发布插件/" itemprop="url">npm publish发布插件</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-16T00:08:39+08:00">
-                2017-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/05/16/npm-publish发布插件/" class="leancloud_visitors" data-flag-title="npm publish发布插件">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="通过npm-publish发布自己的插件"><a href="#通过npm-publish发布自己的插件" class="headerlink" title="通过npm publish发布自己的插件"></a>通过npm publish发布自己的插件</h1><hr>
-<p>最近做一个项目需要用到轮播效果，于是就想着自己开发一个组件，可以通过npm install安装，这样可以循环利用我开发的组件</p>
-<h3 id="这是我的文件目录"><a href="#这是我的文件目录" class="headerlink" title="这是我的文件目录"></a>这是我的文件目录</h3><p><img src="http://a3.qpic.cn/psb?/V11dGOEK4JH7xZ/joJSPWVIJmxRBbz2fnAd9m3IWIW88J0o4qpCVX.tMsI!/b/dG0BAAAAAAAA&amp;bo=wgCZAAAAAAADB3k!&amp;rf=viewer_4" alt="list"></p>
-<h3 id="第一步是创建入口文件，这里我举例创建swiper-js文件"><a href="#第一步是创建入口文件，这里我举例创建swiper-js文件" class="headerlink" title="第一步是创建入口文件，这里我举例创建swiper.js文件"></a>第一步是创建入口文件，这里我举例创建swiper.js文件</h3><pre><code>import swiper from &apos;../src/swiper&apos;; //这是我所需要的组件
-export default  swiper;   //将组件导出
-</code></pre><hr>
-<h3 id="在根目录下进入cmd，输入npm-init-生成package-json文件"><a href="#在根目录下进入cmd，输入npm-init-生成package-json文件" class="headerlink" title="在根目录下进入cmd，输入npm init 生成package.json文件"></a>在根目录下进入cmd，输入npm init 生成package.json文件</h3><p>其中 ：<br> name  这是通过npm install的文件名<br> version 这是版本号，每次发布的版本号不能相同<br> description 这是对插件的描述<br> repository 这是github的仓库</p>
-<p> 下面是我创建的package文件代码</p>
-<pre><code>{
-  &quot;name&quot;: &quot;banner-swiper&quot;,
-  &quot;version&quot;: &quot;1.0.3&quot;,
-  &quot;description&quot;: &quot;simple swiper for vue&quot;,
-  &quot;main&quot;: &quot;dist/swiper.js&quot;,
-  &quot;scripts&quot;: {
-    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
-  },
-  &quot;repository&quot;: {
-    &quot;type&quot;: &quot;git&quot;,
-    &quot;url&quot;: &quot;git+ssh://git@github.com/yezi12138/swiper.git&quot;
-  },
-  &quot;author&quot;: &quot;yezi12138&quot;,
-  &quot;license&quot;: &quot;ISC&quot;,
-  &quot;bugs&quot;: {
-    &quot;url&quot;: &quot;https://github.com/yezi12138/swiper/issues&quot;
-  },
-  &quot;homepage&quot;: &quot;https://github.com/yezi12138/swiper#readme&quot;
-}
-</code></pre><hr>
-<h3 id="接下来就到了发布环节"><a href="#接下来就到了发布环节" class="headerlink" title="接下来就到了发布环节"></a>接下来就到了发布环节</h3><p>首先登陆npm账号（没有就去注册一个）</p>
-<blockquote>
-<p>npm login</p>
-</blockquote>
-<p>会提示你输入名字、密码和邮箱</p>
-<p>然后发布</p>
-<blockquote>
-<p>npm publish</p>
-</blockquote>
-<p>如果发布出错，错误是you don’t have permission…可能是你的name已经被创建了，换个名字再试试</p>
-<p>贴上我插件的github地址：<a href="https://github.com/yezi12138/swiper" target="_blank" rel="external">https://github.com/yezi12138/swiper</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2339,7 +2400,7 @@ export default  swiper;   //将组件导出
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

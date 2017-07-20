@@ -263,6 +263,167 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/16/npm-publish发布插件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/05/16/npm-publish发布插件/" itemprop="url">npm publish发布插件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-16T00:08:39+08:00">
+                2017-05-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/16/npm-publish发布插件/" class="leancloud_visitors" data-flag-title="npm publish发布插件">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="通过npm-publish发布自己的插件"><a href="#通过npm-publish发布自己的插件" class="headerlink" title="通过npm publish发布自己的插件"></a>通过npm publish发布自己的插件</h1><hr>
+<p>最近做一个项目需要用到轮播效果，于是就想着自己开发一个组件，可以通过npm install安装，这样可以循环利用我开发的组件</p>
+<h3 id="这是我的文件目录"><a href="#这是我的文件目录" class="headerlink" title="这是我的文件目录"></a>这是我的文件目录</h3><p><img src="http://a3.qpic.cn/psb?/V11dGOEK4JH7xZ/joJSPWVIJmxRBbz2fnAd9m3IWIW88J0o4qpCVX.tMsI!/b/dG0BAAAAAAAA&amp;bo=wgCZAAAAAAADB3k!&amp;rf=viewer_4" alt="list"></p>
+<h3 id="第一步是创建入口文件，这里我举例创建swiper-js文件"><a href="#第一步是创建入口文件，这里我举例创建swiper-js文件" class="headerlink" title="第一步是创建入口文件，这里我举例创建swiper.js文件"></a>第一步是创建入口文件，这里我举例创建swiper.js文件</h3><pre><code>import swiper from &apos;../src/swiper&apos;; //这是我所需要的组件
+export default  swiper;   //将组件导出
+</code></pre><hr>
+<h3 id="在根目录下进入cmd，输入npm-init-生成package-json文件"><a href="#在根目录下进入cmd，输入npm-init-生成package-json文件" class="headerlink" title="在根目录下进入cmd，输入npm init 生成package.json文件"></a>在根目录下进入cmd，输入npm init 生成package.json文件</h3><p>其中 ：<br> name  这是通过npm install的文件名<br> version 这是版本号，每次发布的版本号不能相同<br> description 这是对插件的描述<br> repository 这是github的仓库</p>
+<p> 下面是我创建的package文件代码</p>
+<pre><code>{
+  &quot;name&quot;: &quot;banner-swiper&quot;,
+  &quot;version&quot;: &quot;1.0.3&quot;,
+  &quot;description&quot;: &quot;simple swiper for vue&quot;,
+  &quot;main&quot;: &quot;dist/swiper.js&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+  },
+  &quot;repository&quot;: {
+    &quot;type&quot;: &quot;git&quot;,
+    &quot;url&quot;: &quot;git+ssh://git@github.com/yezi12138/swiper.git&quot;
+  },
+  &quot;author&quot;: &quot;yezi12138&quot;,
+  &quot;license&quot;: &quot;ISC&quot;,
+  &quot;bugs&quot;: {
+    &quot;url&quot;: &quot;https://github.com/yezi12138/swiper/issues&quot;
+  },
+  &quot;homepage&quot;: &quot;https://github.com/yezi12138/swiper#readme&quot;
+}
+</code></pre><hr>
+<h3 id="接下来就到了发布环节"><a href="#接下来就到了发布环节" class="headerlink" title="接下来就到了发布环节"></a>接下来就到了发布环节</h3><p>首先登陆npm账号（没有就去注册一个）</p>
+<blockquote>
+<p>npm login</p>
+</blockquote>
+<p>会提示你输入名字、密码和邮箱</p>
+<p>然后发布</p>
+<blockquote>
+<p>npm publish</p>
+</blockquote>
+<p>如果发布出错，错误是you don’t have permission…可能是你的name已经被创建了，换个名字再试试</p>
+<p>贴上我插件的github地址：<a href="https://github.com/yezi12138/swiper" target="_blank" rel="external">https://github.com/yezi12138/swiper</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/11/工厂模式VS构造函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -696,7 +857,7 @@ alert（person1.sayName == person2.sayName） //true
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
