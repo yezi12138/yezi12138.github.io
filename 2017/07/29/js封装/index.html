@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="js,学习笔记," />
+  <meta name="keywords" content="js," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="工厂模式VS构造函数 什么是工厂模式？简单来说，如果我们要使用同一个接口创建很多个对象，我们就会想到用函数传递参数的方法： function createPerson(name,age,job){     var o = new Object();     o.name = name;     o.age = age;     o.job = job;     o.sayName = functi">
-<meta name="keywords" content="js,学习笔记">
+<meta name="description" content="js的封装 用一个简单的book设计来做例子1. 门户大开型对象特点：  成员属性公开 用this指向成员属性 外部可改变成员值，不利于维护   代码设计：var Book = function (isbn, name, author) {   this.isbn = isbn   this.name = name   this.author = author } // 公共方法 Book.pro">
+<meta name="keywords" content="js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="工厂模式VS构造函数">
-<meta property="og:url" content="http://yoursite.com/2017/05/11/工厂模式VS构造函数/index.html">
+<meta property="og:title" content="js封装">
+<meta property="og:url" content="http://yoursite.com/2017/07/29/js封装/index.html">
 <meta property="og:site_name" content="yezi">
-<meta property="og:description" content="工厂模式VS构造函数 什么是工厂模式？简单来说，如果我们要使用同一个接口创建很多个对象，我们就会想到用函数传递参数的方法： function createPerson(name,age,job){     var o = new Object();     o.name = name;     o.age = age;     o.job = job;     o.sayName = functi">
-<meta property="og:updated_time" content="2017-05-11T06:40:36.610Z">
+<meta property="og:description" content="js的封装 用一个简单的book设计来做例子1. 门户大开型对象特点：  成员属性公开 用this指向成员属性 外部可改变成员值，不利于维护   代码设计：var Book = function (isbn, name, author) {   this.isbn = isbn   this.name = name   this.author = author } // 公共方法 Book.pro">
+<meta property="og:updated_time" content="2017-07-29T07:57:43.340Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="工厂模式VS构造函数">
-<meta name="twitter:description" content="工厂模式VS构造函数 什么是工厂模式？简单来说，如果我们要使用同一个接口创建很多个对象，我们就会想到用函数传递参数的方法： function createPerson(name,age,job){     var o = new Object();     o.name = name;     o.age = age;     o.job = job;     o.sayName = functi">
+<meta name="twitter:title" content="js封装">
+<meta name="twitter:description" content="js的封装 用一个简单的book设计来做例子1. 门户大开型对象特点：  成员属性公开 用this指向成员属性 外部可改变成员值，不利于维护   代码设计：var Book = function (isbn, name, author) {   this.isbn = isbn   this.name = name   this.author = author } // 公共方法 Book.pro">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/11/工厂模式VS构造函数/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/07/29/js封装/"/>
 
 
 
 
 
-  <title>工厂模式VS构造函数 | yezi</title>
+  <title>js封装 | yezi</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -263,7 +263,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/11/工厂模式VS构造函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/29/js封装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yezi">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">工厂模式VS构造函数</h1>
+          <h1 class="post-title" itemprop="name headline">js封装</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-11T14:27:46+08:00">
-                2017-05-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T15:57:25+08:00">
+                2017-07-29
               </time>
             
 
@@ -310,7 +310,7 @@
 
           
           
-             <span id="/2017/05/11/工厂模式VS构造函数/" class="leancloud_visitors" data-flag-title="工厂模式VS构造函数">
+             <span id="/2017/07/29/js封装/" class="leancloud_visitors" data-flag-title="js封装">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -338,75 +338,136 @@
       
 
       
-        <h1 id="工厂模式VS构造函数"><a href="#工厂模式VS构造函数" class="headerlink" title="工厂模式VS构造函数"></a>工厂模式VS构造函数</h1><hr>
-<h3 id="什么是工厂模式？"><a href="#什么是工厂模式？" class="headerlink" title="什么是工厂模式？"></a>什么是工厂模式？</h3><p>简单来说，如果我们要使用同一个接口创建很多个对象，我们就会想到用函数传递参数的方法：</p>
-<pre><code>function createPerson(name,age,job){
-    var o = new Object();
-    o.name = name;
-    o.age = age;
-    o.job = job;
-    o.sayName = function(){
-        alert(this.name);
-    };
-    return o;
-}
-var person1 = createPerson(&quot;yezi&quot;,22,&quot;web&quot;);
-var person2 = createPerson(&quot;join&quot;,39,&quot;designer&quot;);
-</code></pre><p> 这种方式虽然可以无数次调用，却没办法解决对象识别的问题（即怎样知道一个对象的类型）。随着js发展，有一个新的模式可以解决这个问题。</p>
-<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>使用构造函数重写上面的例子：</p>
-<pre><code>function Person(name,age,job){
-    this.name = name;
-    this.age = age;
-    this.job = job;
-    this.sayName = function(){
-        alert(this.name);
-    };
-}
-var person1 = new Person(&quot;yezi&quot;,22,&quot;web&quot;);
-var person2 = new Person(&quot;join&quot;,39,&quot;designer&quot;);
-</code></pre><p>在这个例子中我们注意到一下几个不同点：</p>
-<ul>
-<li>没有显示创建对象  //var o = new Object()</li>
-<li>直接将属性和方法赋给了this对象</li>
-<li>没有return语句</li>
-</ul>
-<p>要创建Person的新实例，必须要使用new操作符，以这种方式调用构造函数实际上会经历一下4个步骤：</p>
+        <h1 id="js的封装"><a href="#js的封装" class="headerlink" title="js的封装"></a>js的封装</h1><hr>
+<h2 id="用一个简单的book设计来做例子"><a href="#用一个简单的book设计来做例子" class="headerlink" title="用一个简单的book设计来做例子"></a>用一个简单的book设计来做例子</h2><h3 id="1-门户大开型对象"><a href="#1-门户大开型对象" class="headerlink" title="1. 门户大开型对象"></a>1. 门户大开型对象</h3><h4 id="特点："><a href="#特点：" class="headerlink" title="特点："></a><font color="blue">特点：</font></h4><blockquote>
 <ol>
-<li>创建一个新对象</li>
-<li>将构造函数的作用于给新对象（因此this指向了这个新对象）</li>
-<li>执行构造函数的代码</li>
-<li>返回新对象</li>
+<li>成员属性公开</li>
+<li>用this指向成员属性</li>
+<li>外部可改变成员值，不利于维护</li>
 </ol>
-<p>总的来说构造函数隐形地创建了新对象，并且会继承一个属性 <strong>constructor</strong></p>
-<p>我们可以用constructor来判断实例的类型</p>
-<pre><code>alert（person1.constructor == Person） //true
-alert（person2.constructor == Person） //true
-</code></pre><h3 id="将构造函数当作函数"><a href="#将构造函数当作函数" class="headerlink" title="将构造函数当作函数"></a>将构造函数当作函数</h3><p>构造函数和其他函数唯一区别，就是调用方式不同。不过，构造函数毕竟也是函数。任何情况，只要通过new操作符来调用，那它就可以作为构造函数；而任何函数，如果不通过new操作符来调用，那它和别的普通函数也不会有什么不同。例如之前的例子可以这样调用：</p>
-<pre><code>//当作构造函数使用
-var person1 = new Person(&quot;yezi&quot;,22,&quot;web&quot;);
-person.sayName（）;//&quot;yezi&quot;
-
-//当作普通函数使用
-Person(&quot;yezi&quot;,22,&quot;web&quot;); //添加到window对象
-window.sayName（）;//&quot;yezi&quot;
-
-//在另一个对象的作用域中使用
-var o = new Object();
-Person.call(o,&quot;yezi&quot;,22,&quot;web&quot;);
-o.sayName();//&quot;yezi&quot;
-</code></pre><h3 id="顺便一提"><a href="#顺便一提" class="headerlink" title="顺便一提:"></a>顺便一提:</h3><h4 id="使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）"><a href="#使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）" class="headerlink" title="使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）"></a>使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）</h4><pre><code>alert（person1.sayName == person2.sayName） //false
-</code></pre><p>对于多个实例共享的函数，建议把函数写在类型的原型链中</p>
-<pre><code>function Person(name,age,job){
-    this.name = name;
-    this.age = age;
-    this.job = job;
-    Person.prototype.sayName = function(){
-        alert(this.name);
-    };
+</blockquote>
+<h4 id="代码设计："><a href="#代码设计：" class="headerlink" title="代码设计："></a><font color="blue">代码设计：</font></h4><pre><code>var Book = function (isbn, name, author) {
+  this.isbn = isbn
+  this.name = name
+  this.author = author
 }
+// 公共方法
+Book.prototype.display = function () {
+  // ...
+}
+</code></pre><h5 id="总结：-这是最简单的设计模式，不过保密性差"><a href="#总结：-这是最简单的设计模式，不过保密性差" class="headerlink" title="总结： 这是最简单的设计模式，不过保密性差"></a><font color="red">总结：</font> 这是最简单的设计模式，不过保密性差</h5><h4 id="代码改进："><a href="#代码改进：" class="headerlink" title="代码改进："></a><font color="blue">代码改进：</font></h4><pre><code>var Book = function (isbn, name, author) {
+    this.setIsbn(isbn)
+    this.setName(name)
+    this.setAuthor(author)
+  }  
+  // 可以在赋值器中对数据进行处理
+  Book.prototype = {
+    display: function () {
+    },
+    setIsbn: function (isbn) {
+      this.isbn = isbn
+    },
+    getIsbn: function () {
+      return this.isbn
+    },
+    setName: function (name) {
+      this.name = name
+    },
+    getName: function () {
+      return this.name
+    },
+    setAuthor: function (author) {
+      this.author =  author
+    },
+    getAuthor: function () {
+      return this.author
+    }
+  }
+  var book = new Book(&apos;123456&apos;, &apos;西游记&apos;, &apos;陈乔恩&apos;)
+  // 下面是测试构造器
+  console.log(book.constructor === Book) // false
+  // 因为用prototype = {} 这种方式会断开constructor
+  Book.prototype.constructor = Book
+  console.log(book.constructor === Book) // true
+</code></pre><h5 id="总结：-改进之后降低了代码直接的耦合度，同时优化了代码，便于维护"><a href="#总结：-改进之后降低了代码直接的耦合度，同时优化了代码，便于维护" class="headerlink" title="总结： 改进之后降低了代码直接的耦合度，同时优化了代码，便于维护"></a><font color="red">总结：</font> 改进之后降低了代码直接的耦合度，同时优化了代码，便于维护</h5><hr>
+<h3 id="1-私用成员设计模式"><a href="#1-私用成员设计模式" class="headerlink" title="1. 私用成员设计模式"></a>1. 私用成员设计模式</h3><h4 id="特点：-1"><a href="#特点：-1" class="headerlink" title="特点："></a><font color="blue">特点：</font></h4><blockquote>
+<ol>
+<li>拥有私有成员</li>
+<li>只能通过特权方法修改私有属性</li>
+<li>使用了闭包来设计</li>
+<li><font color="red">私有成员不用this指向</font></li>
+<li><font color="red">特权方法用this指向</font>
 
-alert（person1.sayName == person2.sayName） //true
-</code></pre>
+</li>
+</ol>
+</blockquote>
+<h4 id="代码设计：-1"><a href="#代码设计：-1" class="headerlink" title="代码设计："></a><font color="blue">代码设计：</font></h4><pre><code>var Book = function (isbn, name, author) {
+  // 私有属性
+  var isbn, name, author
+  // 特权方法，用来访问私有属性
+  this.setIsbn = function (newIsbn) {
+    // 对数据处理
+  }
+  this.getIsbn = function () {
+    return isbn
+  }
+  this.getName = function () {
+    return name
+  }
+  this.getAuthor = function () {
+    return author
+  }
+  // init
+  this.setIsbn(isbn)
+  this.setName(name)
+  this.setAuthor(author)
+}
+Book.prototype.display = function () {}
+</code></pre><h5 id="总结：-私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向"><a href="#总结：-私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向" class="headerlink" title="总结： 私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向"></a><font color="red">总结：</font> 私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向</h5><hr>
+<h3 id="1-静态成员设计模式"><a href="#1-静态成员设计模式" class="headerlink" title="1. 静态成员设计模式"></a>1. 静态成员设计模式</h3><h4 id="特点：-2"><a href="#特点：-2" class="headerlink" title="特点："></a><font color="blue">特点：</font></h4><blockquote>
+<ol>
+<li>拥有静态成员</li>
+<li>静态成员是作用在类上，不是实例上面</li>
+<li>通过立即调用函数和闭包方式创建</li>
+</ol>
+</blockquote>
+<h4 id="代码设计：-2"><a href="#代码设计：-2" class="headerlink" title="代码设计："></a><font color="blue">代码设计：</font></h4><pre><code>var Book = (function () {
+  // 私人静态成员
+  var bookNum = 0
+  // 私人静态方法
+  var total = function () {}
+
+  // 返回constructor
+  return function (isbn, name, author) {
+  // 私有属性
+  var isbn, name, author
+  // 特权方法，用来访问私有属性
+  this.setIsbn = function (newIsbn) {
+    // 对数据处理
+  }
+  this.getIsbn = function () {
+    return isbn
+  }
+  this.getName = function () {
+    return name
+  }
+  this.getAuthor = function () {
+    return author
+  }
+  bookNum++  // 静态成员值加一
+  // init
+  this.setIsbn(isbn)
+  this.setName(name)
+  this.setAuthor(author)
+} 
+})();
+
+// 公共静态方法 (即每个实例都有一个副本)
+Book.borrow = function () {}
+
+// 公共方法 (所有实例共享的方法)
+Book.prototype.display = function () {}
+</code></pre><h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><h4 id="可以用静态成员方法模仿，只设置取值器"><a href="#可以用静态成员方法模仿，只设置取值器" class="headerlink" title="可以用静态成员方法模仿，只设置取值器"></a>可以用静态成员方法模仿，只设置取值器</h4><h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><h4 id="JavaScript设计模式-（2009年-美国-Rossharmes-哈梅斯-美国-DustinDiaz-迪亚斯-《JavaScript设计模式》"><a href="#JavaScript设计模式-（2009年-美国-Rossharmes-哈梅斯-美国-DustinDiaz-迪亚斯-《JavaScript设计模式》" class="headerlink" title="JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》"></a>JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》</h4>
       
     </div>
 
@@ -437,8 +498,6 @@ alert（person1.sayName == person2.sayName） //true
           
             <a href="/tags/js/" rel="tag"># js</a>
           
-            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
-          
         </div>
       
 
@@ -450,8 +509,8 @@ alert（person1.sayName == person2.sayName） //true
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/10/用hexo开发博客教程/" rel="next" title="用hexo开发博客教程">
-                <i class="fa fa-chevron-left"></i> 用hexo开发博客教程
+              <a href="/2017/07/20/node爬虫/" rel="next" title="node爬虫">
+                <i class="fa fa-chevron-left"></i> node爬虫
               </a>
             
           </div>
@@ -459,10 +518,6 @@ alert（person1.sayName == person2.sayName） //true
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/16/npm-publish发布插件/" rel="prev" title="npm publish发布插件">
-                npm publish发布插件 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -582,7 +637,7 @@ alert（person1.sayName == person2.sayName） //true
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工厂模式VS构造函数"><span class="nav-number">1.</span> <span class="nav-text">工厂模式VS构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是工厂模式？"><span class="nav-number">1.0.1.</span> <span class="nav-text">什么是工厂模式？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造函数"><span class="nav-number">1.0.2.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将构造函数当作函数"><span class="nav-number">1.0.3.</span> <span class="nav-text">将构造函数当作函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#顺便一提"><span class="nav-number">1.0.4.</span> <span class="nav-text">顺便一提:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">使用构造函数创建对象时候，如果函数内部有多个相同属性（上面例子的sayName函数），则可能会出项内存占多的情况。因为函数本质也是对象，在创建实例的时候也同时在内部创建不同对象（sayName）</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#js的封装"><span class="nav-number">1.</span> <span class="nav-text">js的封装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#用一个简单的book设计来做例子"><span class="nav-number">1.1.</span> <span class="nav-text">用一个简单的book设计来做例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-门户大开型对象"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 门户大开型对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#特点："><span class="nav-number">1.1.1.1.</span> <span class="nav-text">特点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码设计："><span class="nav-number">1.1.1.2.</span> <span class="nav-text">代码设计：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#总结：-这是最简单的设计模式，不过保密性差"><span class="nav-number">1.1.1.2.1.</span> <span class="nav-text">总结： 这是最简单的设计模式，不过保密性差</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码改进："><span class="nav-number">1.1.1.3.</span> <span class="nav-text">代码改进：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#总结：-改进之后降低了代码直接的耦合度，同时优化了代码，便于维护"><span class="nav-number">1.1.1.3.1.</span> <span class="nav-text">总结： 改进之后降低了代码直接的耦合度，同时优化了代码，便于维护</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-私用成员设计模式"><span class="nav-number">1.1.2.</span> <span class="nav-text">1. 私用成员设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#特点：-1"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">特点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码设计：-1"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">代码设计：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#总结：-私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向"><span class="nav-number">1.1.2.2.1.</span> <span class="nav-text">总结： 私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-静态成员设计模式"><span class="nav-number">1.1.3.</span> <span class="nav-text">1. 静态成员设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#特点：-2"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">特点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码设计：-2"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">代码设计：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量"><span class="nav-number">1.1.4.</span> <span class="nav-text">常量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可以用静态成员方法模仿，只设置取值器"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">可以用静态成员方法模仿，只设置取值器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考："><span class="nav-number">1.1.5.</span> <span class="nav-text">参考：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaScript设计模式-（2009年-美国-Rossharmes-哈梅斯-美国-DustinDiaz-迪亚斯-《JavaScript设计模式》"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>

@@ -263,6 +263,257 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/29/js封装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/29/js封装/" itemprop="url">js封装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T15:57:25+08:00">
+                2017-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/29/js封装/" class="leancloud_visitors" data-flag-title="js封装">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="js的封装"><a href="#js的封装" class="headerlink" title="js的封装"></a>js的封装</h1><hr>
+<h2 id="用一个简单的book设计来做例子"><a href="#用一个简单的book设计来做例子" class="headerlink" title="用一个简单的book设计来做例子"></a>用一个简单的book设计来做例子</h2><h3 id="1-门户大开型对象"><a href="#1-门户大开型对象" class="headerlink" title="1. 门户大开型对象"></a>1. 门户大开型对象</h3><h4 id="特点："><a href="#特点：" class="headerlink" title="特点："></a><font color="blue">特点：</font></h4><blockquote>
+<ol>
+<li>成员属性公开</li>
+<li>用this指向成员属性</li>
+<li>外部可改变成员值，不利于维护</li>
+</ol>
+</blockquote>
+<h4 id="代码设计："><a href="#代码设计：" class="headerlink" title="代码设计："></a><font color="blue">代码设计：</font></h4><pre><code>var Book = function (isbn, name, author) {
+  this.isbn = isbn
+  this.name = name
+  this.author = author
+}
+// 公共方法
+Book.prototype.display = function () {
+  // ...
+}
+</code></pre><h5 id="总结：-这是最简单的设计模式，不过保密性差"><a href="#总结：-这是最简单的设计模式，不过保密性差" class="headerlink" title="总结： 这是最简单的设计模式，不过保密性差"></a><font color="red">总结：</font> 这是最简单的设计模式，不过保密性差</h5><h4 id="代码改进："><a href="#代码改进：" class="headerlink" title="代码改进："></a><font color="blue">代码改进：</font></h4><pre><code>var Book = function (isbn, name, author) {
+    this.setIsbn(isbn)
+    this.setName(name)
+    this.setAuthor(author)
+  }  
+  // 可以在赋值器中对数据进行处理
+  Book.prototype = {
+    display: function () {
+    },
+    setIsbn: function (isbn) {
+      this.isbn = isbn
+    },
+    getIsbn: function () {
+      return this.isbn
+    },
+    setName: function (name) {
+      this.name = name
+    },
+    getName: function () {
+      return this.name
+    },
+    setAuthor: function (author) {
+      this.author =  author
+    },
+    getAuthor: function () {
+      return this.author
+    }
+  }
+  var book = new Book(&apos;123456&apos;, &apos;西游记&apos;, &apos;陈乔恩&apos;)
+  // 下面是测试构造器
+  console.log(book.constructor === Book) // false
+  // 因为用prototype = {} 这种方式会断开constructor
+  Book.prototype.constructor = Book
+  console.log(book.constructor === Book) // true
+</code></pre><h5 id="总结：-改进之后降低了代码直接的耦合度，同时优化了代码，便于维护"><a href="#总结：-改进之后降低了代码直接的耦合度，同时优化了代码，便于维护" class="headerlink" title="总结： 改进之后降低了代码直接的耦合度，同时优化了代码，便于维护"></a><font color="red">总结：</font> 改进之后降低了代码直接的耦合度，同时优化了代码，便于维护</h5><hr>
+<h3 id="1-私用成员设计模式"><a href="#1-私用成员设计模式" class="headerlink" title="1. 私用成员设计模式"></a>1. 私用成员设计模式</h3><h4 id="特点：-1"><a href="#特点：-1" class="headerlink" title="特点："></a><font color="blue">特点：</font></h4><blockquote>
+<ol>
+<li>拥有私有成员</li>
+<li>只能通过特权方法修改私有属性</li>
+<li>使用了闭包来设计</li>
+<li><font color="red">私有成员不用this指向</font></li>
+<li><font color="red">特权方法用this指向</font>
+
+</li>
+</ol>
+</blockquote>
+<h4 id="代码设计：-1"><a href="#代码设计：-1" class="headerlink" title="代码设计："></a><font color="blue">代码设计：</font></h4><pre><code>var Book = function (isbn, name, author) {
+  // 私有属性
+  var isbn, name, author
+  // 特权方法，用来访问私有属性
+  this.setIsbn = function (newIsbn) {
+    // 对数据处理
+  }
+  this.getIsbn = function () {
+    return isbn
+  }
+  this.getName = function () {
+    return name
+  }
+  this.getAuthor = function () {
+    return author
+  }
+  // init
+  this.setIsbn(isbn)
+  this.setName(name)
+  this.setAuthor(author)
+}
+Book.prototype.display = function () {}
+</code></pre><h5 id="总结：-私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向"><a href="#总结：-私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向" class="headerlink" title="总结： 私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向"></a><font color="red">总结：</font> 私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向</h5><hr>
+<h3 id="1-静态成员设计模式"><a href="#1-静态成员设计模式" class="headerlink" title="1. 静态成员设计模式"></a>1. 静态成员设计模式</h3><h4 id="特点：-2"><a href="#特点：-2" class="headerlink" title="特点："></a><font color="blue">特点：</font></h4><blockquote>
+<ol>
+<li>拥有静态成员</li>
+<li>静态成员是作用在类上，不是实例上面</li>
+<li>通过立即调用函数和闭包方式创建</li>
+</ol>
+</blockquote>
+<h4 id="代码设计：-2"><a href="#代码设计：-2" class="headerlink" title="代码设计："></a><font color="blue">代码设计：</font></h4><pre><code>var Book = (function () {
+  // 私人静态成员
+  var bookNum = 0
+  // 私人静态方法
+  var total = function () {}
+
+  // 返回constructor
+  return function (isbn, name, author) {
+  // 私有属性
+  var isbn, name, author
+  // 特权方法，用来访问私有属性
+  this.setIsbn = function (newIsbn) {
+    // 对数据处理
+  }
+  this.getIsbn = function () {
+    return isbn
+  }
+  this.getName = function () {
+    return name
+  }
+  this.getAuthor = function () {
+    return author
+  }
+  bookNum++  // 静态成员值加一
+  // init
+  this.setIsbn(isbn)
+  this.setName(name)
+  this.setAuthor(author)
+} 
+})();
+
+// 公共静态方法 (即每个实例都有一个副本)
+Book.borrow = function () {}
+
+// 公共方法 (所有实例共享的方法)
+Book.prototype.display = function () {}
+</code></pre><h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><h4 id="可以用静态成员方法模仿，只设置取值器"><a href="#可以用静态成员方法模仿，只设置取值器" class="headerlink" title="可以用静态成员方法模仿，只设置取值器"></a>可以用静态成员方法模仿，只设置取值器</h4><h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><h4 id="JavaScript设计模式-（2009年-美国-Rossharmes-哈梅斯-美国-DustinDiaz-迪亚斯-《JavaScript设计模式》"><a href="#JavaScript设计模式-（2009年-美国-Rossharmes-哈梅斯-美国-DustinDiaz-迪亚斯-《JavaScript设计模式》" class="headerlink" title="JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》"></a>JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》</h4>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/20/node爬虫/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2190,167 +2441,6 @@ indicator.addEventListener(&apos;touchmove&apos;, (event) =&gt; {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/17/搭建vue音乐播放器（1）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/05/17/搭建vue音乐播放器（1）/" itemprop="url">搭建vue音乐播放器（1）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-17T15:16:23+08:00">
-                2017-05-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/05/17/搭建vue音乐播放器（1）/" class="leancloud_visitors" data-flag-title="搭建vue音乐播放器（1）">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="搭建vue音乐播放器（1）"><a href="#搭建vue音乐播放器（1）" class="headerlink" title="搭建vue音乐播放器（1）"></a>搭建vue音乐播放器（1）</h1><hr>
-<h2 id="首页轮播组件解析"><a href="#首页轮播组件解析" class="headerlink" title="首页轮播组件解析"></a>首页轮播组件解析</h2><h3 id="实现功能"><a href="#实现功能" class="headerlink" title="实现功能"></a>实现功能</h3><blockquote>
-<ul>
-<li>自动轮播</li>
-<li>滑动切换</li>
-<li>点击indicator切换</li>
-</ul>
-</blockquote>
-<h3 id="html："><a href="#html：" class="headerlink" title="html："></a>html：</h3><pre><code>&lt;template&gt;
-    &lt;div class=&quot;swiper&quot;&gt;
-        &lt;div class=&quot;swiper-items-wrap&quot; ref=&quot;wrap&quot;&gt;
-            &lt;slot&gt;&lt;/slot&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;swiper-indicators-wrap&quot;&gt;
-            &lt;div class=&quot;swiper-indicator&quot; :class=&quot;{&apos;is-active&apos;:$index==index}&quot; v-for=&quot;(page,$index) in pages&quot; v-show=&quot;showIndicators&quot; @click=&quot;nevigateTo($event,$index)&quot;&gt;&lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/template&gt;
-</code></pre><h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p> 假设有4个页面，分别标号为1，2，3，4</p>
-<p> <strong>css样式初始化：</strong> 1页面设置为block，其他为none</p>
-<p> <strong>页面初始化：</strong> 获取<code>&lt;div class=&quot;swiper-items-wrap&quot; ref=&quot;wrap&quot;&gt;&lt;/div&gt;</code>这个节点,然后获取它下面子节点的个数，根据这个子节点的长度初始化indicator</p>
-<p><strong>鼠标按下：</strong> 删除保存的移动方向<font color="red">（不然单击页面会自动移动）</font>，初始化页面位置（调用initPos方法）<br>根据当前的index，将index–，index++设置block，分别设置为前一个页面和后一个页面。这样就存在三个设置为block的页面</p>
-<p><strong>鼠标移动：</strong> 保存鼠标移动的方向（toward），保存移动的距离（offset），调用translate方法移动页面</p>
-<p><strong>鼠标离开：</strong> </p>
-<ol>
-<li>判断移动的距离，如果小于页面的一半，则取消移动，重新初始化页面，此时页面依然是1，2，3显示为block</li>
-<li>如果距离大于页面一般，则先将当前的3个页面设置为none隐藏，令index++<font color="red">（index–，这个根据方向判断）</font>,再重置页面位置，这时候显示的是2，3，4（block），其他未none，因为2，3页面在移动时候设置了动画，所以即使由block-&gt;none-&gt;block，动画却不会断开。相当于从隐藏的位置到初始化位置的动画过渡。</li>
-</ol>
-<hr>
-<h2 id="bug修复"><a href="#bug修复" class="headerlink" title="bug修复"></a>bug修复</h2><ol>
-<li>单个页面时候取消移动效果</li>
-<li>两个页面的时候取消动画效果</li>
-<li>三个页面时候把位置由前-&gt;后 或者 后-&gt;前变化的页面动画取消<font color="red">也就是说这种算法至少需要4个页面</font>
-
-
-
-</li>
-</ol>
-<p>放上轮播组件的github地址： <a href="https://github.com/yezi12138/swiper" target="_blank" rel="external">https://github.com/yezi12138/swiper</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2400,7 +2490,7 @@ indicator.addEventListener(&apos;touchmove&apos;, (event) =&gt; {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
