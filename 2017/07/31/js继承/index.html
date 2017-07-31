@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="yezi">
 <meta property="og:description" content="js继承 类继承基于类继承的步骤： 用一个类的声明定义对象的结构 实例化该类以创建一个新对象，每个创建的对象都有一套该类的所有实例属性的副本  类继承与工厂模式的对比：工厂模式未能解决对象的类型，即由哪个构造函数创建的  类继承的例子：// 创建父类 var Person = function (name) {     this.name = name   }   Person.prototype">
 <meta property="og:image" content="http://wx4.sinaimg.cn/mw690/a359ab18gy1fi354qbexwj207y06r0st.jpg">
-<meta property="og:updated_time" content="2017-07-31T08:29:06.891Z">
+<meta property="og:updated_time" content="2017-07-31T08:41:06.138Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js继承">
 <meta name="twitter:description" content="js继承 类继承基于类继承的步骤： 用一个类的声明定义对象的结构 实例化该类以创建一个新对象，每个创建的对象都有一套该类的所有实例属性的副本  类继承与工厂模式的对比：工厂模式未能解决对象的类型，即由哪个构造函数创建的  类继承的例子：// 创建父类 var Person = function (name) {     this.name = name   }   Person.prototype">
@@ -400,7 +400,7 @@ yezi.behavior = {
 }
 console.log(yezi.behavior) // Object {foot: false, eat: false}
 console.log(feifei.behavior) // Object {foot: true, eat: true}
-</code></pre><font color="red">总结：</font> 直接改变继承的对象值，相当于给实例添加新的属性behavior<br><br>接下来看看另外一个改变对象测试<br><br>    yezi.behavior.foot = false<br>    yezi.behavior.eat = false<br>    console.log(yezi.behavior) // Object {foot: false, eat: false}<br>    console.log(feifei.behavior) // Object {foot: true, eat: true}<br><br><font color="red">总结：</font> 通过这种方式，原理是实例会向上查找behavior属性，再找到foot和eat的值进行修改，而不是给实例直接添加新的behavior属性，这可以说是一个bug<br><br><br>—<br><br><br>## 原型链继承<br><br>### 原型链继承区别之前提到的类继承，类继承沿用的是java面向对象的思维，而原型链则是利用js设计的思维<br><font color="blue">相对于类继承，原型链继承更加简单，但是依然避免不了引用类型的共享bug，原型链继承我理解为是浅复制，对于简单类型进行复制副本，引用类型则用‘指针’指向</font>
+</code></pre><font color="red">总结：</font> 直接改变继承的对象值，相当于给实例添加新的属性behavior<br><br>接下来看看另外一个改变对象测试<br><br>    yezi.behavior.foot = false<br>    yezi.behavior.eat = false<br>    console.log(yezi.behavior) // Object {foot: false, eat: false}<br>    console.log(feifei.behavior) // Object {foot: true, eat: true}<br><br><font color="red">总结：</font> 通过这种方式，原理是实例会向上查找behavior属性，再找到foot和eat的值进行修改，而不是给实例直接添加新的behavior属性，这可以说是一个bug<br><br>—<br><br><br>## 原型链继承<br><br>### 原型链继承区别之前提到的类继承，类继承沿用的是java面向对象的思维，而原型链则是利用js设计的思维<br><font color="blue">相对于类继承，原型链继承更加简单，但是依然避免不了引用类型的共享bug，原型链继承我理解为是浅复制，对于简单类型进行复制副本，引用类型则用‘指针’指向</font>
 
 <h3 id="代码设计"><a href="#代码设计" class="headerlink" title="代码设计:"></a>代码设计:</h3><pre><code>// 原型链继承的主要函数
 function clone (object) {
