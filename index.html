@@ -363,7 +363,7 @@ var Author = function (name, book) {
   }
   // 子类继承父类
   Author.prototype = new Person()
-  subClass.prototype.construtor = Author
+  Author.prototype.construtor = Author
   // 子类的公共方法只能放在继承后面
 
   // 这是改进方法

@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="yezi">
 <meta property="og:description" content="js继承 类继承基于类继承的步骤： 用一个类的声明定义对象的结构 实例化该类以创建一个新对象，每个创建的对象都有一套该类的所有实例属性的副本  类继承与工厂模式的对比：工厂模式未能解决对象的类型，即由哪个构造函数创建的  类继承的例子：// 创建父类 var Person = function (name) {     this.name = name   }   Person.prototype">
 <meta property="og:image" content="http://wx4.sinaimg.cn/mw690/a359ab18gy1fi354qbexwj207y06r0st.jpg">
-<meta property="og:updated_time" content="2017-07-31T08:43:51.894Z">
+<meta property="og:updated_time" content="2017-07-31T08:47:38.145Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js继承">
 <meta name="twitter:description" content="js继承 类继承基于类继承的步骤： 用一个类的声明定义对象的结构 实例化该类以创建一个新对象，每个创建的对象都有一套该类的所有实例属性的副本  类继承与工厂模式的对比：工厂模式未能解决对象的类型，即由哪个构造函数创建的  类继承的例子：// 创建父类 var Person = function (name) {     this.name = name   }   Person.prototype">
@@ -361,7 +361,7 @@ var Author = function (name, book) {
   }
   // 子类继承父类
   Author.prototype = new Person()
-  subClass.prototype.construtor = Author
+  Author.prototype.construtor = Author
   // 子类的公共方法只能放在继承后面
 
   // 这是改进方法
