@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="-H5," />
+  <meta name="keywords" content="ES6," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="H5上传头像 大体的思路是，部分API的兼容性请参照caniuse：  利用FileReader,读取blob对象,或者是file对象，将图片转化为data uri的形式。 使用canvas,在页面上新建一个画布,利用canvas提供的API,将图片画入这个画布当中。 利用canvas.toDataURL()，进行图片的压缩，得到图片的data uri的值 上传文件  HTML部分 （在vue环境">
-<meta name="keywords" content="-H5">
+<meta name="description" content="ES6 Promise原理 最近在学爬虫，对继步的操作十分烦恼，因为需要用到异步函数。于是开始研究起异步编程，现在看到ES6的promise异步，觉得十分有趣，于是上网查了查它的原理。 参考： mengera88的文章地址链接：mengera88的文章 简单的Promise函数function promise (fn) {     // 定义状态，一共有三种 ‘pending’， ‘fulfill">
+<meta name="keywords" content="ES6">
 <meta property="og:type" content="article">
-<meta property="og:title" content="H5上传图片">
-<meta property="og:url" content="http://yoursite.com/2017/07/19/H5上传图片/index.html">
+<meta property="og:title" content="ES6 promise原理">
+<meta property="og:url" content="http://yoursite.com/2017/08/06/ES6-promise原理/index.html">
 <meta property="og:site_name" content="yezi">
-<meta property="og:description" content="H5上传头像 大体的思路是，部分API的兼容性请参照caniuse：  利用FileReader,读取blob对象,或者是file对象，将图片转化为data uri的形式。 使用canvas,在页面上新建一个画布,利用canvas提供的API,将图片画入这个画布当中。 利用canvas.toDataURL()，进行图片的压缩，得到图片的data uri的值 上传文件  HTML部分 （在vue环境">
-<meta property="og:updated_time" content="2017-07-19T11:38:36.404Z">
+<meta property="og:description" content="ES6 Promise原理 最近在学爬虫，对继步的操作十分烦恼，因为需要用到异步函数。于是开始研究起异步编程，现在看到ES6的promise异步，觉得十分有趣，于是上网查了查它的原理。 参考： mengera88的文章地址链接：mengera88的文章 简单的Promise函数function promise (fn) {     // 定义状态，一共有三种 ‘pending’， ‘fulfill">
+<meta property="og:updated_time" content="2017-08-06T10:41:51.165Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="H5上传图片">
-<meta name="twitter:description" content="H5上传头像 大体的思路是，部分API的兼容性请参照caniuse：  利用FileReader,读取blob对象,或者是file对象，将图片转化为data uri的形式。 使用canvas,在页面上新建一个画布,利用canvas提供的API,将图片画入这个画布当中。 利用canvas.toDataURL()，进行图片的压缩，得到图片的data uri的值 上传文件  HTML部分 （在vue环境">
+<meta name="twitter:title" content="ES6 promise原理">
+<meta name="twitter:description" content="ES6 Promise原理 最近在学爬虫，对继步的操作十分烦恼，因为需要用到异步函数。于是开始研究起异步编程，现在看到ES6的promise异步，觉得十分有趣，于是上网查了查它的原理。 参考： mengera88的文章地址链接：mengera88的文章 简单的Promise函数function promise (fn) {     // 定义状态，一共有三种 ‘pending’， ‘fulfill">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/19/H5上传图片/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/06/ES6-promise原理/"/>
 
 
 
 
 
-  <title>H5上传图片 | yezi</title>
+  <title>ES6 promise原理 | yezi</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -263,7 +263,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/19/H5上传图片/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/06/ES6-promise原理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yezi">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">H5上传图片</h1>
+          <h1 class="post-title" itemprop="name headline">ES6 promise原理</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-19T19:37:19+08:00">
-                2017-07-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-06T18:41:08+08:00">
+                2017-08-06
               </time>
             
 
@@ -310,7 +310,7 @@
 
           
           
-             <span id="/2017/07/19/H5上传图片/" class="leancloud_visitors" data-flag-title="H5上传图片">
+             <span id="/2017/08/06/ES6-promise原理/" class="leancloud_visitors" data-flag-title="ES6 promise原理">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -338,132 +338,197 @@
       
 
       
-        <h1 id="H5上传头像"><a href="#H5上传头像" class="headerlink" title="H5上传头像"></a>H5上传头像</h1><hr>
-<p>大体的思路是，部分API的兼容性请参照caniuse：</p>
-<ol>
-<li>利用FileReader,读取blob对象,或者是file对象，将图片转化为data uri的形式。</li>
-<li>使用canvas,在页面上新建一个画布,利用canvas提供的API,将图片画入这个画布当中。</li>
-<li>利用canvas.toDataURL()，进行图片的压缩，得到图片的data uri的值</li>
-<li>上传文件</li>
-</ol>
-<h2 id="HTML部分-（在vue环境下执行）"><a href="#HTML部分-（在vue环境下执行）" class="headerlink" title="HTML部分 （在vue环境下执行）"></a>HTML部分 （在vue环境下执行）</h2><pre><code>&lt;input type=&quot;file&quot; class=&quot;fileInput&quot; ref=&apos;fileInput&apos; accept=&quot;image/*&quot;&gt;
-</code></pre><p> accept=”image/*” 表示只接受图片类型的文件</p>
-<h2 id="监听input-type-’file’-选择文件"><a href="#监听input-type-’file’-选择文件" class="headerlink" title="监听input[type=’file’]选择文件"></a>监听input[type=’file’]选择文件</h2><pre><code>this.$refs.fileInput.addEventListener(&apos;change&apos;, (event) =&gt; {
-    console.log(this.$refs.fileInput.files[0])
-    var file = this.$refs.fileInput.files[0]
-    // 传入图像文件
-    that.upLoadAvatar(file)
+        <h1 id="ES6-Promise原理"><a href="#ES6-Promise原理" class="headerlink" title="ES6 Promise原理"></a>ES6 Promise原理</h1><hr>
+<p>最近在学爬虫，对继步的操作十分烦恼，因为需要用到异步函数。于是开始研究起异步编程，现在看到ES6的promise异步，觉得十分有趣，于是上网查了查它的原理。</p>
+<p>参考： mengera88的文章<br>地址链接：<a href="https://segmentfault.com/a/1190000009478377" target="_blank" rel="external">mengera88的文章</a></p>
+<h2 id="简单的Promise函数"><a href="#简单的Promise函数" class="headerlink" title="简单的Promise函数"></a>简单的Promise函数</h2><pre><code>function promise (fn) {
+    // 定义状态，一共有三种 ‘pending’， ‘fulfilled’，‘rejected’ 
+    var state = &apos;pending&apos;,
+    // 定义回调组，因为可能存在多个函数
+    callbacks = [],
+    // 定义在resolve（value）传进去的值
+    value = null
+    this.then = function (onFulfilled) {
+        // ...
+    }
+    function resolve (newValue) {
+        // ...
+    }
+    fn(resolve)
+  }
+</code></pre><p>一个简单的promise框架已经搭设好，这里没有加入<font color="red">rejected</font>回调，这个以后再说</p>
+<h3 id="测试promise用的函数"><a href="#测试promise用的函数" class="headerlink" title="测试promise用的函数"></a>测试promise用的函数</h3><p>现在我们再看看怎么调用promise</p>
+<pre><code>function getUserId() {
+    return new promise (function(resolve) {
+      //模拟异步请求
+      setTimeout(function () {
+        resolve(&apos;success&apos;)
+      }, 2000)
+    })
+  }
+  // 主函数
+  getUserId().then(function (value) {
+    console.log(value)
   })
-</code></pre><h2 id="显示图像函数"><a href="#显示图像函数" class="headerlink" title="显示图像函数"></a>显示图像函数</h2><pre><code>upLoadAvatar (file) {
-    var that = this
-    var fr = new FileReader()
-    fr.readAsDataURL(file)
-    fr.onload = function (e) {
-      that.$refs.img.setAttribute(&apos;src&apos;, e.target.result)
+</code></pre><ol>
+<li>调用then方法，将想要在Promise异步操作成功时执行的回调放入callbacks队列，其实也就是注册回调函数，可以向观察者模式方向思考；</li>
+<li>创建Promise实例时传入的函数会被赋予一个函数类型的参数，即<font color="red">resolve</font>，它接收一个参数<font color="red">value</font>，代表异步操作返回的结果，当一步操作执行成功后，用户会调用resolve方法，这时候其实真正执行的操作是将callbacks队列中的回调一一执行。</li>
+</ol>
+<h3 id="改进promise-（完善then和resolve）"><a href="#改进promise-（完善then和resolve）" class="headerlink" title="改进promise  （完善then和resolve）"></a>改进promise  （完善then和resolve）</h3><pre><code>function promise (fn) {
+    var state = &apos;pending&apos;,
+    callbacks = [],
+    value = null
+    this.then = function (onFulfilled) {
+      // 在等待时间保存传进来的函数 
+      if (state === &apos;pending&apos;) {
+        callbacks.push(onFulfilled)
+        // return this 是为能链式调用then
+        return this
+      }
+      // 保证在异步结束后，后续函数能正常执行
+      onFulfilled(value)
+      return this
     }
-  }
-</code></pre><p>这样就可以在本地调试完毕，图像能够正确选择出来</p>
-<hr>
-<h2 id="利用canvas压缩图片大小"><a href="#利用canvas压缩图片大小" class="headerlink" title="利用canvas压缩图片大小"></a>利用canvas压缩图片大小</h2><p>增加canvas标签，设置隐藏不可见</p>
-<pre><code>&lt;canvas id=&quot;canvas&quot; style=&quot;display:none&quot;&gt;&lt;/canvas&gt;
-</code></pre><p>增加压缩函数</p>
-<pre><code>compressImg (img) {
-    var canvas = document.getElementById(&apos;canvas&apos;)
-    var ctx = canvas.getContext(&apos;2d&apos;)
-    // 利用canvas进行绘图
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-    // 将原来图片的质量压缩到原先的0.2倍。
-    var data = canvas.toDataURL(&apos;image/jpeg&apos;, 0.2) // data url的形式
-    return data
-  }
-</code></pre><h4 id="HTMLCanvasElement-toDataURL-方法返回一个包含图片展示的-data-URI-。可以使用-type-参数其类型，默认为-PNG-格式。图片的分辨率为96dpi"><a href="#HTMLCanvasElement-toDataURL-方法返回一个包含图片展示的-data-URI-。可以使用-type-参数其类型，默认为-PNG-格式。图片的分辨率为96dpi" class="headerlink" title="HTMLCanvasElement.toDataURL() 方法返回一个包含图片展示的 data URI 。可以使用 type 参数其类型，默认为 PNG 格式。图片的分辨率为96dpi"></a>HTMLCanvasElement.toDataURL() 方法返回一个包含图片展示的 data URI 。可以使用 type 参数其类型，默认为 PNG 格式。图片的分辨率为96dpi</h4><blockquote>
-<p>canvas.toDataURL(type, encoderOptions)</p>
-</blockquote>
-<p><font color="red">type 可选</font><br>图片格式，默认为 image/png</p>
-<p><font color="red">encoderOptions 可选</font><br>在指定图片格式为 image/jpeg 或 image/webp的情况下，可以从 0 到 1 的区间内选择图片的质量。如果超出取值范围，将会使用默认值 0.92。其他参数会被忽略。</p>
-<h4 id="回到整题，修改uploadAvatar函数"><a href="#回到整题，修改uploadAvatar函数" class="headerlink" title="回到整题，修改uploadAvatar函数"></a>回到整题，修改uploadAvatar函数</h4><pre><code>upLoadAvatar (file) {
-    if (!file) {
-      return
+    // 防止resolve在then完成之前执行
+    function resolve (newValue) {
+      value = newValue
+      state = &apos;fulfilled&apos;
+      // 将resolve置于队列尾部，防止在then之前就执行
+      setTimeout(function () {
+        callbacks.forEach(function (callback) {
+          callback(value)
+        })
+      }, 0)
     }
-    var MAXSIZE = 100 * 1024 // 超过这个值就进行压缩
-    var that = this
-    var fr = new FileReader()
-    fr.onload = function (e) {
-      var result = this.result
-      var img = new Image()
-
-      // img.onload必须的，不然加载的图片会看不见
-      img.onload = function () {
-        // 如果大于100K则进行压缩
-        if (file.size &gt;= MAXSIZE) {
-          var imgData = that.compressImg(img)
-          // username用来辨别用户，avatar是上传的图片
-          let userInfo = {
-            username: that.user.name,
-            avatar: imgData
-          }
-          that.$http.post(&apos;/refreshInfo&apos;, {userInfo}).then((res) =&gt; {
-            that.user = res.data
-          })
-        } else {
-            // 不压缩则直接上传
-          let userInfo = {
-            username: that.user.name,
-            avatar: result
-          }
-          that.$http.post(&apos;/refreshInfo&apos;, {userInfo}).then((res) =&gt; {
-            that.user = res.data
-          })
+    fn(resolve)
+  }
+</code></pre><p>这个样子我们再运行上面测试promise的代码，结果就是异步调用成功</p>
+<h2 id="链式promise"><a href="#链式promise" class="headerlink" title="链式promise"></a>链式promise</h2><p>上面的代码虽然可以实现异步，但却无法实现链式异步，就是连续两个promise。假设有这样一个场景：你get请求一个数据，然后之后的post方法依赖get过来的请求，这就需要到达链式异步</p>
+<h3 id="测试用的代码"><a href="#测试用的代码" class="headerlink" title="测试用的代码"></a>测试用的代码</h3><pre><code>function fn1() {
+    return new promise(function (resolve) {
+      setTimeout(function () {
+        console.log(&apos;fn1 is over&apos;)
+        resolve(&apos;success&apos;)
+      }, 3000)
+    })
+  }
+  function fn2(val) {
+    console.log(&apos;fn2 receipt:&apos;, val);
+    return new promise(function (resolve) {
+      setTimeout(function () {
+        console.log(&apos;fn2 is over&apos;)
+        resolve(&apos;fali&apos;)
+      }, 5000)
+    })
+  }
+  // 主函数
+  fn1().then(fn2).then(function (val) {
+    console.log(val)
+  })
+</code></pre><h3 id="1-对then方法修改"><a href="#1-对then方法修改" class="headerlink" title="1. 对then方法修改"></a>1. 对then方法修改</h3><pre><code>this.then = function (onFulfilled) {
+      return new promise(function (resolve) {
+        handle({
+          onFulfilled: onFulfilled,
+          resolve: resolve
+        })
+      })
+    }
+</code></pre><p>这是then返回一个promise对象，handle的数据保存在promise1中的callbacks</p>
+<h3 id="2-对resolve修改"><a href="#2-对resolve修改" class="headerlink" title="2. 对resolve修改"></a>2. 对resolve修改</h3><pre><code>function resolve (newValue) {
+    // 这是将fn2 return回的promise对象进行判断，如果是函数或者对象，就执行
+    // 如果不太明白可以跳过，我下面会描述过程
+      if (newValue &amp;&amp; (typeof newValue == &apos;object&apos; || typeof newValue === &apos;function&apos;)) {
+        var then = newValue.then
+        if (typeof then === &apos;function&apos;) {
+          then.call(newValue, resolve)
+          return
         }
       }
-      img.src = this.result
+      value = newValue
+      state = &apos;fulfilled&apos;
+      // 将resolve置于队列尾部，防止在then之前就执行
+      setTimeout(function () {
+        callbacks.forEach(function (callback) {
+          handle(callback)
+        })
+      }, 0)
     }
-    fr.readAsDataURL(file)
-  }
-</code></pre><h4 id="注意："><a href="#注意：" class="headerlink" title="注意："></a><font color="red">注意：</font></h4><p>fr.onload = function () {<br>    this.result…   // 这个返回的是base64编码的url，可以直接发送<br>}</p>
-<hr>
-<h2 id="后台处理，返回修改后的数据"><a href="#后台处理，返回修改后的数据" class="headerlink" title="后台处理，返回修改后的数据"></a>后台处理，返回修改后的数据</h2><p>用node模拟了后台接口，实现对mongoose数据的修改和数据返回</p>
-<pre><code>router.post(&apos;/refreshInfo&apos;, (req, res) =&gt; {
-    var userInfo = req.body.userInfo
-    // 不允许修改密码
-    if (userInfo.password) {
+</code></pre><h3 id="全部代码"><a href="#全部代码" class="headerlink" title="全部代码"></a>全部代码</h3><pre><code>window.onload = function () {
+  function promise (fn) {
+    var state = &apos;pending&apos;,
+    callbacks = [],
+    value = null
+    this.then = function (onFulfilled) {
+      return new promise(function (resolve) {
+        handle({
+          onFulfilled: onFulfilled,
+          resolve: resolve
+        })
+      })
+    }
+    function handle (callback) {
+      if (state === &apos;pending&apos;) {
+        callbacks.push(callback)
         return
+      } else if (state === &apos;fulfilled&apos;) {
+        var ret = callback.onFulfilled(value) || value
+        callback.resolve(ret)
+      }
     }
-    // 修改mongoose的数据
-    user.update({username: userInfo.username}, {$set: {avatar: userInfo.avatar}}, function (err, result) {
-      if (err) {
-        console.log(err)
-    } else {
-        console.log(&apos;update success&apos;)
-        user.find({username: userInfo.username}, (err, data) =&gt; {
-            if (err) {
-                console.log(err)
-            } else {
-                if (data.length === 0) {
-                   res.send(&apos;fail&apos;)
-               } else {
-                var user = {
-                    name: data[0].username,
-                    avatar: data[0].avatar
-                }
-                res.send(user)
-            }
+    // 防止resolve在then完成之前执行
+    function resolve (newValue) {
+      if (newValue &amp;&amp; (typeof newValue == &apos;object&apos; || typeof newValue === &apos;function&apos;)) {
+        var then = newValue.then
+        if (typeof then === &apos;function&apos;) {
+          then.call(newValue, resolve)
+          return
         }
-    })
+      }
+      value = newValue
+      state = &apos;fulfilled&apos;
+      // 将resolve置于队列尾部，防止在then之前就执行
+      setTimeout(function () {
+        callbacks.forEach(function (callback) {
+          handle(callback)
+        })
+      }, 0)
     }
-})
-})
-</code></pre><h3 id="注意：-1"><a href="#注意：-1" class="headerlink" title="注意："></a><font color="red">注意：</font></h3><p>每一个接口只能返回一个header，即res.send或者其他的只能执行一次，否则会报错</p>
-<blockquote>
-<p>Error: Can’t set headers after they are sent</p>
-</blockquote>
-<p><a href="https://cnodejs.org/topic/53774ffecbcc396349ca1155" target="_blank" rel="external">Can’t set headers after they are sent解决方案</a></p>
-<hr>
-<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><ol>
-<li>通过ajax不能上传超过100K的图片，怎么解决？</li>
-<li>没有实现上传失败的处理方案</li>
+    fn(resolve)
+  }
+
+  function fn1() {
+    return new promise(function (resolve) {
+      setTimeout(function () {
+        console.log(&apos;fn1 is over&apos;)
+        resolve(&apos;success&apos;)
+      }, 3000)
+    })
+  }
+  function fn2(val) {
+    console.log(&apos;fn2 receipt:&apos;, val);
+    return new promise(function (resolve) {
+      setTimeout(function () {
+        console.log(&apos;fn2 is over&apos;)
+        resolve(&apos;fali&apos;)
+      }, 5000)
+    })
+  }
+  // 主函数
+  fn1().then(fn2).then(function (val) {
+    console.log(val)
+  })
+}
+</code></pre><font color="red">函数执行过程：</font>
+
+<ol>
+<li>第一步执行<font color="blue">fn1函数</font>,创建promise1，这时因为计时器异步，所以直接执行then方法，把<font color="blue">fn2函数</font>添加到promise1的callbacks上，同时，因为then同时返回了一个promise2对象，所以<font color="blue">fn3函数</font>添加到promise2上</li>
+<li>执行fn1计时器中的函数，然后执行promise1的resolve，传入’success’，因为传入的字符串，resolve执行handle(callback)，执行<font color="blue">if (state === ‘fulfilled’)里面的语句</font>。这个时候被执行的是<font color="blue">fn2函数</font></li>
+<li>var ret = callback.onFulfilled(value) || value 执行后首先执行fn2里面的输出语句，然后将返回的promise3对象传给ret</li>
+<li>执行resolve(ret)，就是走到resolve函数的if判断语句，<font color="red">then.call(newValue, resolve)结果等同于执行new promise4(resolve)</font></li>
+<li>因为创建promise4,同理会先执行同步函数then，将fn3链接到promise4的callbacks，然后等promise4的计时器执行完毕，执行fn3</li>
+<li>总的指向为： promise1 –&gt; fn2 &amp;&amp;  fn2 return的promise4 –&gt; fn3</li>
 </ol>
-<p>后续慢慢填坑。。。。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>是不是觉得很绕？ 绕就对了。。。。慢慢看多几次写几个console.log就会慢慢慢慢慢慢慢慢理解。</p>
 
       
     </div>
@@ -493,7 +558,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/H5/" rel="tag"># -H5</a>
+            <a href="/tags/ES6/" rel="tag"># ES6</a>
           
         </div>
       
@@ -506,8 +571,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/10/backdrop-filter/" rel="next" title="backdrop-filter">
-                <i class="fa fa-chevron-left"></i> backdrop-filter
+              <a href="/2017/07/31/js继承/" rel="next" title="js继承">
+                <i class="fa fa-chevron-left"></i> js继承
               </a>
             
           </div>
@@ -515,10 +580,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/20/node爬虫/" rel="prev" title="node爬虫">
-                node爬虫 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -638,7 +699,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#H5上传头像"><span class="nav-number">1.</span> <span class="nav-text">H5上传头像</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML部分-（在vue环境下执行）"><span class="nav-number">1.1.</span> <span class="nav-text">HTML部分 （在vue环境下执行）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听input-type-’file’-选择文件"><span class="nav-number">1.2.</span> <span class="nav-text">监听input[type=’file’]选择文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示图像函数"><span class="nav-number">1.3.</span> <span class="nav-text">显示图像函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用canvas压缩图片大小"><span class="nav-number">1.4.</span> <span class="nav-text">利用canvas压缩图片大小</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTMLCanvasElement-toDataURL-方法返回一个包含图片展示的-data-URI-。可以使用-type-参数其类型，默认为-PNG-格式。图片的分辨率为96dpi"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">HTMLCanvasElement.toDataURL() 方法返回一个包含图片展示的 data URI 。可以使用 type 参数其类型，默认为 PNG 格式。图片的分辨率为96dpi</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#回到整题，修改uploadAvatar函数"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">回到整题，修改uploadAvatar函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意："><span class="nav-number">1.4.0.3.</span> <span class="nav-text">注意：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后台处理，返回修改后的数据"><span class="nav-number">1.5.</span> <span class="nav-text">后台处理，返回修改后的数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注意：-1"><span class="nav-number">1.5.1.</span> <span class="nav-text">注意：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后续"><span class="nav-number">1.6.</span> <span class="nav-text">后续</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ES6-Promise原理"><span class="nav-number">1.</span> <span class="nav-text">ES6 Promise原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单的Promise函数"><span class="nav-number">1.1.</span> <span class="nav-text">简单的Promise函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试promise用的函数"><span class="nav-number">1.1.1.</span> <span class="nav-text">测试promise用的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改进promise-（完善then和resolve）"><span class="nav-number">1.1.2.</span> <span class="nav-text">改进promise  （完善then和resolve）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链式promise"><span class="nav-number">1.2.</span> <span class="nav-text">链式promise</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试用的代码"><span class="nav-number">1.2.1.</span> <span class="nav-text">测试用的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-对then方法修改"><span class="nav-number">1.2.2.</span> <span class="nav-text">1. 对then方法修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-对resolve修改"><span class="nav-number">1.2.3.</span> <span class="nav-text">2. 对resolve修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全部代码"><span class="nav-number">1.2.4.</span> <span class="nav-text">全部代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
 
           </div>
