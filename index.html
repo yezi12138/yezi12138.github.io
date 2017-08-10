@@ -263,6 +263,171 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/10/从零开始学习react第二天/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/从零开始学习react第二天/" itemprop="url">从零开始学习react第二天</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T21:56:05+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/10/从零开始学习react第二天/" class="leancloud_visitors" data-flag-title="从零开始学习react第二天">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="从零开始学习react第二天"><a href="#从零开始学习react第二天" class="headerlink" title="从零开始学习react第二天"></a>从零开始学习react第二天</h1><hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>首先我们先完善第一天留下来的问题，之前我们用 <code>babel-loader</code> <code>babel-preset-react</code> <code>babel-preset-es2005</code> 三个包将ES6语法转换为ES5，相对于大多数浏览器，这样的设置可能已经足够了，但是对于少数不支持ES5语法的浏览器，这样的设置可能还不够，而且 <code>babel-loader</code> 对于ES6的 <code>promise</code> <code>fetch</code>，ES5的新方法 <code>Object.assign</code> ,虽然能正确运行，但是对于IE9以下的浏览器来说并不能兼容</p>
+<font color="blue">这个时候就需要 <code>polyfill</code></font>.<br><br>为了能随心所欲地使用ES6语法，这里我推荐使用  <code>babel-polyfill</code> <code>babel-preset-env</code><br>关于 <code>babel-preset-env</code> 的选择原理看这里：<br><a href="https://segmentfault.com/a/1190000010106158" target="_blank" rel="external">21 分钟精通前端 Polyfill 方案</a><br><a href="https://segmentfault.com/q/1010000005596587" target="_blank" rel="external">babel-polyfill和babel-runtime对比</a><br><br>### 安装  <code>babel-polyfill</code><br>&gt; npm install babel-polyfill –save<br><br>### 修改pakage.json配置，让 <code>babel-polyfill</code> 单独插入到html<br>为了实现多入口的注入，我们用到 <code>new webpack.optimize.CommonsChunkPlugin(options)</code><br>代码如下：<br><br>    plugins: [<br>        // …<br>        new webpack.optimize.CommonsChunkPlugin({<br>            name: ‘verdor’,<br>            filename: ‘polyfill.js’<br>        })<br>    ]<br>    // 修改入口文件,增加vendor<br>    entry: {<br>        app: ‘./src/index.js’,<br>        verdor: ‘babel-polyfill’<br>    }<br><br>这样运行webpack，可以看到编译后的html下面有两个script文件引用了<br><br>—<br><br>回到正题，今天学习的是<code>babel-plugin-react-transform</code>的热加载<br><br>## babel-plugin-react-transform 热加载的实现<br>之前我们已经实现了页面的自动刷新，用的命令是：<br>&gt; webpack-dev-server –inline<br><br>原本想用 <code>react-hot-loader</code> 可是官方已经停止维护，推荐我们使用 <code>babel-plugin-react-transform</code><br><br>### 于是我们先安装包<br>&gt; npm install –save-dev babel-plugin-react-transform<br><br>还有一些转换器搭配使用<br>&gt; npm install –save-dev react-transform-hmr<br>&gt; npm install –save-dev react-transform-catch-errors redbox-react<br><br><code>babel-plugin-react-transform</code> 这是个基本的架子<br><code>react-transform-hmr</code> 是真正实现热更新的插件<br><code>react-transform-catch-errors</code> <code>redbox-react</code>  是实现在页面上显示错误，不用每次都打开控制台,可以不安装<br><br>要让新建的两个transform生效,只需再安装一个present<br>&gt; npm install babel-preset-react-hmre –save-dev<br><br>### 第一次启动<br>&gt; npm run dev<br><br>发现结果并不是和我们想象中一样，达到了热刷新，结果还是和以前一样，全面刷新。<br>于是我各种百度，还是不得其解，只好去他们的官网下载了一个<a href="https://github.com/gaearon/react-transform" target="_blank" rel="external">demo</a><br><br>发现，他们的demo并不是用 <code>webpack-dev-server</code> 作为服务器，而是用 <code>webpack-dev-middleware</code> 和 <code>webpack-hot-middleware</code> 开启热刷新<br><br>于是我开始仿照他们的demo，重构了我的目录结构<br><br>### 重构项目结构<br><br>安装这两个模块<br>&gt; npm install –save-dev webpack-dev-middleware webpack-hot-middleware<br><br>然后新建一个文件夹build，<font color="blue">把webpack.config.js放进去并且改名为webpack.base.conf.js</font>，然后新建两个文件 <code>webpack.dev.conf.js</code> <code>webpack.prod.conf.js</code><br><br>目录结构如下：<br><img src="http://wx1.sinaimg.cn/mw690/a359ab18gy1fieycd93xaj20he08jaa6.jpg" alt="目录结构"><br><br>#### <code>webpack.dev.conf.js</code> 文件主要是在开发环境所要用到的配置，代码如下：<br><br>    var webpack = require(‘webpack’)<br>    var merge = require(‘webpack-merge’)<br>    var HtmlwebpackPlugin = require(‘html-webpack-plugin’)<br>    var path = require(‘path’)<br>    var config = require(‘./webpack.config’)<br>    module.exports = merge(config, {<br>      // cheap-module-eval-source-map is faster for development<br>      devtool: ‘#cheap-module-eval-source-map’,<br>      plugins: [<br>        new webpack.HotModuleReplacementPlugin(),<br>        new webpack.NoEmitOnErrorsPlugin(),<br>        new HtmlwebpackPlugin({<br>        template: path.resolve(<strong>dirname, ‘../index.html’),<br>        inject: true<br>        }),<br>      ]<br>    })<br><br>主要把仅在开发过程用到的配置写在这里，然后合并<code>webpack.base.conf.js</code>的参数<br><br>#### <code>webpack.base.conf.js</code> 的配置如下：<br><br>    var path = require(‘path’)<br>    module.exports = {<br>      devtool: ‘eval-source-map’,<br>      entry: {<br>        index: ‘./src/index.js’<br>      },<br>      output: {<br>        path: </strong>dirname + ‘/dist’,<br>        filename: ‘bundle.js’,<br>        publicPath: ‘/‘<br>      },<br>      resolve: {<br>        extensions: [‘.js’, ‘.jsx’],<br>        alias: {<br>          ‘src’: path.resolve(<strong>dirname, ‘/src’)<br>        }<br>      },<br>      module: {<br>        loaders: [<br>        {<br>          test: /.jsx?$/,<br>          loader: ‘babel-loader’,<br>          exclude: path.resolve(</strong>dirname, ‘/node_modules’)<br>        }<br>        ]<br>      }<br>    }<br><br>这里只留下entry，resolve，output三个属性<br><br>#### 在 <code>webpack.dev.conf.js</code> 中添加这么一段代码，将 <code>webpack-hot-middleware</code> 注入到entry里面去<br><br>    Object.keys(config.entry).forEach(function (name) {<br>      config.entry[name] = [‘webpack-hot-middleware/client’].concat(config.entry[name])<br>    })<br><br>当然你也可以直接在 <code>webpack.base.conf.js</code> 中的entry里面这样写：<br><br>    entry: [<br>        webpack-hot-middleware/client,<br>        ‘./src/index.js’<br>    ]<br>但是为了开发和生产环境分离，我们还是推荐选择第一种写法，<font color="red">注意第一种写法entry是对象，而第二种写法则是数组</font>
+
+<h2 id="创建dev-server-js文件，开启服务"><a href="#创建dev-server-js文件，开启服务" class="headerlink" title="创建dev-server.js文件，开启服务"></a>创建dev-server.js文件，开启服务</h2><p>在 build 文件夹下面创建 <code>dev-server.js</code><br>代码如下：</p>
+<pre><code>var path = require(&apos;path&apos;)
+var express = require(&apos;express&apos;)
+var webpack = require(&apos;webpack&apos;)
+var config = require(&apos;./webpack.dev.conf&apos;)
+var app = express()
+var compiler = webpack(config)
+app.use(require(&apos;webpack-dev-middleware&apos;)(compiler, {
+  noInfo: true,
+  publicPath: config.output.publicPath
+}))
+app.use(require(&apos;webpack-hot-middleware&apos;)(compiler))
+app.listen(3000, function(err) {
+  if (err) {
+    console.log(err)
+    return
+  }
+  console.log(&apos;Listening at http://localhost:3000&apos;)
+})
+</code></pre><p>这个文件引进 <code>webpack.base.conf.js</code> 的配置，用express开启了一个服务器，监听端口3000</p>
+<p>修改script中的配置：</p>
+<pre><code>&quot;scripts&quot;: {
+ &quot;dev&quot;: &quot;node build/dev-server.js&quot;
+}
+</code></pre><p>然后命令行输入： npm run dev<br>等待几秒，你就会发现我们的页面正常显示了！</p>
+<h3 id="热刷新"><a href="#热刷新" class="headerlink" title="热刷新"></a>热刷新</h3><p>问题来了，当你修改index.js 里面的值的时候，你会发现页面根本没有自动刷新，而且控制台输出了这样一段信息</p>
+<blockquote>
+<p>following modules couldn’t be hot updated: (Full reload needed)<br>This is usually because the modules which have changed (and their parents) do not know how to hot reload themselves.</p>
+</blockquote>
+<p>这是因为我们仅仅是运用了 <code>webpack-dev-middleware</code> 和 <code>webpack-hot-middleware</code><br>一开始说过的 <code>babel-plugin-react-transform</code> 这三个包还没有用上<br>怎么用呢？我们可以直接在 <code>.babelrc</code> 中添加：</p>
+<pre><code>{
+  &quot;presets&quot;: [&quot;react&quot;, &quot;es2015&quot;],
+  &quot;env&quot;: {
+   &quot;development&quot;: {
+     &quot;presets&quot;: [&quot;react-hmre&quot;]
+   }
+  }
+}
+</code></pre><p>这样子就行了，然后重启一次服务，这样子就可以实现热刷新了！</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/10/从零开始学习react第一天/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -374,11 +539,49 @@ ReactDom.render(
 )
 </code></pre><p>在index.html中引用index.js</p>
 <pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;./index.js&quot;&gt;&lt;/script&gt;
-</code></pre><p>当然，如果仅仅是这样，是完全不可能运行得了页面的，因为浏览器根本不支持jsx语法，这个时候我们就要用到webpack来打包我们的页面啦</p>
-<font color="red">备注：</font>这次是主要达到webpack+ES6+react项目，所以在这里不用Browser.js来转换jsx语法啦<br><br>### 第三步：配置webpack<br><br>&gt; npm webpack –save-dev<br><br>在根目录下创建webpack.config.js文件，详细代码如下<br><br>    var webpack = require(‘webpack’)<br>    // 这个plugin是用来将js注入html模板<br>    var HtmlwebpackPlugin = require(‘html-webpack-plugin’)<br>    var path = require(‘path’)<br><br>    module.exports = {<br>      devtool: ‘eval-source-map’,<br>      /<em>
-       </em>入口文件的设置<br>       <em>支持三种形式 对象， 字符串， 数组
-       </em>同时支持多个入口<br>       */<br>      entry: {<br>        app: ‘./src/index.js’<br>      },<br>      // 输出设置<br>      output: {<br>        path: <strong>dirname + ‘/dist’,<br>        filename: ‘bundle.js’,<br>        publicPath: ‘/dist’<br>      },<br>      resolve: {<br>        // 打包后缀为wxtensions的文件<br>        extensions: [‘.js’, ‘.jsx’],<br>        // 这个是路径的简写 src == ./src<br>        alias: {<br>          ‘src’: path.resolve(</strong>dirname, ‘/src’)<br>        }<br>      },<br>      plugins: [<br>        new HtmlwebpackPlugin({<br>         template: path.resolve(__dirname, ‘./index.html’),<br>         // 把入口文件注入到html的body之前<br>         inject: true<br>        })<br>      ]<br>    }<br><br>这样子我们就设置了项目的入口和出口,还有模板html，<font color="blue">我们还需要对jsx语法进行转换，才可以达到页面的展示</font>
+</code></pre><p>当然，如果仅仅是这样，是完全不可能运行得了页面的，因为浏览器根本不支持jsx语法，这个时候我们就要用到webpack来打包我们的页面啦<br>备注：这次是主要达到webpack+ES6+react项目，所以在这里不用Browser.js来转换jsx语法啦</p>
+<h3 id="第三步：配置webpack"><a href="#第三步：配置webpack" class="headerlink" title="第三步：配置webpack"></a>第三步：配置webpack</h3><blockquote>
+<p>npm webpack –save-dev</p>
+</blockquote>
+<p>在根目录下创建webpack.config.js文件，详细代码如下</p>
+<pre><code>var webpack = require(&apos;webpack&apos;)
+// 这个plugin是用来将js注入html模板
+var HtmlwebpackPlugin = require(&apos;html-webpack-plugin&apos;)
+var path = require(&apos;path&apos;)
 
+module.exports = {
+  devtool: &apos;eval-source-map&apos;,
+  /*
+   *入口文件的设置
+   *支持三种形式 对象， 字符串， 数组
+   *同时支持多个入口
+   */
+  entry: {
+    app: &apos;./src/index.js&apos;
+  },
+  // 输出设置
+  output: {
+    path: __dirname + &apos;/dist&apos;,
+    filename: &apos;bundle.js&apos;,
+    publicPath: &apos;/dist&apos;
+  },
+  resolve: {
+    // 打包后缀为wxtensions的文件
+    extensions: [&apos;.js&apos;, &apos;.jsx&apos;],
+    // 这个是路径的简写 src == ./src
+    alias: {
+      &apos;src&apos;: path.resolve(__dirname, &apos;/src&apos;)
+    }
+  },
+  plugins: [
+    new HtmlwebpackPlugin({
+     template: path.resolve(__dirname, &apos;./index.html&apos;),
+     // 把入口文件注入到html的body之前
+     inject: true
+    })
+  ]
+}
+</code></pre><p>这样子我们就设置了项目的入口和出口,还有模板html，<font color="blue">我们还需要对jsx语法进行转换，才可以达到页面的展示</font></p>
 <h3 id="第四步：运用babel转换jsx"><a href="#第四步：运用babel转换jsx" class="headerlink" title="第四步：运用babel转换jsx"></a>第四步：运用babel转换jsx</h3><p>首先我们需要下载依赖</p>
 <blockquote>
 <p> npm install  babel-core babel-loader babel-preset-es2015 babel-preset-react –save-dev</p>
@@ -418,14 +621,22 @@ ReactDom.render(
 <p><code>webpack-dev-server</code> 是一个小型的Node.js Express服务器,它使用webpack-dev-middleware来服务于webpack的包,除此自外，它还有一个通过Sock.js来连接到服务器的微型运行时.</p>
 <p>然后我们在 <code>pakage.json</code> 文件里面找到 <code>scripts</code> ,添加这样一段：</p>
 <pre><code>&quot;scripts&quot;: {
-    &quot;dev&quot;: &quot;webpack-dev-server --inline --hot --content-base ./&quot;
+    &quot;dev&quot;: &quot;webpack-dev-server --inline&quot;
 }
-</code></pre><p>其中：</p>
-<blockquote>
-<p>–inline 启用inline模式 详细参数可以点击链接查看<a href="https://segmentfault.com/a/1190000006964335" target="_blank" rel="external">webpack-dev-server详解</a><br>–hot 启用热加载<br>–content-base 监听目录下的内容变化</p>
+</code></pre><p>在pakage.json中加入这段代码：</p>
+<pre><code>devServer: {
+    inline: true,//实时刷新
+    historyApiFallback: true
+}
+</code></pre><h4 id="踩坑，请注意了："><a href="#踩坑，请注意了：" class="headerlink" title="踩坑，请注意了："></a><font color="red">踩坑，请注意了：</font></h4><ol>
+<li>pakage.json 要设置 <code>publicPath</code> : <code>/</code> 不然无法热更新</li>
+<li>pakage.json 要在<code>plugins</code>设置一个新的插件 <code>new webpack.HotModuleReplacementPlugin()</code> 不然启动之后会无法显示出页面<br>其中：<blockquote>
+<p><code>--inline</code> 启用inline模式 详细参数可以点击链接查看<a href="https://segmentfault.com/a/1190000006964335" target="_blank" rel="external">webpack-dev-server详解</a><br><code>--hot</code> 不要按网上教程加上  webpack 2+之后加了之后就无法热更新<br><code>colors</code> 这个也不要加，会报错</p>
 </blockquote>
+</li>
+</ol>
 <h3 id="第二步-启动"><a href="#第二步-启动" class="headerlink" title="第二步:启动"></a>第二步:启动</h3><blockquote>
-<p>npm run dev<br>然后项目就会自动打包，同时我们打开 <code>http://localhost:8080/dist/index.html</code></p>
+<p>npm run dev<br>然后项目就会自动打包，同时我们打开 <code>http://localhost:8080</code></p>
 </blockquote>
 <p>就可以看到我们的页面，改动index.js的内容，你可以看到页面会自动刷新！<br>这样，我们今天所要讲的内容就全部到此结束啦</p>
 <p>by the way， 听说 <code>webpack-dev-server</code> 已经停止维护了，改为使用 <code>react-transform</code><br>明天我再详细了解了解~</p>
@@ -2280,310 +2491,6 @@ TestEntity.save(function(err,doc){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/11/node上传文件/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/11/node上传文件/" itemprop="url">node上传文件</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-11T21:46:52+08:00">
-                2017-06-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/06/11/node上传文件/" class="leancloud_visitors" data-flag-title="node上传文件">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="node入门——http上传文件服务器"><a href="#node入门——http上传文件服务器" class="headerlink" title="node入门——http上传文件服务器"></a>node入门——http上传文件服务器</h1><hr>
-<p>这是第一次学习nodeJS这么语言，参考 Manuel Kiessling 大神的教学文案，结合自己的理解做一个应用允许用户浏览页面以及上传文件，我这里做了一点分析和解答</p>
-<p>用到的知识有：</p>
-<blockquote>
-<ul>
-<li>http模块</li>
-<li>路由知识</li>
-<li>formidable模块</li>
-</ul>
-</blockquote>
-<p>目录结构如下：<br>+node学习<br>    &nbsp; |  –index.js<br>    &nbsp; |  –requestHandles.js<br>    &nbsp; |  –router.js<br>    &nbsp; |  –server.js</p>
-<hr>
-<h3 id="入口文件提供接口，server用来启动服务器，而路由是用来确定进入的页面，并且传递数据，handles是用来返回数据给客户端。"><a href="#入口文件提供接口，server用来启动服务器，而路由是用来确定进入的页面，并且传递数据，handles是用来返回数据给客户端。" class="headerlink" title="入口文件提供接口，server用来启动服务器，而路由是用来确定进入的页面，并且传递数据，handles是用来返回数据给客户端。"></a>入口文件提供接口，server用来启动服务器，而路由是用来确定进入的页面，并且传递数据，handles是用来返回数据给客户端。</h3><h4 id="入口文件index-js"><a href="#入口文件index-js" class="headerlink" title="入口文件index.js"></a>入口文件index.js</h4><pre><code>var server = require(&quot;./server&quot;);
-var router = require(&quot;./router&quot;);
-var requestHandlers = require(&quot;./requestHandlers&quot;);
-
-var handle ={}
-handle[&quot;/&quot;]= requestHandlers.start;
-handle[&quot;/start&quot;]= requestHandlers.start;
-handle[&quot;/upload&quot;]= requestHandlers.upload;
-
-server.start(router.route, handle);
-</code></pre><h4 id="server-js"><a href="#server-js" class="headerlink" title="server.js"></a>server.js</h4><pre><code>var http = require(&quot;http&quot;);
-//url用来解析请求的URL路径
-var url = require(&quot;url&quot;);
-
-function start(route, handle){
-  function onRequest(request, response){
-    var postData =&quot;&quot;; //用来保存上传的数据
-    var pathname = url.parse(request.url).pathname; //路径名字
-    console.log(&quot;Request for &quot;+ pathname +&quot; received.&quot;);
-
-request.setEncoding(&quot;utf8&quot;);
-
-request.addListener(&quot;data&quot;,function(postDataChunk){
-  postData += postDataChunk;
-  console.log(&quot;Received POST data chunk &apos;&quot;+
-  postDataChunk +&quot;&apos;.&quot;);
-});
-
-request.addListener(&quot;end&quot;,function(){
-//request请求全部结束后执行，转向对应的路由，执行相应函数
-  route(handle, pathname, response, postData);
-});
-
- }
-//启动服务
-  http.createServer(onRequest).listen(8888);
-  console.log(&quot;Server has started.&quot;);
-}
-
-exports.start = start;
-</code></pre><h4 id="router-js"><a href="#router-js" class="headerlink" title="router.js"></a>router.js</h4><pre><code>  function route(handle, pathname, response, postData){
-  console.log(&quot;About to route a request for &quot;+ pathname);
-  if(typeof handle[pathname]===&apos;function&apos;){
-    handle[pathname](response, postData);
-  }else{
-    console.log(&quot;No request handler found for &quot;+ pathname);
-    response.writeHead(404,{&quot;Content-Type&quot;:&quot;text/plain&quot;});
-    response.write(&quot;404 Not found&quot;);
-    response.end();
-  }
-}
-
-exports.route = route;
-</code></pre><h4 id="requesthandles-js"><a href="#requesthandles-js" class="headerlink" title="requesthandles.js"></a>requesthandles.js</h4><pre><code>var querystring = require(&quot;querystring&quot;);
-
-function start(response, postData){
-  console.log(&quot;Request handler &apos;start&apos; was called.&quot;);
-
-  var body =&apos;&lt;html&gt;&apos;+
-    &apos;&lt;head&gt;&apos;+
-    &apos;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; &apos;+
-    &apos;charset=UTF-8&quot; /&gt;&apos;+
-    &apos;&lt;/head&gt;&apos;+
-    &apos;&lt;body&gt;&apos;+
-    &apos;&lt;form action=&quot;/upload&quot; method=&quot;post&quot;&gt;&apos;+
-    &apos;&lt;textarea name=&quot;text&quot; rows=&quot;20&quot; cols=&quot;60&quot;&gt;&lt;/textarea&gt;&apos;+
-    &apos;&lt;input type=&quot;submit&quot; value=&quot;Submit text&quot; /&gt;&apos;+
-    &apos;&lt;/form&gt;&apos;+
-    &apos;&lt;/body&gt;&apos;+
-    &apos;&lt;/html&gt;&apos;;
-
-    response.writeHead(200,{&quot;Content-Type&quot;:&quot;text/html&quot;});
-    response.write(body);
-    response.end();
-}
-
-function upload(response, postData){
-  console.log(&quot;Request handler &apos;upload&apos; was called.&quot;);
-  response.writeHead(200,{&quot;Content-Type&quot;:&quot;text/html&quot;});
-  //确保中文不会乱码
-  response.write(&apos;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;/&gt;&lt;/head&gt;&apos;); 
-  response.write(&quot;You&apos;ve sent the text: &quot;+
-  querystring.parse(postData).text);
-  response.end();
-}
-
-exports.start = start;
-exports.upload = upload;
-</code></pre><font color="red">这样子我们就实现了一个简单的文本输入，显示的小应用，接下来继续完善这个应用</font>
-
-<hr>
-<h2 id="处理文件上传"><a href="#处理文件上传" class="headerlink" title="处理文件上传"></a>处理文件上传</h2><p>首先要引入一个模块</p>
-<blockquote>
-<p>npm install formidable</p>
-</blockquote>
-<p>官方的使用介绍如下：</p>
-<pre><code>    var formidable = require(&apos;formidable&apos;),
-    http = require(&apos;http&apos;),
-    util = require(&apos;util&apos;);
-
-http.createServer(function(req, res){
-  if(req.url ==&apos;/upload&apos;&amp;&amp; req.method.toLowerCase()==&apos;post&apos;){
-    // parse a file upload
-
-    //创建Formidable.IncomingForm对象
-    var form =new formidable.IncomingForm();
-    form.parse(req,function(err, fields, files){
-      res.writeHead(200,{&apos;content-type&apos;:&apos;text/plain&apos;});
-      res.write(&apos;received upload:\n\n&apos;);
-      res.end(util.inspect({fields: fields, files: files}));
-    });
-    return;
-  }
-
-  // show a file upload form
-  res.writeHead(200,{&apos;content-type&apos;:&apos;text/html&apos;});
-  res.end(
-    &apos;&lt;form action=&quot;/upload&quot; enctype=&quot;multipart/form-data&quot; &apos;+
-    &apos;method=&quot;post&quot;&gt;&apos;+
-    &apos;&lt;input type=&quot;text&quot; name=&quot;title&quot;&gt;&lt;br&gt;&apos;+
-    &apos;&lt;input type=&quot;file&quot; name=&quot;upload&quot; multiple=&quot;multiple&quot;&gt;&lt;br&gt;&apos;+
-    &apos;&lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt;&apos;+
-    &apos;&lt;/form&gt;&apos;
-  );
-}).listen(8888);
-</code></pre><h4 id="Q：什么是util"><a href="#Q：什么是util" class="headerlink" title="Q：什么是util"></a>Q：什么是util</h4><blockquote>
-<p>util是node.js核心模块，提供常用函数的集合，用于弥补核心js的功能</p>
-</blockquote>
-<h4 id="Q：util-inspect"><a href="#Q：util-inspect" class="headerlink" title="Q：util.inspect"></a>Q：util.inspect</h4><p>util.inspect(object,[showHidden],[depth],[colors])是一个将任意对象转换为字符串的方法，<br>通常用于调试和错误的输出。</p>
-<ol>
-<li>showhidden - 是一个可选参数，如果值为true，将会输出更多隐藏信息。</li>
-<li>depth - 表示最大递归的层数。如果对象很复杂，可以指定层数控制输出信息的多少。</li>
-<li>如果不指定depth,默认会递归3层，指定为null表示不限递归层数完整遍历对象。</li>
-<li>如果color = true，输出格式将会以ansi颜色编码，通常用于在终端显示更漂亮的效果。<br><font color="red">注意：</font>特别要指出的是，util.inspect并不会简单地直接把对象转换为字符串，即使对该对象定义了toString方法也不会调用</li>
-</ol>
-<h4 id="Q：form的enctype-”multipart-form-data”？"><a href="#Q：form的enctype-”multipart-form-data”？" class="headerlink" title="Q：form的enctype=”multipart/form-data”？"></a>Q：form的enctype=”multipart/form-data”？</h4><p>是设置表单的MIME编码。默认情况，这个编码格式是application/x-www-form-urlencoded，不能用于文件上传；只有使用了multipart/form-data，才能完整的传递文件数据</p>
-<h3 id="上传代码解析"><a href="#上传代码解析" class="headerlink" title="上传代码解析"></a>上传代码解析</h3><pre><code>    function upload(response, request){
-  console.log(&quot;Request handler &apos;upload&apos; was called.&quot;);
-
-  var form =new formidable.IncomingForm();
-  console.log(&quot;about to parse&quot;);
-  form.uploadDir=&quot;./public&quot;;//必须设置
-  form.parse(request,function(error, fields, files){
-    console.log(&quot;parsing done&quot;);
-    console.log(files);
-    fs.renameSync(files.upload.path,&quot;./public/1.jpg&quot;);
-    response.writeHead(200,{&quot;Content-Type&quot;:&quot;text/html&quot;});
-    response.write(&quot;received image:&lt;br/&gt;&quot;);
-    response.write(`&lt;img src=&apos;/show&apos; /&gt;`);
-    response.end();
-  });
-}
-</code></pre><p>//设置上传的目录位置</p>
-<blockquote>
-<p>form.uploadDir=”./public”;</p>
-</blockquote>
-<p>//更改文件的名字</p>
-<blockquote>
-<p>fs.renameSync(files.upload.path,”./public/1.jpg”) </p>
-</blockquote>
-<p>//这段无法显示图片</p>
-<blockquote>
-<p>response.write(<code>&lt;img src=&#39;./public/1.jpg&#39; /&gt;</code>);</p>
-</blockquote>
-<p>//如果直接写相对路径或者绝对路径无法显示，原因不明（Q,Q）</p>
-<blockquote>
-<p>response.write(<code>&lt;img src=&#39;/show&#39; /&gt;</code>);</p>
-</blockquote>
-<hr>
-<p>接下来就按照教程继续下去就行，我就不累赘（<a href="http://ourjs.com/detail/529ca5950cb6498814000005）" target="_blank" rel="external">http://ourjs.com/detail/529ca5950cb6498814000005）</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2633,7 +2540,7 @@ http.createServer(function(req, res){
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
