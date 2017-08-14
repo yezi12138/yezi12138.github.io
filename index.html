@@ -2210,7 +2210,7 @@ Book.prototype.display = function () {
 </blockquote>
 <h4 id="代码设计：-1"><a href="#代码设计：-1" class="headerlink" title="代码设计："></a><font color="blue">代码设计：</font></h4><pre><code>var Book = function (isbn, name, author) {
   // 私有属性
-  var isbn, name, author
+  var isbn =isbn , name = name, author = author
   // 特权方法，用来访问私有属性
   this.setIsbn = function (newIsbn) {
     // 对数据处理
@@ -2224,13 +2224,9 @@ Book.prototype.display = function () {
   this.getAuthor = function () {
     return author
   }
-  // init
-  this.setIsbn(isbn)
-  this.setName(name)
-  this.setAuthor(author)
 }
 Book.prototype.display = function () {}
-</code></pre><h5 id="总结：-私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向"><a href="#总结：-私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向" class="headerlink" title="总结： 私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向"></a><font color="red">总结：</font> 私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向</h5><hr>
+</code></pre><h5 id="总结：-私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向-每个实例都有一个副本，各不影响"><a href="#总结：-私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向-每个实例都有一个副本，各不影响" class="headerlink" title="总结： 私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向.每个实例都有一个副本，各不影响"></a><font color="red">总结：</font> 私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向.每个实例都有一个副本，各不影响</h5><hr>
 <h3 id="1-静态成员设计模式"><a href="#1-静态成员设计模式" class="headerlink" title="1. 静态成员设计模式"></a>1. 静态成员设计模式</h3><h4 id="特点：-2"><a href="#特点：-2" class="headerlink" title="特点："></a><font color="blue">特点：</font></h4><blockquote>
 <ol>
 <li>拥有静态成员</li>
@@ -2247,7 +2243,7 @@ Book.prototype.display = function () {}
   // 返回constructor
   return function (isbn, name, author) {
   // 私有属性
-  var isbn, name, author
+  var isbn =isbn , name = name, author = author
   // 特权方法，用来访问私有属性
   this.setIsbn = function (newIsbn) {
     // 对数据处理
@@ -2261,20 +2257,20 @@ Book.prototype.display = function () {}
   this.getAuthor = function () {
     return author
   }
+  this.getBookNum = function () {
+    return bookNum
+  }
   bookNum++  // 静态成员值加一
-  // init
-  this.setIsbn(isbn)
-  this.setName(name)
-  this.setAuthor(author)
 } 
 })();
 
-// 公共静态方法 (即每个实例都有一个副本)
+// 静态方法 (即每个实例都有一个副本)
 Book.borrow = function () {}
 
 // 公共方法 (所有实例共享的方法)
 Book.prototype.display = function () {}
-</code></pre><h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><h4 id="可以用静态成员方法模仿，只设置取值器"><a href="#可以用静态成员方法模仿，只设置取值器" class="headerlink" title="可以用静态成员方法模仿，只设置取值器"></a>可以用静态成员方法模仿，只设置取值器</h4><h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><h4 id="JavaScript设计模式-（2009年-美国-Rossharmes-哈梅斯-美国-DustinDiaz-迪亚斯-《JavaScript设计模式》"><a href="#JavaScript设计模式-（2009年-美国-Rossharmes-哈梅斯-美国-DustinDiaz-迪亚斯-《JavaScript设计模式》" class="headerlink" title="JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》"></a>JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》</h4>
+</code></pre><p>这个方法中 <code>bookNum</code> 是所有实例共享的数据</p>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><h4 id="可以用静态成员方法模仿，只设置取值器"><a href="#可以用静态成员方法模仿，只设置取值器" class="headerlink" title="可以用静态成员方法模仿，只设置取值器"></a>可以用静态成员方法模仿，只设置取值器</h4><h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><h4 id="JavaScript设计模式-（2009年-美国-Rossharmes-哈梅斯-美国-DustinDiaz-迪亚斯-《JavaScript设计模式》"><a href="#JavaScript设计模式-（2009年-美国-Rossharmes-哈梅斯-美国-DustinDiaz-迪亚斯-《JavaScript设计模式》" class="headerlink" title="JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》"></a>JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》</h4>
           
         
       
