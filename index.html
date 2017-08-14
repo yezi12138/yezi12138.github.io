@@ -263,6 +263,723 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/14/一个简单的MVVM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/14/一个简单的MVVM/" itemprop="url">一个简单的MVVM</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T14:41:15+08:00">
+                2017-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/14/一个简单的MVVM/" class="leancloud_visitors" data-flag-title="一个简单的MVVM">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="MVVM框架"><a href="#MVVM框架" class="headerlink" title="MVVM框架"></a>MVVM框架</h1><hr>
+<h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>基于 Vue 数据绑定方式实现MVVM框架</p>
+<p>这次基于MVVM框架实现的使用方法：</p>
+<pre><code>// 定义监听对象
+data = {
+  a: &quot;before&quot;,
+  b: [1, 2, 3, 4],
+  c: {
+    d: &quot;child d&quot;,
+    f: &quot;child f&quot;
+  }
+}
+var oberver = new Listen(data)
+</code></pre><p>数据定义包括了基本类型，对象的嵌套，还有数组的处理<br>参考： <a href="http://hcysun.me/2016/04/28/JavaScript%E5%AE%9E%E7%8E%B0MVVM%E4%B9%8B%E6%88%91%E5%B0%B1%E6%98%AF%E6%83%B3%E7%9B%91%E6%B5%8B%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8F%98%E5%8C%96/" target="_blank" rel="external">JavaScript实现MVVM</a></p>
+<h2 id="实现原理："><a href="#实现原理：" class="headerlink" title="实现原理："></a>实现原理：</h2><p>通过 <code>Object.defineProperty</code> 方法，设置对象的 <code>setter</code> <code>getter</code> 构造器，完成对数据的监听</p>
+<h2 id="1-对象的监听"><a href="#1-对象的监听" class="headerlink" title="1. 对象的监听"></a>1. 对象的监听</h2><p>定义监听函数 Listen：</p>
+<pre><code>class Listen {
+    constructor (obj) {
+        // 对obj进行类型判断
+        if (Object.prototype.toString.call(obj) !== &apos;[object Object]&apos;) {
+            return console.log(&apos;this obj isn&apos;t a object, please make sure&apos;)
+        }
+        this.observe(obj)
+    }
+    observe (obj) {
+         // 遍历data里面的属性，设置set/getter
+        Object.keys(obj).forEach((key, index, keyArray) =&gt; {
+            var oldVal =  = obj[key]
+            Object.defineProperty(obj, key, {
+                get: function () {
+                    return oldVal
+                }.bind(this),
+                set: function (newVal) {
+                    // 做一些处理，这里测试用了打印函数
+                    console.log(`oldVal=${oldVal} --- newVal=${newVal}`)
+                    oldVal = newVal
+                }.bind(this)
+            })
+        })
+    }
+}
+</code></pre><p>这里使用<code>Object.prototype.toString.call(obj)</code> 判断数据的类型，详细内容可以看这个： <a href="http://www.cnblogs.com/flyjs/archive/2012/02/20/2360504.html99%AE%E9%80%9A%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8F%98%E5%8C%96/" target="_blank" rel="external">JS数据类型判断</a></p>
+<h3 id="测试代码："><a href="#测试代码：" class="headerlink" title="测试代码："></a>测试代码：</h3><pre><code>var data = {
+  a: &quot;before&quot;,
+  b: [1, 2, 3, 4],
+  c: {
+    d: &quot;child d&quot;,
+    f: &quot;child f&quot;
+  }
+}
+var observer = new Listen(data)
+data.a = &quot;after&quot;
+data.b = &quot;after&quot;
+</code></pre><h3 id="结果："><a href="#结果：" class="headerlink" title="结果："></a>结果：</h3><blockquote>
+<p>oldVal=before — newVal=after<br>oldVal=1,2,3,4 — newVal=after</p>
+</blockquote>
+<p>好了，现在我们这个框架可以监听一级数据了，可是对于二级数据，比如 <code>data.b.c</code> ，修改它的值，却没有出现监听。<br>原因是代码里面只处理了一级数据，现在我们可以再加个判断，如果当前obj[key]是属于对象，则进行迭代</p>
+<h3 id="处理二级数据："><a href="#处理二级数据：" class="headerlink" title="处理二级数据："></a>处理二级数据：</h3><pre><code>if (Object.prototype.toString.call(obj[key]) === &apos;[object Object]&apos; || Object.prototype.toString.call(obj[key]) === &apos;[object Array]&apos;) {
+          this.observe(obj[key])
+        }
+</code></pre><p>将这段代码加到 <code>Object.keys(obj).forEach</code> 下面，然后测试结果</p>
+<blockquote>
+<p>data.c.d = “after”<br>data.b<a href="http://hcysun.me/2016/04/28/JavaScript%E5%AE%9E%E7%8E%B0MVVM%E4%B9%8B%E6%88%91%E5%B0%B1%E6%98%AF%E6%83%B3%E7%9B%91%E6%B5%8B%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8F%98%E5%8C%96/" target="_blank" rel="external">1</a> = “after”</p>
+</blockquote>
+<p>输出：</p>
+<blockquote>
+<p>oldVal=child d — newVal=after<br>oldVal=2 — newVal=after</p>
+</blockquote>
+<h2 id="对数组方法的处理"><a href="#对数组方法的处理" class="headerlink" title="对数组方法的处理"></a>对数组方法的处理</h2><p>原理： 在数组的原型链上加多一层，变成:</p>
+<blockquote>
+<p>objArray —&gt; addChain —&gt; Array</p>
+</blockquote>
+<p>这样就可以监听Array方法，而且也不必重写Array的原生方法</p>
+<h3 id="具体实现："><a href="#具体实现：" class="headerlink" title="具体实现："></a>具体实现：</h3><pre><code>overrideArrayProto (array) {
+      // 保存原始 Array 原型
+      var originalProto = Array.prototype,
+      // 通过 Object.create 方法创建一个对象，该对象的原型就是Array.prototype
+      overrideProto = Object.create(Array.prototype),
+      self = this,
+      result;
+      // 遍历要重写的数组方法
+      var OAM = [&apos;push&apos;, &apos;pop&apos;, &apos;shift&apos;, &apos;unshift&apos;, &apos;splice&apos;, &apos;sort&apos;, &apos;reverse&apos;]
+      Object.keys(OAM).forEach((key, index, keyArray) =&gt; {
+        var method = OAM[index],
+        oldArray = [];
+        // 使用 Object.defineProperty 给 overrideProto 添加属性，属性的名称是对应的数组函数名，值是函数
+        Object.defineProperty(overrideProto, method, {
+          value: function () {
+            // 复制数组
+            // this指向array
+            oldArray = this.slice(0)
+            console.log(&apos;arguments: &apos;, arguments)
+            // 将arguments转化为数组
+            var arg = [].slice.apply(arguments)
+            result = originalProto[method].apply(this, arg)
+            // 执行回调，这里测试用打印函数
+            console.log(`oldArray=${oldArray} --- newVArray=${result}`)
+            return result
+          },
+          enumerable: false
+        })
+      })
+      // 最后 让该数组实例的 __proto__ 属性指向 假的原型 overrideProto
+      array.__proto__ = overrideProto
+    }
+</code></pre><p>在<code>observe</code>开头加上一下代码：</p>
+<pre><code>// 如果发现监测的对象是数组的话就要调用 overrideArrayProto 方法
+      if(Object.prototype.toString.call(obj) === &apos;[object Array]&apos;){
+        this.overrideArrayProto(obj)
+      }
+</code></pre><h3 id="测试代码：-1"><a href="#测试代码：-1" class="headerlink" title="测试代码："></a>测试代码：</h3><pre><code>data.b[1] = &quot;after&quot;
+data.b.pop()
+data.b.push(121)
+console.log(data.b)
+</code></pre><h3 id="结果输出："><a href="#结果输出：" class="headerlink" title="结果输出："></a>结果输出：</h3><blockquote>
+<p>oldVal=2 — newVal=after<br>oldArray=1,after,3,4 — newVArray=4<br>oldArray=1,after,3 — newVArray=4<br>[1, “after”, 3, 121]</p>
+</blockquote>
+<p>一个简单的MVVM框架到此结束</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/12/从零开始学习react第四天/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/12/从零开始学习react第四天/" itemprop="url">从零开始学习react第四天</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T17:41:25+08:00">
+                2017-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/12/从零开始学习react第四天/" class="leancloud_visitors" data-flag-title="从零开始学习react第四天">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="从零开始学习react的第四天"><a href="#从零开始学习react的第四天" class="headerlink" title="从零开始学习react的第四天"></a>从零开始学习react的第四天</h1><hr>
+<h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>昨天我们已经添加了对于css，图片之类的处理，那么我们现在就可以开始我们的项目了，对于完全没了解react语法的，可以先去看阮一峰老师的教程： <a href="http://www.ruanyifeng.com/blog/2015/03/react.html" target="_blank" rel="external">react入门</a><br>我这里就不再重复写教程了，主要了解react怎么render，如何绑定数据，生命周期，借下来我给个简单例子说明一下，热身一下。</p>
+<h3 id="主函数-app-js"><a href="#主函数-app-js" class="headerlink" title="主函数 app.js"></a>主函数 app.js</h3><pre><code>import ComponentHeader from &apos;./header&apos;
+render() {
+    return (
+      &lt;div&gt;
+        &lt;ComponentHeader/&gt;
+        &lt;h1&gt;this is mainBody page&lt;/h1&gt;
+      &lt;/div&gt;,
+      document.getElementById(&apos;app&apos;)
+    )
+}
+</code></pre><p><code>ComponentHeader</code> 作为组件导入<br>注意： 导入的组件一定要大写 <code>ComponentHeader</code> 不能写成 <code>componentHeader</code></p>
+<h3 id="子函数-header-js"><a href="#子函数-header-js" class="headerlink" title="子函数 header.js"></a>子函数 header.js</h3><pre><code>import React from &apos;react&apos;;
+export default class Header extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      title: &apos;this is header page&apos;
+    }
+  }
+  changeInfo () {
+    this.setState({
+      info: &apos;change info&apos;
+    })
+  }
+  render () {
+    return (
+      &lt;div&gt;
+      &lt;h1&gt;{this.state.title}&lt;/h1&gt;
+      &lt;input type=&apos;button&apos; type=&apos;button&apos; onClick={this.changeInfo.bind(this)}/&gt;
+      &lt;/div&gt;
+    )
+  }
+}
+</code></pre><p><code>constructor</code> 是react组件的构造函数<br><code>this.state</code> 设置组件的内部初始值，在<code>constructor</code> 里面定义<br><code>super()</code> 初始化基类的数据<br><code>{this.state.title}</code> react数据的绑定<br><code>changeInfo</code> 自定义的函数，用来测试setState作用<br><code>this.setState</code> 用来改变state<br><code>export default</code> 是将组件导出来<br><code>input</code> 注意事件绑定的方法 <code>bind</code> ，否则会报错</p>
+<blockquote>
+<p>Cannot read property ‘setState’ of null</p>
+</blockquote>
+<p>简单地过了一遍基本知识点，接下来说说今天学习的react父子组件通信</p>
+<hr>
+<h2 id="react父子组件通信"><a href="#react父子组件通信" class="headerlink" title="react父子组件通信"></a>react父子组件通信</h2><h3 id="父向子组件传参"><a href="#父向子组件传参" class="headerlink" title="父向子组件传参"></a>父向子组件传参</h3><p>在父组件app.js里面：</p>
+<pre><code>render() {
+    return (
+      &lt;div&gt;
+        &lt;ComponentHeader info={this.state.toHeader}/&gt;
+        &lt;h1&gt;this is mainBody page&lt;/h1&gt;
+      &lt;/div&gt;,
+      document.getElementById(&apos;app&apos;)
+    )
+}
+</code></pre><p>在要传递上面写上要传递的参数，左边 <code>info</code> 表示参数名，右边 <code>this.state.toHeader</code> 是传递参数值</p>
+<p>在子组件header.js里面：</p>
+<pre><code>export default class Header extends React.Component {
+  // ...
+  render () {
+    return (
+      &lt;div&gt;
+      &lt;h1&gt;this is header page&lt;/h1&gt;
+      &lt;p&gt;info: {{this.props.info}}&lt;/p&gt;
+      &lt;p&gt;子页面输入: &lt;input type=&apos;button&apos; type=&apos;text&apos; onChange={this.props.changeInput}/&gt;&lt;/p&gt;
+      &lt;/div&gt;
+    )
+  }
+}
+</code></pre><p>通过 <code>this.props.[name]</code> 获取传进来的数据</p>
+<h3 id="子组件向父组件传参"><a href="#子组件向父组件传参" class="headerlink" title="子组件向父组件传参"></a>子组件向父组件传参</h3><p>要求： 子组件输入数据，在父组件中显示</p>
+<p>header.js子组件：</p>
+<pre><code>render () {
+    return (
+      &lt;div&gt;
+      // ...
+      &lt;p&gt;子页面输入：&lt;input type=&apos;text&apos; onChange={this.props.changeInput}/&gt; &lt;/p&gt;
+      &lt;/div&gt;
+    )
+  }
+</code></pre><p>app.js父组件：</p>
+<pre><code>changeInput (event) {
+    this.setState({
+      age: event.target.value，
+      title: &apos;this is mainBody page&apos;,
+      toHeader: &apos;info comes from mainBody page&apos;
+    })
+  }
+  render() {
+    return (
+      &lt;div&gt;
+        // ...
+        &lt;ComponentHeader info={this.state.toHeader} changeInput={this.changeInput.bind(this)}/&gt;
+        &lt;p&gt;age: {this.state.age}&lt;/p&gt;
+      &lt;/div&gt;,
+      document.getElementById(&apos;app&apos;)
+    )
+  }
+</code></pre><p>父组件设置函数 <code>changeInput</code> ，然后再子组件处传入<br>子组件向父组件传值的原理是通过由父组件传递函数给子组件，在子组件运行父组件的形式，达到子向父组件传参</p>
+<h2 id="一个传参技巧"><a href="#一个传参技巧" class="headerlink" title="一个传参技巧"></a>一个传参技巧</h2><p>通过<code>{...this.props}</code> 这样的方式，可以一次性传递当前页面的所有由父组件传递过来的参数<br>比如有这样一个场景：<br>父组件 –&gt; 子组件 –&gt; 孙子组件<br>孙子组件要获取父组件传递的所有参数，就可以用这样形式获取，如果参数发生变化，也只需要改动父组件这一处</p>
+<h2 id="对于props的设定"><a href="#对于props的设定" class="headerlink" title="对于props的设定"></a>对于props的设定</h2><h3 id="设定传递参数的默认值，-name-是组件名字"><a href="#设定传递参数的默认值，-name-是组件名字" class="headerlink" title="设定传递参数的默认值，[name]是组件名字"></a>设定传递参数的默认值，[name]是组件名字</h3><pre><code>[name].defaultProps = {
+    &apos;username&apos;: &apos;yezi&apos;
+}
+</code></pre><h3 id="设置props类型"><a href="#设置props类型" class="headerlink" title="设置props类型"></a>设置props类型</h3><pre><code>[name].propsTypes = {
+    &apos;username&apos;: React.PropTypes.string.isRequired
+}
+</code></pre><p>设置 <code>username</code> 必须为 <code>string</code> 类型，<code>required</code> 设置不能为空</p>
+<hr>
+<h2 id="与VUE的父子传参方式对比"><a href="#与VUE的父子传参方式对比" class="headerlink" title="与VUE的父子传参方式对比"></a>与VUE的父子传参方式对比</h2><h3 id="vue父组件向子组件传参数的方式和react基本相似，都是通过传递props-name-的值"><a href="#vue父组件向子组件传参数的方式和react基本相似，都是通过传递props-name-的值" class="headerlink" title="vue父组件向子组件传参数的方式和react基本相似，都是通过传递props[name]的值"></a>vue父组件向子组件传参数的方式和react基本相似，都是通过传递props[name]的值</h3><h3 id="vue子组件向父组件传参的方式和react有极大的不同"><a href="#vue子组件向父组件传参的方式和react有极大的不同" class="headerlink" title="vue子组件向父组件传参的方式和react有极大的不同"></a>vue子组件向父组件传参的方式和react有极大的不同</h3><ol>
+<li>vue通过$emit(name, [props])函数达到向上传递，然后再父组件监听派发上来的函数，然后<font color="blue">在父函数中处理</font></li>
+<li>react依然通过this.props方式向子组件传进父组件参数，<font color="blue">在子组件中处理</font></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/11/从零开始学习react第三天/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/11/从零开始学习react第三天/" itemprop="url">从零开始学习react第三天</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-11T17:47:01+08:00">
+                2017-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/11/从零开始学习react第三天/" class="leancloud_visitors" data-flag-title="从零开始学习react第三天">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="从零开始学习react第三天"><a href="#从零开始学习react第三天" class="headerlink" title="从零开始学习react第三天"></a>从零开始学习react第三天</h1><hr>
+<p>前面我们已经配置出一个基本的react-cli，但是依然还没有完善好，因为现在的配置仅仅是打包的js和html格式的文件，对于图片，css，字体这些文件还无法进行打包处理，今天我们就开始给项目添加这些功能。</p>
+<h2 id="第一种：内联样式"><a href="#第一种：内联样式" class="headerlink" title="第一种：内联样式"></a>第一种：内联样式</h2><h3 id="首先按我们用index-js作为解说"><a href="#首先按我们用index-js作为解说" class="headerlink" title="首先按我们用index.js作为解说"></a>首先按我们用index.js作为解说</h3><pre><code>import React from &apos;react&apos;;
+import { render } from &apos;react-dom&apos;;
+if (module.hot) {
+  module.hot.accept();
+}
+render(
+  &lt;div&gt;
+  &lt;h1&gt;hello world&lt;/h1&gt;
+  &lt;/div&gt;,
+  document.getElementById(&apos;app&apos;)
+);
+</code></pre><p>在react中定义样式：</p>
+<pre><code>const styleIndex = {
+    fontSize: &quot;14px&quot;,
+    // react不推荐这种写法
+    &quot;padding-top&quot;: &quot;20px&quot;
+}
+</code></pre><p>在 <code>index.js</code> 文件中写入</p>
+<pre><code>import React from &apos;react&apos;;
+import { render } from &apos;react-dom&apos;;
+if (module.hot) {
+  module.hot.accept();
+}
+const styleIndex = {
+  // ...
+}
+render(
+  &lt;div style={styleIndex}&gt;
+  &lt;h1&gt;hello world&lt;/h1&gt;
+  &lt;/div&gt;,
+  document.getElementById(&apos;app&apos;)
+);
+</code></pre><p>最后结果会将样式内联到<code>div</code>上面，这样的方式有几个特点：</p>
+<ol>
+<li>不会造成全局污染</li>
+<li>css写法和传统写法不同</li>
+<li>嵌入的方式是内联，不利于修改</li>
+<li>无法写动画 / 伪类</li>
+</ol>
+<h3 id="这种写法支持react表达式"><a href="#这种写法支持react表达式" class="headerlink" title="这种写法支持react表达式"></a>这种写法支持react表达式</h3><blockquote>
+<p>backgroundColor: (this.state.isPadding) ? “#ccc” : “#ddd”<br>注意这里用的是圆括号</p>
+</blockquote>
+<pre><code>const styleIndex = {
+  fontSize: &quot;14px&quot;,
+  // react不推荐这种写法
+  &quot;padding-top&quot;: (this.state.isPadding) ? &quot;20px&quot; : 0,
+  // 支持表达式写法
+  backgroundColor: (this.state.isPadding) ? &quot;#ccc&quot; : &quot;#ddd&quot;,
+  color: &quot;#fff&quot;
+}
+</code></pre><h2 id="CSS-module"><a href="#CSS-module" class="headerlink" title="CSS module"></a>CSS module</h2><p>利用 <code>css-loader</code> <code>style-loader</code> 两个module，在webpack配置，就可以在需要运用js的文件下require进来，当成对象使用</p>
+<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><blockquote>
+<p>npm install –save-dev css-loader style-loader</p>
+</blockquote>
+<h3 id="创建header-js"><a href="#创建header-js" class="headerlink" title="创建header.js"></a>创建header.js</h3><p>在<code>src</code> 目录下创建一个文件夹<code>components</code>，用来存放我们的组件<br>然后在<code>components</code> 下创建`header.js</p>
+<pre><code>import React from &apos;react&apos;;
+export default class HeaderTpl extends React.Component {
+  constructor () {
+    super()
+  }
+  render () {
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;this is header&lt;/h1&gt;
+      &lt;/div&gt;
+    )
+  }
+}
+</code></pre><h3 id="编写css"><a href="#编写css" class="headerlink" title="编写css"></a>编写css</h3><p>在 <code>src/css</code> 目录下创建一个<code>header.css</code>：</p>
+<pre><code>.header h1{
+  background-color: #ccc;
+  color: #fff;
+}
+</code></pre><h3 id="配置webpack-base-conf-js"><a href="#配置webpack-base-conf-js" class="headerlink" title="配置webpack.base.conf.js"></a>配置webpack.base.conf.js</h3><pre><code>{
+  test: /\.css$/,
+  loader: &quot;style-loader!css-loader?modules&amp;localIdentName=[path][name]---[local]---[hash:base64:5]&quot;
+}
+</code></pre><p>?modules&amp;localIdentName=[path][name]—[local]—[hash:base64:5]<br>这段参数的意思是启动CSSmodule ，然后让编译后的css的名字改成<code>[path][name]---[local]---[hash:base64:5]</code>，这样可以达到限定css作用域</p>
+<h3 id="在header-js引用css"><a href="#在header-js引用css" class="headerlink" title="在header.js引用css"></a>在header.js引用css</h3><pre><code>import React from &apos;react&apos;;
+import headerStyle from &apos;../css/header.css&apos;
+export default class HeaderTpl extends React.Component {
+  constructor () {
+    super()
+  }
+  render () {
+    return (
+      &lt;div className={headerStyle.header}&gt;
+        &lt;h1&gt;this is header&lt;/h1&gt;
+      &lt;/div&gt;
+    )
+  }
+}
+</code></pre><p>通过类似于函数的调用，就可以达到引用css样式效果，而且这里的header.css最后会被编译成 <code>src-css-header---header---19-MS</code></p>
+<h3 id="修改index-js文件："><a href="#修改index-js文件：" class="headerlink" title="修改index.js文件："></a>修改index.js文件：</h3><pre><code>import React from &apos;react&apos;;
+import headerStyle from &apos;../css/header.css&apos;
+export default class HeaderTpl extends React.Component {
+  constructor () {
+    super()
+  }
+  render () {
+    return (
+      &lt;div className={headerStyle.header}&gt;
+        &lt;h1&gt;this is header&lt;/h1&gt;
+      &lt;/div&gt;
+    )
+  }
+}
+</code></pre><p>运行 <code>npm run dev</code> 查看效果</p>
+<h3 id="顺便一提，我们上面用的是-classNmae绑定css，如果想用-class-绑定的话，可以安装-babel-plugin-react-html-attrs"><a href="#顺便一提，我们上面用的是-classNmae绑定css，如果想用-class-绑定的话，可以安装-babel-plugin-react-html-attrs" class="headerlink" title="顺便一提，我们上面用的是 classNmae绑定css，如果想用 class 绑定的话，可以安装 babel-plugin-react-html-attrs"></a>顺便一提，我们上面用的是 <code>classNmae</code>绑定css，如果想用 <code>class</code> 绑定的话，可以安装 <code>babel-plugin-react-html-attrs</code></h3><h4 id="在-babelrc中配置"><a href="#在-babelrc中配置" class="headerlink" title="在 .babelrc中配置"></a>在 .babelrc中配置</h4><pre><code>{
+  &quot;presets&quot;: [&quot;react&quot;, &quot;es2015&quot;],
+  &quot;env&quot;: {
+   &quot;development&quot;: {
+     &quot;presets&quot;: [&quot;react-hmre&quot;]
+   }
+  },
+  plugins: [&apos;react-html-attrs&apos;]
+}
+</code></pre><p>添加 <code>plugins: [&#39;react-html-attrs&#39;]</code> </p>
+<p>然后我们在header.js里面就可以这样子写：</p>
+<pre><code>&lt;div class={headerStyle.header}&gt;
+    &lt;h1&gt;this is header&lt;/h1&gt;
+  &lt;/div&gt;
+</code></pre><p>达到的效果是一样的！ 也更贴近我们的日常使用习惯</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/10/从零开始学习react第二天/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -410,7 +1127,7 @@ module.exports = merge(config, {
     }),
   ]
 })
-</code></pre><p>主要把仅在开发过程用到的配置写在这里，然后合并<code>webpack.base.conf.js</code>的参数</p>
+</code></pre><p>这里必须用到 <code>new webpack.HotModuleReplacementPlugin()</code> ，不然无法启用热更新<br>主要把仅在开发过程用到的配置写在这里，然后合并<code>webpack.base.conf.js</code>的参数</p>
 <h4 id="webpack-base-conf-js-的配置如下："><a href="#webpack-base-conf-js-的配置如下：" class="headerlink" title="webpack.base.conf.js 的配置如下："></a><code>webpack.base.conf.js</code> 的配置如下：</h4><pre><code>var path = require(&apos;path&apos;)
 module.exports = {
   devtool: &apos;eval-source-map&apos;,
@@ -487,6 +1204,15 @@ app.listen(3000, function(err) {
   }
 }
 </code></pre><p>这样子就行了，然后重启一次服务，这样子就可以实现热刷新了！</p>
+<h3 id="8月12日更新"><a href="#8月12日更新" class="headerlink" title="8月12日更新"></a>8月12日更新</h3><p>对于文件入口，要加入以下代码: </p>
+<pre><code>if(module.hot)
+ {
+     module.hot.accept();
+ }
+</code></pre><p>不然对于主入口的数据无法进行热更新，当更改主入口数据时候会报错</p>
+<blockquote>
+<p>following modules couldn’t be hot updated: (Full reload needed)<br>This is usually because the modules which have changed (and their parents) do not know how to hot reload themselves.</p>
+</blockquote>
 
           
         
@@ -2052,552 +2778,11 @@ fs.appendFile(file, data, function(err){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/10/backdrop-filter/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/10/backdrop-filter/" itemprop="url">backdrop-filter</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T00:22:48+08:00">
-                2017-07-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/10/backdrop-filter/" class="leancloud_visitors" data-flag-title="backdrop-filter">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="css新属性backdrop-filter"><a href="#css新属性backdrop-filter" class="headerlink" title="css新属性backdrop-filter"></a>css新属性backdrop-filter</h1><hr>
-<p>在iOS系统上常常能看到高斯模糊(Gaussian Blur)效果，而这种效果早期使用CSS来实现是较为痛苦的一件事情。其实，早上2011年，浏览器就开始对CSS filters规范有所支持。也就是说在2011年浏览器就可以实现Filters效果。但这种效果基本上都只运用在SVG上(只有SVG支持Filter效果)，而且只有Firefox浏览器支持，并且只能运用在HTML上。这也造就CSS要实现Filters效果是非常蛋疼的一件事情。比如说下图的效果：</p>
-<p><img src="http://wx4.sinaimg.cn/mw1024/a359ab18gy1fhdwokjuh8j20c405xwfk.jpg" alt="fosted-glass"></p>
-<h3 id="浏览器兼容性"><a href="#浏览器兼容性" class="headerlink" title="浏览器兼容性"></a>浏览器兼容性</h3><p><img src="http://wx4.sinaimg.cn/mw690/a359ab18gy1fhdwrsqo5lj20pp0863z2.jpg" alt="此处输入图片的描述"></p>
-<p>  到目前为止，也仅有Safari 9支持</p>
-<h2 id="backdrop-filter"><a href="#backdrop-filter" class="headerlink" title="backdrop-filter"></a>backdrop-filter</h2><p>backdrop-filter是在Filter Level2提出来的。其取值和filter Level1中filter属性的属性值一样，包括：</p>
-<ol>
-<li>blur()</li>
-<li>brightness()</li>
-<li>contrast()</li>
-<li>drop-shadow()</li>
-<li>grayscale()</li>
-<li>hue-rotate()</li>
-<li>invert()</li>
-<li>opacity()</li>
-<li>saturate()</li>
-<li>sepia()</li>
-</ol>
-<p>这个属性现在仅仅适用于ios端，用来实现ios端毛玻璃效果</p>
-<font color="blue">参考资料(<a href="http://www.w3cplus.com/css3/advanced-css-filters.html" target="_blank" rel="external">http://www.w3cplus.com/css3/advanced-css-filters.html</a>)</font>
-
-<hr>
-<h2 id="纯css实现毛玻璃另外一种方法："><a href="#纯css实现毛玻璃另外一种方法：" class="headerlink" title="纯css实现毛玻璃另外一种方法："></a>纯css实现毛玻璃另外一种方法：</h2><p>先搞一个div作为容器层，用来放置风景背景图。内部放一个div，作为毛玻璃的主体。再放一个img，显示图标。<br>容器层：大小是图片大小，把风景图作为背景显示，no-repeat。这里用到一个小技巧，将background-attachment设成fixed，不随元素滚动，让子元素继承了本层的背景后，子元素就变成了一个viewport，移到哪儿就看到背景的哪儿</p>
-<pre><code>.container{
-    width: 287px;height: 285px;
-    background-image: url(background.png);    
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    overflow: hidden;
-}
-</code></pre><p>毛玻璃层：这里的关键技巧就是background:inherit，直接使用了父元素的背景，和父级的background-attachment:fixed可完成从相机看世界的各种牛逼效果。本文的的毛玻璃是全景，当然可以上半部或者下半部，或者其他位置，这就看出inherit和fixed牛逼的地方了。        </p>
-<pre><code>.frosted-glass{
-    width: 287px;
-    height: 285px;
-    background: inherit;
-    -webkit-filter: blur(5px);
-    -moz-filter: blur(5px);
-    -ms-filter: blur(5px);
-    -o-filter: blur(5px);
-    filter: blur(5px);
-    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=4, MakeShadow=false);
-}
-</code></pre><p>测试了只能对图片进行模糊，对dom节点这些页面展示内容无法进行模糊。</p>
-<p>要实现对页面内容模糊，方法是：<br>1、需要能将图片模糊的滤镜。<br>2、需要捕获到毛玻璃浮层下面所有内容的图像信息。就好像截屏。<br>3、需要让图片运动能与浏览器滚动同步。主要难点在于实时同步，尤其是处理滚动的惯性。</p>
-<font color="blue">参考资料(<a href="https://www.zhihu.com/question/23533918" target="_blank" rel="external">https://www.zhihu.com/question/23533918</a>)<br>如何通过 HTML5 实现 iOS 7 的实时毛玻璃模糊效果？  —by 知乎</font>
-
-
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/17/node保存登陆信息/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/17/node保存登陆信息/" itemprop="url">node保存登陆信息</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-17T20:18:58+08:00">
-                2017-06-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/06/17/node保存登陆信息/" class="leancloud_visitors" data-flag-title="node保存登陆信息">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="node-vue实现记住密码功能"><a href="#node-vue实现记住密码功能" class="headerlink" title="node+vue实现记住密码功能"></a>node+vue实现记住密码功能</h1><hr>
-<p>首先要引入依赖</p>
-<pre><code>var session = require(&apos;express-session&apos;);
-var cookieParser = require(&apos;cookie-parser&apos;);
-var MongoStore = require(&apos;connect-mongo&apos;)(session);//用来将session添加到mongodb数据库，实现长时间保存
-</code></pre><p>使用session（在build\dev-server.js）</p>
-<pre><code>app.use(cookieParser());
-   app.use(session({
-     secret:&apos;secret&apos;,
-     resave:true, // don&apos;t save session if unmodified
-     saveUninitialized:false,// don&apos;t create session until something stored
-     cookie:{
-       maxAge:1000*60*10 //过期时间设置(单位毫秒)
-     },
-     store: new MongoStore({   //创建新的mongodb数据库
-           host: &apos;localhost&apos;,    //数据库的地址，本机的话就是127.0.0.1，也可以是网络主机
-           port: 27017,          //数据库的端口号
-           db: &apos;test&apos;        //数据库的名称。
-         })
-   }));
-</code></pre><h3 id="这样子的代码有一个报错："><a href="#这样子的代码有一个报错：" class="headerlink" title="这样子的代码有一个报错："></a>这样子的代码有一个报错：</h3><blockquote>
-<p>Error: Connection strategy not found MongoDB</p>
-</blockquote>
-<p>解决方法是store里面要有url，不知道是不是版本问题：</p>
-<pre><code>store: new MongoStore({   //创建新的mongodb数据库
-    url: &apos;mongodb://localhost/test&apos; 
-  })
-</code></pre><h3 id="再次有一个报错："><a href="#再次有一个报错：" class="headerlink" title="再次有一个报错："></a>再次有一个报错：</h3><blockquote>
-<p> Cannot set property ‘user’ of undefined</p>
-</blockquote>
-<p>百度了一下原因是要把sesson的配置放在路由之前。</p>
-<pre><code>app.use(cookieParser());
-app.use(session({
-  ~
-}));
-app.use(api) //使用路由
-</code></pre><h3 id="增加一个路由，用来返回session的值"><a href="#增加一个路由，用来返回session的值" class="headerlink" title="增加一个路由，用来返回session的值"></a>增加一个路由，用来返回session的值</h3><pre><code>router.get(&apos;/auth&apos;,(req,res) =&gt; {
-    if(req.session.user){
-        res.send(req.session.user)
-    }
-});
-</code></pre><h4 id="在index主页下增加方法，用来获取用户信息"><a href="#在index主页下增加方法，用来获取用户信息" class="headerlink" title="在index主页下增加方法，用来获取用户信息"></a>在index主页下增加方法，用来获取用户信息</h4><pre><code>/*************************************************
-获取登录信息
-@ 允许自动登录则返回登陆状态码 1
-@ 不允许则返回登陆状态码 2
-**************************************************/
-router.get(&apos;/auth&apos;,(req,res) =&gt; {
-    let token = {
-        account: req.session.user,
-        loginCode:req.session.loginCode
-}
-if(token){
-    res.send(token)
-}
-});
-</code></pre><h4 id="添加自动登录的函数"><a href="#添加自动登录的函数" class="headerlink" title="添加自动登录的函数"></a>添加自动登录的函数</h4><pre><code>autoLogin(){
-    this.$http.get(&apos;/auth&apos;).then((res) =&gt; {
-      // console.log(res.data)
-      var token = res.data;
-      if(token &amp;&amp; token.loginCode === 1){
-        this.account = token.account;
-        this.isLogin = true;
-      }else{
-        this.account = token.account;
-        this.isLogin = false;
-      }
-    })
-  }
-</code></pre><h4 id="在页面创建时候判断是否自动登录"><a href="#在页面创建时候判断是否自动登录" class="headerlink" title="在页面创建时候判断是否自动登录"></a>在页面创建时候判断是否自动登录</h4><pre><code>created(){
-  this.autoLogin();
-}
-</code></pre><p>这样就可以在页面创建时候验证用户信息，实现免登录。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/13/mongodb安装和使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/13/mongodb安装和使用/" itemprop="url">mongodb安装和使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T17:22:27+08:00">
-                2017-06-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/06/13/mongodb安装和使用/" class="leancloud_visitors" data-flag-title="mongodb安装和使用">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="mongodb使用"><a href="#mongodb使用" class="headerlink" title="mongodb使用"></a>mongodb使用</h1><hr>
-<h2 id="1-安装mongodb（https-www-mongodb-com-download-center-community）"><a href="#1-安装mongodb（https-www-mongodb-com-download-center-community）" class="headerlink" title="1.安装mongodb（https://www.mongodb.com/download-center#community）"></a>1.安装mongodb（<a href="https://www.mongodb.com/download-center#community）" target="_blank" rel="external">https://www.mongodb.com/download-center#community）</a></h2><h2 id="2-配置环境变量，让mongodb可以全局使用"><a href="#2-配置环境变量，让mongodb可以全局使用" class="headerlink" title="2.配置环境变量，让mongodb可以全局使用"></a>2.配置环境变量，让mongodb可以全局使用</h2><p>在【我的电脑】–&gt;属性–&gt;高级设置–&gt;环境变量 path下设置mongodb下bin的路径</p>
-<blockquote>
-<p>C:\Program Files\MongoDB\Server\3.4\bin</p>
-</blockquote>
-<p>这样就可以在任意cmd下启动mogodb</p>
-<h2 id="3-启动mongodb"><a href="#3-启动mongodb" class="headerlink" title="3.启动mongodb"></a>3.启动mongodb</h2><blockquote>
-<p>mongod –dbpath=D:\data\db //dbpath是指定数据存放目录</p>
-</blockquote>
-<p>成功的话会输出一下内容：<br>2017-04-09T10:45:31.583+0800 I CONTROL  [initandlisten] MongoDB starting : pid=12244 port=27017 dbpath=E:\Tool\modb\db 64-bit host=JSB015<br>2017-04-09T10:45:31.584+0800 I CONTROL  [initandlisten] targetMinOS: Windows Vista/Windows Server 2008<br>…</p>
-<h2 id="4-一个简单的mongodb操作实例"><a href="#4-一个简单的mongodb操作实例" class="headerlink" title="4.一个简单的mongodb操作实例"></a>4.一个简单的mongodb操作实例</h2><pre><code> var mongoose = require(&quot;mongoose&quot;);
-mongoose.Promise = global.Promise; 
-var db = mongoose.connect(&quot;mongodb://127.0.0.1:27017/test&quot;);
-var TestSchema = new mongoose.Schema({
-    name : {type:String},
-    age : {type:Number,default:0},
-    email : {type:String},
-    time : {type:Date,default:Date.now}
-});
-var TestModel = db.model(&quot;test1&quot;,TestSchema); 
-var TestEntity = new TestModel({
-    name:&apos;helloworld&apos;,
-    age:28,
-    emial:&apos;helloworld@qq.com&apos;
-});
-TestEntity.save(function(err,doc){
-    if(err){
-        console.log(&quot;error :&quot; + err);
-    } else {
-        console.log(doc);
-    }
-});
-</code></pre><p>Schema ： 一种以文件形式存储的数据库模型骨架，不具备数据库的操作能力</p>
-<p>Model ： 由Schema发布生成的模型，具有抽象属性和行为的数据库操作对</p>
-<p>Entity ： 由Model创建的实体，他的操作也会影响数据库</p>
-<h2 id="5-踩坑："><a href="#5-踩坑：" class="headerlink" title="5.踩坑："></a>5.踩坑：</h2><ol>
-<li><p> DeprecationWarning: Mongoose: mpromise (mongoose’s default promise library) is deprecated, plug in your own promise library instead: <a href="http://mongoosejs.com/docs/promises.html" target="_blank" rel="external">http://mongoosejs.com/docs/promises.html</a><br>如果出现这段代码，则需要在db.connect之前加入以下代码：</p>
-<blockquote>
-<p>mongoose.Promise = global.Promise;<br>//或者 这样 ：mongoose.Promise = require(‘bluebird’);</p>
-</blockquote>
-</li>
-<li></li>
-</ol>
-<pre><code>MongoError: failed to connect to server [127.0.0.1:27017] on first connect
-</code></pre><p>这是mongodb数据库没有开启提示的错误，应该先开启数据库连接</p>
-<blockquote>
-<p>mongod<br>// 或者指定数据目录 mongod –dbpath=d:\data\db</p>
-</blockquote>
-<h2 id="6-可以让mongodb随window启动而启动"><a href="#6-可以让mongodb随window启动而启动" class="headerlink" title="6.可以让mongodb随window启动而启动"></a>6.可以让mongodb随window启动而启动</h2><p>这样就不用每次都启动一次<br>在命令行执行：</p>
-<blockquote>
-<p>mongod –logpath D:\MongoDb\logs\MongoDB.log –logappend –dbpath D:\data –directoryperdb –serviceName MongoDB –install –auth</p>
-</blockquote>
-<p>删除自启动服务：</p>
-<blockquote>
-<p> sc delete MongoDB</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2642,7 +2827,7 @@ TestEntity.save(function(err,doc){
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

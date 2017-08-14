@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="yezi">
 <meta property="og:description" content="从零开始学习react第二天 前言首先我们先完善第一天留下来的问题，之前我们用 babel-loader babel-preset-react babel-preset-es2005 三个包将ES6语法转换为ES5，相对于大多数浏览器，这样的设置可能已经足够了，但是对于少数不支持ES5语法的浏览器，这样的设置可能还不够，而且 babel-loader 对于ES6的 promise fetch，ES">
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/a359ab18gy1fieycd93xaj20he08jaa6.jpg">
-<meta property="og:updated_time" content="2017-08-10T14:03:41.554Z">
+<meta property="og:updated_time" content="2017-08-12T07:27:31.397Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从零开始学习react第二天">
 <meta name="twitter:description" content="从零开始学习react第二天 前言首先我们先完善第一天留下来的问题，之前我们用 babel-loader babel-preset-react babel-preset-es2005 三个包将ES6语法转换为ES5，相对于大多数浏览器，这样的设置可能已经足够了，但是对于少数不支持ES5语法的浏览器，这样的设置可能还不够，而且 babel-loader 对于ES6的 promise fetch，ES">
@@ -408,7 +408,7 @@ module.exports = merge(config, {
     }),
   ]
 })
-</code></pre><p>主要把仅在开发过程用到的配置写在这里，然后合并<code>webpack.base.conf.js</code>的参数</p>
+</code></pre><p>这里必须用到 <code>new webpack.HotModuleReplacementPlugin()</code> ，不然无法启用热更新<br>主要把仅在开发过程用到的配置写在这里，然后合并<code>webpack.base.conf.js</code>的参数</p>
 <h4 id="webpack-base-conf-js-的配置如下："><a href="#webpack-base-conf-js-的配置如下：" class="headerlink" title="webpack.base.conf.js 的配置如下："></a><code>webpack.base.conf.js</code> 的配置如下：</h4><pre><code>var path = require(&apos;path&apos;)
 module.exports = {
   devtool: &apos;eval-source-map&apos;,
@@ -485,6 +485,15 @@ app.listen(3000, function(err) {
   }
 }
 </code></pre><p>这样子就行了，然后重启一次服务，这样子就可以实现热刷新了！</p>
+<h3 id="8月12日更新"><a href="#8月12日更新" class="headerlink" title="8月12日更新"></a>8月12日更新</h3><p>对于文件入口，要加入以下代码: </p>
+<pre><code>if(module.hot)
+ {
+     module.hot.accept();
+ }
+</code></pre><p>不然对于主入口的数据无法进行热更新，当更改主入口数据时候会报错</p>
+<blockquote>
+<p>following modules couldn’t be hot updated: (Full reload needed)<br>This is usually because the modules which have changed (and their parents) do not know how to hot reload themselves.</p>
+</blockquote>
 
       
     </div>
@@ -536,6 +545,10 @@ app.listen(3000, function(err) {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/11/从零开始学习react第三天/" rel="prev" title="从零开始学习react第三天">
+                从零开始学习react第三天 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -607,7 +620,7 @@ app.listen(3000, function(err) {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -655,7 +668,7 @@ app.listen(3000, function(err) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#从零开始学习react第二天"><span class="nav-number">1.</span> <span class="nav-text">从零开始学习react第二天</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-babel-polyfill"><span class="nav-number">1.1.1.</span> <span class="nav-text">安装  babel-polyfill</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改pakage-json配置，让-babel-polyfill-单独插入到html"><span class="nav-number">1.1.2.</span> <span class="nav-text">修改pakage.json配置，让 babel-polyfill 单独插入到html</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babel-plugin-react-transform-热加载的实现"><span class="nav-number">1.2.</span> <span class="nav-text">babel-plugin-react-transform 热加载的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#于是我们先安装包"><span class="nav-number">1.2.1.</span> <span class="nav-text">于是我们先安装包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一次启动"><span class="nav-number">1.2.2.</span> <span class="nav-text">第一次启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重构项目结构"><span class="nav-number">1.2.3.</span> <span class="nav-text">重构项目结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#webpack-dev-conf-js-文件主要是在开发环境所要用到的配置，代码如下："><span class="nav-number">1.2.3.1.</span> <span class="nav-text">webpack.dev.conf.js 文件主要是在开发环境所要用到的配置，代码如下：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#webpack-base-conf-js-的配置如下："><span class="nav-number">1.2.3.2.</span> <span class="nav-text">webpack.base.conf.js 的配置如下：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在-webpack-dev-conf-js-中添加这么一段代码，将-webpack-hot-middleware-注入到entry里面去"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">在 webpack.dev.conf.js 中添加这么一段代码，将 webpack-hot-middleware 注入到entry里面去</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建dev-server-js文件，开启服务"><span class="nav-number">1.3.</span> <span class="nav-text">创建dev-server.js文件，开启服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#热刷新"><span class="nav-number">1.3.1.</span> <span class="nav-text">热刷新</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#从零开始学习react第二天"><span class="nav-number">1.</span> <span class="nav-text">从零开始学习react第二天</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-babel-polyfill"><span class="nav-number">1.1.1.</span> <span class="nav-text">安装  babel-polyfill</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改pakage-json配置，让-babel-polyfill-单独插入到html"><span class="nav-number">1.1.2.</span> <span class="nav-text">修改pakage.json配置，让 babel-polyfill 单独插入到html</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babel-plugin-react-transform-热加载的实现"><span class="nav-number">1.2.</span> <span class="nav-text">babel-plugin-react-transform 热加载的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#于是我们先安装包"><span class="nav-number">1.2.1.</span> <span class="nav-text">于是我们先安装包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一次启动"><span class="nav-number">1.2.2.</span> <span class="nav-text">第一次启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重构项目结构"><span class="nav-number">1.2.3.</span> <span class="nav-text">重构项目结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#webpack-dev-conf-js-文件主要是在开发环境所要用到的配置，代码如下："><span class="nav-number">1.2.3.1.</span> <span class="nav-text">webpack.dev.conf.js 文件主要是在开发环境所要用到的配置，代码如下：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#webpack-base-conf-js-的配置如下："><span class="nav-number">1.2.3.2.</span> <span class="nav-text">webpack.base.conf.js 的配置如下：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在-webpack-dev-conf-js-中添加这么一段代码，将-webpack-hot-middleware-注入到entry里面去"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">在 webpack.dev.conf.js 中添加这么一段代码，将 webpack-hot-middleware 注入到entry里面去</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建dev-server-js文件，开启服务"><span class="nav-number">1.3.</span> <span class="nav-text">创建dev-server.js文件，开启服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#热刷新"><span class="nav-number">1.3.1.</span> <span class="nav-text">热刷新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8月12日更新"><span class="nav-number">1.3.2.</span> <span class="nav-text">8月12日更新</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
