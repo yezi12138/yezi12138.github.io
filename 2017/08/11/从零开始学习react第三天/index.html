@@ -97,7 +97,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/11/从零开始学习react第三天/index.html">
 <meta property="og:site_name" content="yezi">
 <meta property="og:description" content="从零开始学习react第三天 前面我们已经配置出一个基本的react-cli，但是依然还没有完善好，因为现在的配置仅仅是打包的js和html格式的文件，对于图片，css，字体这些文件还无法进行打包处理，今天我们就开始给项目添加这些功能。 第一种：内联样式首先按我们用index.js作为解说import React from &amp;apos;react&amp;apos;; import { render }">
-<meta property="og:updated_time" content="2017-08-14T09:48:51.513Z">
+<meta property="og:updated_time" content="2017-08-24T06:30:44.618Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从零开始学习react第三天">
 <meta name="twitter:description" content="从零开始学习react第三天 前面我们已经配置出一个基本的react-cli，但是依然还没有完善好，因为现在的配置仅仅是打包的js和html格式的文件，对于图片，css，字体这些文件还无法进行打包处理，今天我们就开始给项目添加这些功能。 第一种：内联样式首先按我们用index.js作为解说import React from &amp;apos;react&amp;apos;; import { render }">
@@ -463,6 +463,38 @@ export default class HeaderTpl extends React.Component {
     &lt;h1&gt;this is header&lt;/h1&gt;
   &lt;/div&gt;
 </code></pre><p>达到的效果是一样的！ 也更贴近我们的日常使用习惯</p>
+<h2 id="另外一种调用css的方式"><a href="#另外一种调用css的方式" class="headerlink" title="另外一种调用css的方式"></a>另外一种调用css的方式</h2><p>首先还原配置</p>
+<h3 id="配置webpack-base-conf-js-1"><a href="#配置webpack-base-conf-js-1" class="headerlink" title="配置webpack.base.conf.js"></a>配置webpack.base.conf.js</h3><pre><code>{
+  test: /\.css$/,
+  loader: &quot;style-loader!css-loader&quot;
+}
+</code></pre><h3 id="修改header-css："><a href="#修改header-css：" class="headerlink" title="修改header.css："></a>修改<code>header.css</code>：</h3><pre><code>.App-header{
+  background-color: #ccc;
+  color: #fff;
+}
+</code></pre><h3 id="在header-js引用css-1"><a href="#在header-js引用css-1" class="headerlink" title="在header.js引用css"></a>在header.js引用css</h3><pre><code>import React from &apos;react&apos;;
+import &apos;../css/header.css&apos;
+export default class HeaderTpl extends React.Component {
+  constructor () {
+    super()
+  }
+  render () {
+    return (
+      &lt;div className=&quot;App-header&quot;&gt;
+        &lt;h1&gt;this is header&lt;/h1&gt;
+      &lt;/div&gt;
+    )
+  }
+}
+</code></pre><p>这种写法无法避免全局污染</p>
+<h2 id="配置sass"><a href="#配置sass" class="headerlink" title="配置sass"></a>配置sass</h2><blockquote>
+<p>npm install sass-loader node-sass –save-dev</p>
+</blockquote>
+<h3 id="在-webpack-base-conf-下面加一个loader"><a href="#在-webpack-base-conf-下面加一个loader" class="headerlink" title="在 webpack.base.conf 下面加一个loader"></a>在 <code>webpack.base.conf</code> 下面加一个loader</h3><pre><code>{
+  test: /\.scss$/,
+  loaders: [&apos;style-loader&apos;, &apos;css-loader&apos;, &apos;sass-loader&apos;],
+}
+</code></pre><p>这样子就行了</p>
 
       
     </div>
@@ -637,7 +669,7 @@ export default class HeaderTpl extends React.Component {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#从零开始学习react第三天"><span class="nav-number">1.</span> <span class="nav-text">从零开始学习react第三天</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一种：内联样式"><span class="nav-number">1.1.</span> <span class="nav-text">第一种：内联样式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#首先按我们用index-js作为解说"><span class="nav-number">1.1.1.</span> <span class="nav-text">首先按我们用index.js作为解说</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#这种写法支持react表达式"><span class="nav-number">1.1.2.</span> <span class="nav-text">这种写法支持react表达式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSS-module"><span class="nav-number">1.2.</span> <span class="nav-text">CSS module</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装依赖"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建header-js"><span class="nav-number">1.2.2.</span> <span class="nav-text">创建header.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写css"><span class="nav-number">1.2.3.</span> <span class="nav-text">编写css</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置webpack-base-conf-js"><span class="nav-number">1.2.4.</span> <span class="nav-text">配置webpack.base.conf.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在header-js引用css"><span class="nav-number">1.2.5.</span> <span class="nav-text">在header.js引用css</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改index-js文件："><span class="nav-number">1.2.6.</span> <span class="nav-text">修改index.js文件：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#顺便一提，我们上面用的是-classNmae绑定css，如果想用-class-绑定的话，可以安装-babel-plugin-react-html-attrs"><span class="nav-number">1.2.7.</span> <span class="nav-text">顺便一提，我们上面用的是 classNmae绑定css，如果想用 class 绑定的话，可以安装 babel-plugin-react-html-attrs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在-babelrc中配置"><span class="nav-number">1.2.7.1.</span> <span class="nav-text">在 .babelrc中配置</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#从零开始学习react第三天"><span class="nav-number">1.</span> <span class="nav-text">从零开始学习react第三天</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一种：内联样式"><span class="nav-number">1.1.</span> <span class="nav-text">第一种：内联样式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#首先按我们用index-js作为解说"><span class="nav-number">1.1.1.</span> <span class="nav-text">首先按我们用index.js作为解说</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#这种写法支持react表达式"><span class="nav-number">1.1.2.</span> <span class="nav-text">这种写法支持react表达式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSS-module"><span class="nav-number">1.2.</span> <span class="nav-text">CSS module</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装依赖"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建header-js"><span class="nav-number">1.2.2.</span> <span class="nav-text">创建header.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写css"><span class="nav-number">1.2.3.</span> <span class="nav-text">编写css</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置webpack-base-conf-js"><span class="nav-number">1.2.4.</span> <span class="nav-text">配置webpack.base.conf.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在header-js引用css"><span class="nav-number">1.2.5.</span> <span class="nav-text">在header.js引用css</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改index-js文件："><span class="nav-number">1.2.6.</span> <span class="nav-text">修改index.js文件：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#顺便一提，我们上面用的是-classNmae绑定css，如果想用-class-绑定的话，可以安装-babel-plugin-react-html-attrs"><span class="nav-number">1.2.7.</span> <span class="nav-text">顺便一提，我们上面用的是 classNmae绑定css，如果想用 class 绑定的话，可以安装 babel-plugin-react-html-attrs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在-babelrc中配置"><span class="nav-number">1.2.7.1.</span> <span class="nav-text">在 .babelrc中配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#另外一种调用css的方式"><span class="nav-number">1.3.</span> <span class="nav-text">另外一种调用css的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置webpack-base-conf-js-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">配置webpack.base.conf.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改header-css："><span class="nav-number">1.3.2.</span> <span class="nav-text">修改header.css：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在header-js引用css-1"><span class="nav-number">1.3.3.</span> <span class="nav-text">在header.js引用css</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置sass"><span class="nav-number">1.4.</span> <span class="nav-text">配置sass</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在-webpack-base-conf-下面加一个loader"><span class="nav-number">1.4.1.</span> <span class="nav-text">在 webpack.base.conf 下面加一个loader</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
