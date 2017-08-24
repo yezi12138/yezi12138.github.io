@@ -263,6 +263,406 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/24/阿里面试题目/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/24/阿里面试题目/" itemprop="url">阿里面试题目</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-24T18:38:52+08:00">
+                2017-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/24/阿里面试题目/" class="leancloud_visitors" data-flag-title="阿里面试题目">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="阿里面试题目"><a href="#阿里面试题目" class="headerlink" title="阿里面试题目"></a>阿里面试题目</h1><hr>
+<p><img src="http://wx3.sinaimg.cn/mw690/a359ab18gy1fiv039e3k4j210o0faq3r.jpg" alt="第一题"></p>
+<p>  实现思路： 递归到最后一层，然后在相应位置填上数值，返回上一层，在相应位置填上当前值的数值，填值的方法是反向填值，个数为下层的个数相乘，然后进入下一轮</p>
+<p>  比如有一个数据如下：</p>
+<pre><code>data = [
+    [&apos;yezi&apos;],
+    [2016, 2017],
+    [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;]
+]
+</code></pre><p>步骤：</p>
+<ol>
+<li>递归到最后一层 <code>[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]</code>，在第三行的位置开始填数值a,b,c；然后保存上一层要开始填值得列数，这里是<code>column = 3</code></li>
+<li>回到第二层<code>[2016, 2017]</code>, 这时循环的数值是2016，然后设置<code>key = column - i - 1</code> 让2016在第二行第三列的位置开始往前填，相应填在第三列 —&gt; 第二列 —&gt; 第一列位置， 然后开始下一次循环，i++</li>
+<li>这时到了2017，判断他有后续兄弟，于是递归到最后一层，再次从<code>column</code> 的位置开始填写，最后回到步骤1</li>
+</ol>
+<p>这个算法有两步：</p>
+<ol>
+<li>第一步是计算每行每次需要填写的个数，比如data数据，对于第一层，yezi要填写的个数是后面层数长度相乘，即2*3 = 6， 2016和2017分别要填写3个，而第三层数值各一个</li>
+<li>第二步就是进行递归</li>
+</ol>
+<p>代码如下：</p>
+<pre><code>window.onload = function () {
+  function fillSheet(sheet, data) {
+    var index = 0;
+    if (data.length === 0) return
+    var column = 0
+    var args = [].slice.call(arguments[1])
+    // 计算每一行应该描绘多少个
+    var amount = []
+    var totalColumn = []
+    var caculate = function () {
+      args.map((key, index) =&gt; {
+        amount.push(key.length)
+      })
+      while (amount.length !== 0) {
+        amount.shift()
+        let total = amount.reduce(function (before, next) {
+          return before * next
+        }, 1)
+        totalColumn.push(total)
+      }
+    }
+    // 给特定数组描绘表格
+    var setValue = function (index, data) {
+      for (let i = 0; i &lt; data[index].length; i++) {
+        let currentKey = data[index][i]
+        let next = index + 1
+        let arr = data[next]
+        let key = null
+        if (arr) {
+          // 开始递归
+          setValue(next, data)
+          // 返回这层时填写当前数值
+          for (let i = 0; i &lt; totalColumn[index]; i++) {
+            key = column - i - 1
+            sheet.setValue(index, key, currentKey)
+          }
+        } else {
+          // 最后一层填写表格
+          key = column
+          sheet.setValue(index, key, currentKey)
+          column = key + 1
+        }
+      }
+    }
+    caculate(args)
+    setValue(index, data)
+  }
+  class Sheet {
+    setValue (row, column, value) {
+      var top = row * 40
+      var left = column * 100
+      var div = document.createElement(&apos;div&apos;)
+      div.style.display = &apos;inline-block&apos;
+      div.style.position = &apos;absolute&apos;
+      div.style.left = left + &apos;px&apos;
+      div.style.top = top + &apos;px&apos;
+      div.innerHTML = value
+      document.body.appendChild(div)
+    }
+  }
+  var data = [
+  [&apos;CNY&apos;, &apos;china&apos;],
+  [2016],
+  [&apos;jack&apos;, &apos;yezi&apos;],
+  [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]
+  ]
+  var sheet = new Sheet()
+  fillSheet(sheet, data)
+  console.log(&apos;over&apos;)
+}
+</code></pre><p>其中 <code>Sheet</code> 是为了测试代码效果而写的</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/24/从零开始学习react第五天/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/24/从零开始学习react第五天/" itemprop="url">从零开始学习react第五天</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-24T18:27:24+08:00">
+                2017-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/08/24/从零开始学习react第五天/" class="leancloud_visitors" data-flag-title="从零开始学习react第五天">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="从零开始学习react第五天"><a href="#从零开始学习react第五天" class="headerlink" title="从零开始学习react第五天"></a>从零开始学习react第五天</h1><hr>
+<p>第五天，这次学习如何使用react-router</p>
+<h2 id="安装-react-router"><a href="#安装-react-router" class="headerlink" title="安装 react-router"></a>安装 <code>react-router</code></h2><blockquote>
+<p>npm install react-router –save</p>
+</blockquote>
+<h3 id="踩坑点：-这里我用的是2-x版本，如果使用4-x版本，下面方法就不支持了"><a href="#踩坑点：-这里我用的是2-x版本，如果使用4-x版本，下面方法就不支持了" class="headerlink" title="踩坑点： 这里我用的是2.x版本，如果使用4.x版本，下面方法就不支持了"></a>踩坑点： 这里我用的是2.x版本，如果使用4.x版本，下面方法就不支持了</h3><h2 id="项目加入router"><a href="#项目加入router" class="headerlink" title="项目加入router"></a>项目加入router</h2><p>新建 <code>root.js</code>， 代码如下：</p>
+<pre><code>import React from &apos;react&apos;;
+import {Router, Route, hashHistory, IndexRoute} from &apos;react-router&apos;
+import App from &apos;./components/app&apos;
+import List from &apos;./components/list&apos;
+import Child from &apos;./components/child&apos;
+export default class Root extends React.Component {
+  render () {
+    return (
+      &lt;Router history={hashHistory}&gt;
+        &lt;Route path=&quot;/&quot; component={App} /&gt;
+        &lt;Route path=&quot;/list&quot; component={List}&gt;
+          &lt;IndexRoute component={Child} /&gt;
+          &lt;Route path=&quot;/child&quot; component={Child} /&gt;
+          &lt;Route path=&quot;/App&quot; component={App} /&gt;
+        &lt;/Route&gt;
+      &lt;/Router&gt;
+    )
+  }
+}
+</code></pre><ol>
+<li><code>Router</code> 定义一个路由</li>
+<li><code>history={hashHistory}</code> 定义路由路径</li>
+<li><code>path</code> 定义路由路径</li>
+<li><code>IndexRoute</code> 进入路由list时，默认显示该子路由，相当于子路由默认页，如果不加这个，在进入list时候并不会显示路由</li>
+</ol>
+<h3 id="踩坑点："><a href="#踩坑点：" class="headerlink" title="踩坑点："></a>踩坑点：</h3><ol>
+<li>这里的写法是 <code>path=&quot;/child&quot;</code> 这样可以通过url <code>xxxx.com/child</code> 访问到页面，但是如果这样写 <code>path=&quot;child&quot;</code> 把 <code>/</code> 去掉，就不能通过路由访问到了，但是也不会报错，把他设置成子路由首页也是没问题的</li>
+<li>上面代码中，用户访问/child时，会先加载list组件，然后在它的内部再加载child组件</li>
+</ol>
+<h3 id="新增list-js，代码如下："><a href="#新增list-js，代码如下：" class="headerlink" title="新增list.js，代码如下："></a>新增list.js，代码如下：</h3><pre><code>import React from &apos;react&apos;;
+export default class List extends React.Component {
+  render () {
+    return (
+      &lt;div&gt;
+        &lt;div&gt;this is list&lt;/div&gt;
+        {this.props.children}
+      &lt;/div&gt;
+    )
+  }
+}
+</code></pre><p><code>{this.props.children}</code> 这里的代码是为了显示子路由，如果不加上这个，子路由就无法显示</p>
+<p>然后就可以运行整个项目，路由搭建成功</p>
+<h2 id="Link-跳转路由"><a href="#Link-跳转路由" class="headerlink" title="Link 跳转路由"></a>Link 跳转路由</h2><p>Link组件用于取代<a>元素，生成一个链接，允许用户点击后跳转到另一个路由。它基本上就是<a>元素的React 版本，可以接收Router的状态</a></a></p>
+<pre><code>import {Link} from &apos;react-router&apos;;
+render () {
+    return (
+        &lt;div&gt;
+            // ...
+            &lt;Link to=&apos;/list&apos; activeStyle={{color: 'red'}}&gt;to list&lt;/Link&gt;
+            &lt;Link to=&apos;/child&apos; activeClassName=&quot;active&quot;&gt;to child&lt;/Link&gt;
+        &lt;/div&gt;
+    )
+}
+</code></pre><p><code>activeStyle</code> 使用Link组件的activeStyle属性添加行内样式<br><code>activeClassName</code> 使用Link组件的activeClassName属性添加css样式</p>
+<h3 id="在Router组件之外的跳转"><a href="#在Router组件之外的跳转" class="headerlink" title="在Router组件之外的跳转"></a>在Router组件之外的跳转</h3><p>在Router组件之外，导航到路由页面，可以使用浏览器的History API，像下面这样写：</p>
+<pre><code>import { browserHistory } from &apos;react-router&apos;;
+browserHistory.push(&apos;/some/path&apos;);
+</code></pre><p>更多用法请查阅这里 <a href="http://www.ruanyifeng.com/blog/2016/05/react_router.html?utm_source=tool.lu" target="_blank" rel="external">React Router 使用教程</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/14/一个简单的MVVM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2336,476 +2736,6 @@ Book.prototype.display = function () {}
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/20/node爬虫/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/20/node爬虫/" itemprop="url">node爬虫</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-20T20:32:25+08:00">
-                2017-07-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/20/node爬虫/" class="leancloud_visitors" data-flag-title="node爬虫">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="node爬虫"><a href="#node爬虫" class="headerlink" title="node爬虫"></a>node爬虫</h1><hr>
-<p>为了获取豆瓣书籍的数据，上网学习了怎么用node写一个爬虫，爬豆瓣网站信息</p>
-<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>先新建一个文件夹 起名 node爬虫<br>然后进入cmd，执行</p>
-<blockquote>
-<p>npm init // 初始化项目</p>
-</blockquote>
-<p>安装对应依赖</p>
-<blockquote>
-<p>npm install express cheerio superagent –save</p>
-</blockquote>
-<p>新建一个主文件 index.js<br>项目结构如下<br><img src="http://wx4.sinaimg.cn/mw690/a359ab18gy1fhqmh7md4jj205p030jra.jpg" alt="pic2"></p>
-<hr>
-<h2 id="编写index-js"><a href="#编写index-js" class="headerlink" title="编写index.js"></a>编写index.js</h2><pre><code>var express = require(&apos;express&apos;)
-var cheerio = require(&apos;cheerio&apos;)
-var superagent = require(&apos;superagent&apos;)
-
-var app = express()
-
-app.get(&apos;/&apos;, function (req, res, next) {
-  superagent.get(&apos;https://book.douban.com/&apos;)
-  .end(function (err, sres) {
-    if (err) {
-      return next(err)
-    }
-    // 这里的$和jq操作类似
-    var $ = cheerio.load(sres.text)
-    var books = getData(&apos;.books-express&apos;, $)
-    // 可以把上面代码注释，把下面注释去掉，获取不同数据
-    // var books = getData(&apos;.popular-books&apos;, $)
-    res.send(JSON.stringify(books))
-  });
-});
-app.listen(3000, function () {
-  console.log(&apos;app is listening at port 3000&apos;);
-});
-</code></pre><p>主要函数</p>
-<pre><code>function getData (className,$) {
-  var books = {}
-  $(className).each(function (idx, element) {
-    var $el = cheerio.load(element)
-    var section = []
-    var book = {}
-    var lis = $el(&apos;ul li&apos;).each(function(i, elem) {
-        // 这里实验所以只取前6个数据
-      if (i&gt;=6) {
-        return
-      }
-      book = {
-        img: $(this).find(&apos;.cover a img&apos;).attr(&apos;src&apos;),
-        title: $(this).find(&apos;a&apos;).attr(&apos;title&apos;),
-        rating: $(this).find(&apos;.info .average-rating&apos;).text().replace(/[\r\n]/g, &quot;&quot;),
-        author: $(this).find(&apos;.info .author:first-child&apos;).text().replace(/[\r\n]/g, &quot;&quot;),
-        classification: $(this).find(&apos;.info .book-list-classification&apos;).text().replace(/[\r\n]/g, &quot;&quot;),
-        reviews: $(this).find(&apos;.info .reviews&apos;).text().replace(/[\r\n]/g, &quot;&quot;).split(&apos;(&apos;)[0],
-        reviewer: $(this).find(&apos;.info .reviews a&apos;).text().replace(/[\r\n]/g, &quot;&quot;)
-      }
-      section.push(book)
-    })
-    books[$(this).find(&apos;h2 span:first-child&apos;).text()] = section
-    })
-    return books
-}
-</code></pre><h3 id="注意：必须要用-this-find把内容限定在每一个li内部检索，不然会检索到其他部分内容，造成内容重叠或者缺失"><a href="#注意：必须要用-this-find把内容限定在每一个li内部检索，不然会检索到其他部分内容，造成内容重叠或者缺失" class="headerlink" title="注意：必须要用$(this).find把内容限定在每一个li内部检索，不然会检索到其他部分内容，造成内容重叠或者缺失"></a><font color="red">注意：</font>必须要用$(this).find把内容限定在每一个li内部检索，不然会检索到其他部分内容，造成内容重叠或者缺失</h3><h3 id="同时用replace-r-n-g-“”-是为了去除文本中的-n换行符"><a href="#同时用replace-r-n-g-“”-是为了去除文本中的-n换行符" class="headerlink" title="同时用replace(/[\r\n]/g, “”)是为了去除文本中的\n换行符"></a>同时用replace(/[\r\n]/g, “”)是为了去除文本中的\n换行符</h3><hr>
-<h2 id="最后获取到的数据如下"><a href="#最后获取到的数据如下" class="headerlink" title="最后获取到的数据如下"></a>最后获取到的数据如下</h2><blockquote>
-<p>{“新书速递”:[{“img”:”<a href="https://img3.doubanio.com/lpic/s29478140.jpg&quot;,&quot;title&quot;:&quot;不疯魔不成活&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img3.doubanio.com/lpic/s29478140.jpg&quot;,&quot;title&quot;:&quot;不疯魔不成活&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” 微笑的猫 “,”classification”:””,”reviews”:””,”reviewer”:””},{“img”:”<a href="https://img1.doubanio.com/lpic/s29471397.jpg&quot;,&quot;title&quot;:&quot;六神磊磊读唐诗&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img1.doubanio.com/lpic/s29471397.jpg&quot;,&quot;title&quot;:&quot;六神磊磊读唐诗&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” 六神磊磊 “,”classification”:””,”reviews”:””,”reviewer”:””},{“img”:”<a href="https://img3.doubanio.com/lpic/s29460644.jpg&quot;,&quot;title&quot;:&quot;隐性逻辑&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img3.doubanio.com/lpic/s29460644.jpg&quot;,&quot;title&quot;:&quot;隐性逻辑&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” [德] 卡尔·诺顿 “,”classification”:””,”reviews”:””,”reviewer”:””},{“img”:”<a href="https://img3.doubanio.com/lpic/s29498174.jpg&quot;,&quot;title&quot;:&quot;权力脸谱&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img3.doubanio.com/lpic/s29498174.jpg&quot;,&quot;title&quot;:&quot;权力脸谱&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” 铲史官 “,”classification”:””,”reviews”:””,”reviewer”:””},{“img”:”<a href="https://img1.doubanio.com/lpic/s29498208.jpg&quot;,&quot;title&quot;:&quot;父母：挑战&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img1.doubanio.com/lpic/s29498208.jpg&quot;,&quot;title&quot;:&quot;父母：挑战&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” [美] 鲁道夫•德雷克斯 “,”classification”:””,”reviews”:””,”reviewer”:””},{“img”:”<a href="https://img3.doubanio.com/lpic/s29490136.jpg&quot;,&quot;title&quot;:&quot;π的杀人魔法&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author" target="_blank" rel="external">https://img3.doubanio.com/lpic/s29490136.jpg&quot;,&quot;title&quot;:&quot;π的杀人魔法&quot;,&quot;rating&quot;:&quot;&quot;,&quot;author</a>“:” 墨殇 “,”classification”:””,”reviews”:””,”reviewer”:””}]}</p>
-</blockquote>
-<hr>
-<h2 id="把数据写入文件"><a href="#把数据写入文件" class="headerlink" title="把数据写入文件"></a>把数据写入文件</h2><p>引入新的包： </p>
-<blockquote>
-<p> var fs = require(‘fs’)</p>
-</blockquote>
-<p>添加新的函数：</p>
-<pre><code>function writeFile(file, data){  
-// appendFile，如果文件不存在，会自动创建新文件  
-// 如果用writeFile，那么会删除旧文件，直接写新文件  
-fs.appendFile(file, data, function(err){
-    if (err) {
-      console.log(&quot;fail &quot; + err)
-    } else {
-      console.log(&quot;写入文件ok&quot;)
-    }
-})
-</code></pre><p>}</p>
-<p>更新主函数：</p>
-<pre><code>app.get(&apos;/&apos;, function (req, res, next) {
-  superagent.get(&apos;https://book.douban.com/&apos;)
-  .end(function (err, sres) {
-    if (err) {
-      return next(err)
-    }
-    var $ = cheerio.load(sres.text)
-    var books = getData(&apos;.books-express&apos;, $)
-    // var books = getData(&apos;.popular-books&apos;, $)
-    res.send(JSON.stringify(books))
-
-    // 添加如下代码
-    writeFile(&apos;C:\\Users\\Administrator\\Desktop\\node爬虫\\data.txt&apos;, JSON.stringify(books))
-  });
-});
-</code></pre><p>这样就可以把数据写入本地文件<br><img src="http://wx1.sinaimg.cn/mw690/a359ab18gy1fhqmh7lnrmj20fz04tglz.jpg" alt="pic1"><br><img src="http://wx2.sinaimg.cn/mw690/a359ab18gy1fhqmh7ink6j207m055dfu.jpg" alt="pic3"></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/19/H5上传图片/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/19/H5上传图片/" itemprop="url">H5上传图片</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-19T19:37:19+08:00">
-                2017-07-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/19/H5上传图片/" class="leancloud_visitors" data-flag-title="H5上传图片">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="H5上传头像"><a href="#H5上传头像" class="headerlink" title="H5上传头像"></a>H5上传头像</h1><hr>
-<p>大体的思路是，部分API的兼容性请参照caniuse：</p>
-<ol>
-<li>利用FileReader,读取blob对象,或者是file对象，将图片转化为data uri的形式。</li>
-<li>使用canvas,在页面上新建一个画布,利用canvas提供的API,将图片画入这个画布当中。</li>
-<li>利用canvas.toDataURL()，进行图片的压缩，得到图片的data uri的值</li>
-<li>上传文件</li>
-</ol>
-<h2 id="HTML部分-（在vue环境下执行）"><a href="#HTML部分-（在vue环境下执行）" class="headerlink" title="HTML部分 （在vue环境下执行）"></a>HTML部分 （在vue环境下执行）</h2><pre><code>&lt;input type=&quot;file&quot; class=&quot;fileInput&quot; ref=&apos;fileInput&apos; accept=&quot;image/*&quot;&gt;
-</code></pre><p> accept=”image/*” 表示只接受图片类型的文件</p>
-<h2 id="监听input-type-’file’-选择文件"><a href="#监听input-type-’file’-选择文件" class="headerlink" title="监听input[type=’file’]选择文件"></a>监听input[type=’file’]选择文件</h2><pre><code>this.$refs.fileInput.addEventListener(&apos;change&apos;, (event) =&gt; {
-    console.log(this.$refs.fileInput.files[0])
-    var file = this.$refs.fileInput.files[0]
-    // 传入图像文件
-    that.upLoadAvatar(file)
-  })
-</code></pre><h2 id="显示图像函数"><a href="#显示图像函数" class="headerlink" title="显示图像函数"></a>显示图像函数</h2><pre><code>upLoadAvatar (file) {
-    var that = this
-    var fr = new FileReader()
-    fr.readAsDataURL(file)
-    fr.onload = function (e) {
-      that.$refs.img.setAttribute(&apos;src&apos;, e.target.result)
-    }
-  }
-</code></pre><p>这样就可以在本地调试完毕，图像能够正确选择出来</p>
-<hr>
-<h2 id="利用canvas压缩图片大小"><a href="#利用canvas压缩图片大小" class="headerlink" title="利用canvas压缩图片大小"></a>利用canvas压缩图片大小</h2><p>增加canvas标签，设置隐藏不可见</p>
-<pre><code>&lt;canvas id=&quot;canvas&quot; style=&quot;display:none&quot;&gt;&lt;/canvas&gt;
-</code></pre><p>增加压缩函数</p>
-<pre><code>compressImg (img) {
-    var canvas = document.getElementById(&apos;canvas&apos;)
-    var ctx = canvas.getContext(&apos;2d&apos;)
-    // 利用canvas进行绘图
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-    // 将原来图片的质量压缩到原先的0.2倍。
-    var data = canvas.toDataURL(&apos;image/jpeg&apos;, 0.2) // data url的形式
-    return data
-  }
-</code></pre><h4 id="HTMLCanvasElement-toDataURL-方法返回一个包含图片展示的-data-URI-。可以使用-type-参数其类型，默认为-PNG-格式。图片的分辨率为96dpi"><a href="#HTMLCanvasElement-toDataURL-方法返回一个包含图片展示的-data-URI-。可以使用-type-参数其类型，默认为-PNG-格式。图片的分辨率为96dpi" class="headerlink" title="HTMLCanvasElement.toDataURL() 方法返回一个包含图片展示的 data URI 。可以使用 type 参数其类型，默认为 PNG 格式。图片的分辨率为96dpi"></a>HTMLCanvasElement.toDataURL() 方法返回一个包含图片展示的 data URI 。可以使用 type 参数其类型，默认为 PNG 格式。图片的分辨率为96dpi</h4><blockquote>
-<p>canvas.toDataURL(type, encoderOptions)</p>
-</blockquote>
-<p><font color="red">type 可选</font><br>图片格式，默认为 image/png</p>
-<p><font color="red">encoderOptions 可选</font><br>在指定图片格式为 image/jpeg 或 image/webp的情况下，可以从 0 到 1 的区间内选择图片的质量。如果超出取值范围，将会使用默认值 0.92。其他参数会被忽略。</p>
-<h4 id="回到整题，修改uploadAvatar函数"><a href="#回到整题，修改uploadAvatar函数" class="headerlink" title="回到整题，修改uploadAvatar函数"></a>回到整题，修改uploadAvatar函数</h4><pre><code>upLoadAvatar (file) {
-    if (!file) {
-      return
-    }
-    var MAXSIZE = 100 * 1024 // 超过这个值就进行压缩
-    var that = this
-    var fr = new FileReader()
-    fr.onload = function (e) {
-      var result = this.result
-      var img = new Image()
-
-      // img.onload必须的，不然加载的图片会看不见
-      img.onload = function () {
-        // 如果大于100K则进行压缩
-        if (file.size &gt;= MAXSIZE) {
-          var imgData = that.compressImg(img)
-          // username用来辨别用户，avatar是上传的图片
-          let userInfo = {
-            username: that.user.name,
-            avatar: imgData
-          }
-          that.$http.post(&apos;/refreshInfo&apos;, {userInfo}).then((res) =&gt; {
-            that.user = res.data
-          })
-        } else {
-            // 不压缩则直接上传
-          let userInfo = {
-            username: that.user.name,
-            avatar: result
-          }
-          that.$http.post(&apos;/refreshInfo&apos;, {userInfo}).then((res) =&gt; {
-            that.user = res.data
-          })
-        }
-      }
-      img.src = this.result
-    }
-    fr.readAsDataURL(file)
-  }
-</code></pre><h4 id="注意："><a href="#注意：" class="headerlink" title="注意："></a><font color="red">注意：</font></h4><p>fr.onload = function () {<br>    this.result…   // 这个返回的是base64编码的url，可以直接发送<br>}</p>
-<hr>
-<h2 id="后台处理，返回修改后的数据"><a href="#后台处理，返回修改后的数据" class="headerlink" title="后台处理，返回修改后的数据"></a>后台处理，返回修改后的数据</h2><p>用node模拟了后台接口，实现对mongoose数据的修改和数据返回</p>
-<pre><code>router.post(&apos;/refreshInfo&apos;, (req, res) =&gt; {
-    var userInfo = req.body.userInfo
-    // 不允许修改密码
-    if (userInfo.password) {
-        return
-    }
-    // 修改mongoose的数据
-    user.update({username: userInfo.username}, {$set: {avatar: userInfo.avatar}}, function (err, result) {
-      if (err) {
-        console.log(err)
-    } else {
-        console.log(&apos;update success&apos;)
-        user.find({username: userInfo.username}, (err, data) =&gt; {
-            if (err) {
-                console.log(err)
-            } else {
-                if (data.length === 0) {
-                   res.send(&apos;fail&apos;)
-               } else {
-                var user = {
-                    name: data[0].username,
-                    avatar: data[0].avatar
-                }
-                res.send(user)
-            }
-        }
-    })
-    }
-})
-})
-</code></pre><h3 id="注意：-1"><a href="#注意：-1" class="headerlink" title="注意："></a><font color="red">注意：</font></h3><p>每一个接口只能返回一个header，即res.send或者其他的只能执行一次，否则会报错</p>
-<blockquote>
-<p>Error: Can’t set headers after they are sent</p>
-</blockquote>
-<p><a href="https://cnodejs.org/topic/53774ffecbcc396349ca1155" target="_blank" rel="external">Can’t set headers after they are sent解决方案</a></p>
-<hr>
-<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><ol>
-<li>通过ajax不能上传超过100K的图片，怎么解决？</li>
-<li>没有实现上传失败的处理方案</li>
-</ol>
-<p>后续慢慢填坑。。。。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2855,7 +2785,7 @@ fs.appendFile(file, data, function(err){
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2868,7 +2798,7 @@ fs.appendFile(file, data, function(err){
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
