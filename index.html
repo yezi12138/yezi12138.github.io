@@ -263,6 +263,371 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/01/一个简单的MVVM-二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/01/一个简单的MVVM-二/" itemprop="url">一个简单的MVVM(二)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-01T20:41:39+08:00">
+                2017-09-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/09/01/一个简单的MVVM-二/" class="leancloud_visitors" data-flag-title="一个简单的MVVM(二)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="一个简单的MVVM（二）"><a href="#一个简单的MVVM（二）" class="headerlink" title="一个简单的MVVM（二）"></a>一个简单的MVVM（二）</h1><hr>
+<p>一个MVVM框架有五个部分，分别是：</p>
+<ol>
+<li><code>sf.js</code> 框架的入口，定义了框架的类</li>
+<li><code>watcher.js</code> 用来监听data的数据改变，原理是赋值器劫持</li>
+<li><code>scanner.js</code> 扫描dom树，找出<code>sf-</code> 标志的属性和<code>{{value}}</code> 的写法，并且生成map</li>
+<li><code>render.js</code> 用来渲染对应属性数据</li>
+<li><code>boundItem.js</code> 定义scanner的map的类型和相关<code>sf-</code> 监听函数</li>
+</ol>
+<p>这次是仿写VUE的MVVM框架，用法和VUE基本类似</p>
+<h2 id="用法："><a href="#用法：" class="headerlink" title="用法："></a>用法：</h2><pre><code>var sf = new SegmentFault({
+  data: {
+    message1: &apos;单向绑定&apos;,
+    message2: &apos;this is message2&apos;,
+    value: &apos;双向绑定&apos;,
+    arr: {
+      name: &apos;yezi&apos;,
+      song: [&apos;五月天&apos;, &apos;知足&apos;, &apos;倔强&apos;],
+      love:{
+        live:{
+          a:&apos;yezi 3 time&apos;
+        }
+      }
+    }
+  }
+})
+</code></pre><p><code>data</code> 用来绑定数据<br><code>SegmentFault</code> MVVM框架的类</p>
+<h2 id="SegmentFault-类"><a href="#SegmentFault-类" class="headerlink" title="SegmentFault 类"></a>SegmentFault 类</h2><pre><code>let SegmentFault = class SegmentFault {
+  constructor ({data = {}} = {}) {
+    this.data = data
+    // 用来维护viewModel和被绑定的view之间的关系
+    this.viewViewModelMap = []
+    this.init()
+  }
+  // 类的初始化
+  init () {}
+  // 手动更新dom
+  refresh () {}
+</code></pre><h2 id="watcher-js"><a href="#watcher-js" class="headerlink" title="watcher.js"></a>watcher.js</h2><pre><code>export class Watcher {
+  constructor(sf) {
+    this.sf = sf
+    this.data = sf.data;
+    // 监听数据，然后执行回调,这里是更新dom树
+    this.observe(sf.refresh)
+  }
+  observe(callback) {
+    let data = this.data;
+    let sf = this.sf;
+    // 定义循环函数，监听多层对象，详细可以看一个简单的MVVM（一）
+    var define = function (data) {
+      Object.keys(data).forEach((key) =&gt; {
+        let value = data[key]
+        Object.defineProperty(data, key, {
+          get: function () {
+            return value
+          },
+          set: function (newValue) {
+            if (newValue === value) {
+              return
+            }
+            value = newValue
+            callback.call(sf)
+          }
+        })
+        if (Object.prototype.toString.call(data[key]) === &apos;[object Object]&apos; || Object.prototype.toString.call(data[key]) === &apos;[object Array]&apos;) {
+          define(data[key])
+        }
+      })
+    }
+    define(data)
+  }
+}
+</code></pre><h2 id="scanner-js"><a href="#scanner-js" class="headerlink" title="scanner.js"></a>scanner.js</h2><pre><code>import {BoundItem} from &apos;./boundItem&apos;
+export class Scanner {
+  constructor (sf) {
+    this.sf = sf
+    this.results = []
+  }
+  // 遍历dom下面所有节点，寻找sf- 和{{}}
+  findSf (dom) {
+    let children = dom.children
+    // 判断children是否为纯数组
+    if (!children.push) {
+      children = [].slice.call(children)
+    } 
+    children.forEach((key, index) =&gt; {
+      let children = key.children
+      if(children &amp;&amp; children.length &gt; 0) {
+        // 如果子节点还有节点，则进行递归
+        this.findSf(key)
+      } else {
+      // 获取节点所有属性
+        var atrs = key.attributes
+        atrs = [].slice.call(atrs)
+        // 如果在该节点找到{{}}型数据，则bindData为true，否则为false
+        let bindData = /\{\{(\w){1,}([\.\w]*)(\w){1,}\}\}/g.test(key.innerText)
+        let type = null , expression = null, el = key
+        if (atrs.length !== 0) {
+        // 遍历属性，找到sf-标签的属性，保存属性名和值
+          atrs.forEach((atr) =&gt; {
+            if (/^(sf-)/g.test(atr.name)) {
+              type = atr.name
+              expression = atr.nodeValue
+            }
+          })
+        }
+        // 保存数据，形成dom --&gt; 数据的map
+        let item = new BoundItem(type, expression, el, this.sf, bindData)
+        this.results.push(item)
+      }
+    })
+  }
+  scanBindDOM () {
+    let body = document.getElementsByTagName(&apos;body&apos;)[0]
+    this.findSf(body)
+    return this.results
+  }
+}
+</code></pre><h2 id="boundItem-js"><a href="#boundItem-js" class="headerlink" title="boundItem.js"></a>boundItem.js</h2><pre><code>export class BoundItem {
+  constructor(type = null, expression = null, element = null, sf = null, bindData = null) {
+    this.type = type;
+    this.expression = expression;
+    this.el = element;
+    this.bindData = bindData;
+    this.sf = sf;
+    this.listen()
+  } 
+  // 这里只用两个属性做例子
+  listen () {
+    let el = this.el
+    let sf = this.sf
+    let expression = this.expression
+    if (el.nodeName === &apos;INPUT&apos;) {
+      el.addEventListener(&apos;input&apos;, () =&gt; {
+        sf.data[expression] = el.value
+      }, false)
+    }
+  }
+}
+</code></pre><h2 id="render-js"><a href="#render-js" class="headerlink" title="render.js"></a>render.js</h2><pre><code>export class Renderer{
+  constructor (data) {
+    this.data = data
+  }
+  render (boundItem) {
+    let objValue = null
+    let {type, expression, el, sf, bindData} = boundItem
+    // 替换{{}}
+    var pattern1 = new RegExp(/\{\{(\w){1,}([\.\w]*)(\w){1,}\}\}/g)
+    // 绑定sf-
+    var pattern2 = new RegExp(`/\{\{${type}\}\}/g`)
+    // bindData为true表示存在{{}}
+    if (bindData) {
+      // 保存{{message}}
+      let expressionText = el.innerText.match(pattern1)[0]
+      // 取得message，使得可以从data中获取真实数据
+      let expressionData  = expressionText.match(/(\w){1,}([\.\w]*)(\w){1,}/g)[0]
+      // 多重对象绑定的取值 比如 arr.name.song
+      let objArr = expressionData.split(&apos;.&apos;)
+      objValue = this.data[objArr[0]]
+      console.log(&apos;objArr:&apos;, objArr)
+      // 循环取值
+      if (objArr.length &gt;= 2) {
+        objArr.forEach((obj, index) =&gt; {
+          if (index &gt;= 1) {
+            objValue = objValue[obj]
+          }
+        })
+      }
+      // 替换模板，赋值
+      el.innerText = el.innerText.replace(expressionText, objValue)
+      // 这一步是为了防止不断渲染
+      boundItem.bindData = false
+    }
+    // 对特定类型的处理
+    if (type === &apos;sf-text&apos;) {
+      el.innerHTML = this.data[expression]
+    } else if (type === &apos;sf-value&apos;) {
+      el.value = this.data[expression]
+    }
+  }
+}
+</code></pre><h2 id="最后，再重写主函数"><a href="#最后，再重写主函数" class="headerlink" title="最后，再重写主函数"></a>最后，再重写主函数</h2><pre><code>import {Watcher} from &apos;./watcher&apos;;
+import {Scanner} from &apos;./scanner&apos;;
+import {Renderer} from &apos;./render&apos;;
+let SegmentFault = class SegmentFault {
+  constructor ({data = {}} = {}) {
+    this.data = data
+    // 用来维护viewModel和被绑定的view之间的关系
+    this.viewViewModelMap = []
+    this.init()
+  }
+  init () {
+    // 监听sf-数据变化
+    let watcher = new Watcher(this)
+    let scanner = new Scanner(this)
+    this.render = new Renderer(this.data)
+    this.viewViewModelMap = scanner.scanBindDOM()
+    this.viewViewModelMap.forEach((boundItem) =&gt; {
+      this.render.render(boundItem)
+    })
+  }
+  refresh () {
+    this.viewViewModelMap.forEach((boundItem) =&gt; {
+      this.render.render(boundItem)
+    })
+  }
+}
+// 测试代码
+var sf = new SegmentFault({
+  data: {
+    message1: &apos;单向绑定&apos;,
+    message2: &apos;this is message2&apos;,
+    value: &apos;双向绑定&apos;,
+    arr: {
+      name: &apos;yezi&apos;,
+      song: [&apos;五月天&apos;, &apos;知足&apos;, &apos;倔强&apos;],
+      love:{
+        live:{
+          a:&apos;yezi 3 time&apos;
+        }
+      }
+    }
+  }
+})
+
+setTimeout(() =&gt; {
+  console.log(&apos;setTimeout&apos;)
+  sf.data.arr.name = &apos;feifei&apos;
+  // sf.data.value = &apos;change message2&apos;
+}, 3000);
+</code></pre><h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>实现了：</p>
+<ol>
+<li>的文本绑定</li>
+<li>实现多层对象绑定</li>
+<li>双向绑定sf-value</li>
+<li>单向绑定sf-text</li>
+<li>data数据监听</li>
+</ol>
+<p>未实现：</p>
+<ol>
+<li>同一个节点多个绑定（在render加一层循环即可实现）</li>
+<li>其他功能</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/24/阿里面试题目/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -682,7 +1047,7 @@ browserHistory.push(&apos;/some/path&apos;);
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/14/一个简单的MVVM/" itemprop="url">一个简单的MVVM</a></h1>
+                <a class="post-title-link" href="/2017/08/14/一个简单的MVVM/" itemprop="url">一个简单的MVVM(一)</a></h1>
         
 
         <div class="post-meta">
@@ -712,7 +1077,7 @@ browserHistory.push(&apos;/some/path&apos;);
 
           
           
-             <span id="/2017/08/14/一个简单的MVVM/" class="leancloud_visitors" data-flag-title="一个简单的MVVM">
+             <span id="/2017/08/14/一个简单的MVVM/" class="leancloud_visitors" data-flag-title="一个简单的MVVM(一)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -798,7 +1163,7 @@ data.b = &quot;after&quot;
 </code></pre><h3 id="结果："><a href="#结果：" class="headerlink" title="结果："></a>结果：</h3><blockquote>
 <p>oldVal=before — newVal=after<br>oldVal=1,2,3,4 — newVal=after</p>
 </blockquote>
-<p>好了，现在我们这个框架可以监听一级数据了，可是对于二级数据，比如 <code>data.b.c</code> ，修改它的值，却没有出现监听。<br>原因是代码里面只处理了一级数据，现在我们可以再加个判断，如果当前obj[key]是属于对象，则进行迭代</p>
+<p>好了，现在我们这个框架可以监听一级数据了，可是对于二级数据，比如 <code>data.c.d</code> ，修改它的值，却没有出现监听。<br>原因是代码里面只处理了一级数据，现在我们可以再加个判断，如果当前obj[key]是属于对象，则进行迭代</p>
 <h3 id="处理二级数据："><a href="#处理二级数据：" class="headerlink" title="处理二级数据："></a>处理二级数据：</h3><pre><code>if (Object.prototype.toString.call(obj[key]) === &apos;[object Object]&apos; || Object.prototype.toString.call(obj[key]) === &apos;[object Array]&apos;) {
           this.observe(obj[key])
         }
@@ -2489,253 +2854,6 @@ var fnObj = new fn()
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/29/js封装/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/29/js封装/" itemprop="url">js封装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T15:57:25+08:00">
-                2017-07-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/29/js封装/" class="leancloud_visitors" data-flag-title="js封装">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="js的封装"><a href="#js的封装" class="headerlink" title="js的封装"></a>js的封装</h1><hr>
-<h2 id="用一个简单的book设计来做例子"><a href="#用一个简单的book设计来做例子" class="headerlink" title="用一个简单的book设计来做例子"></a>用一个简单的book设计来做例子</h2><h3 id="1-门户大开型对象"><a href="#1-门户大开型对象" class="headerlink" title="1. 门户大开型对象"></a>1. 门户大开型对象</h3><h4 id="特点："><a href="#特点：" class="headerlink" title="特点："></a><font color="blue">特点：</font></h4><blockquote>
-<ol>
-<li>成员属性公开</li>
-<li>用this指向成员属性</li>
-<li>外部可改变成员值，不利于维护</li>
-</ol>
-</blockquote>
-<h4 id="代码设计："><a href="#代码设计：" class="headerlink" title="代码设计："></a><font color="blue">代码设计：</font></h4><pre><code>var Book = function (isbn, name, author) {
-  this.isbn = isbn
-  this.name = name
-  this.author = author
-}
-// 公共方法
-Book.prototype.display = function () {
-  // ...
-}
-</code></pre><h5 id="总结：-这是最简单的设计模式，不过保密性差"><a href="#总结：-这是最简单的设计模式，不过保密性差" class="headerlink" title="总结： 这是最简单的设计模式，不过保密性差"></a><font color="red">总结：</font> 这是最简单的设计模式，不过保密性差</h5><h4 id="代码改进："><a href="#代码改进：" class="headerlink" title="代码改进："></a><font color="blue">代码改进：</font></h4><pre><code>var Book = function (isbn, name, author) {
-    this.setIsbn(isbn)
-    this.setName(name)
-    this.setAuthor(author)
-  }  
-  // 可以在赋值器中对数据进行处理
-  Book.prototype = {
-    display: function () {
-    },
-    setIsbn: function (isbn) {
-      this.isbn = isbn
-    },
-    getIsbn: function () {
-      return this.isbn
-    },
-    setName: function (name) {
-      this.name = name
-    },
-    getName: function () {
-      return this.name
-    },
-    setAuthor: function (author) {
-      this.author =  author
-    },
-    getAuthor: function () {
-      return this.author
-    }
-  }
-  var book = new Book(&apos;123456&apos;, &apos;西游记&apos;, &apos;陈乔恩&apos;)
-  // 下面是测试构造器
-  console.log(book.constructor === Book) // false
-  // 因为用prototype = {} 这种方式会断开constructor
-  Book.prototype.constructor = Book
-  console.log(book.constructor === Book) // true
-</code></pre><h5 id="总结：-改进之后降低了代码直接的耦合度，同时优化了代码，便于维护"><a href="#总结：-改进之后降低了代码直接的耦合度，同时优化了代码，便于维护" class="headerlink" title="总结： 改进之后降低了代码直接的耦合度，同时优化了代码，便于维护"></a><font color="red">总结：</font> 改进之后降低了代码直接的耦合度，同时优化了代码，便于维护</h5><hr>
-<h3 id="1-私用成员设计模式"><a href="#1-私用成员设计模式" class="headerlink" title="1. 私用成员设计模式"></a>1. 私用成员设计模式</h3><h4 id="特点：-1"><a href="#特点：-1" class="headerlink" title="特点："></a><font color="blue">特点：</font></h4><blockquote>
-<ol>
-<li>拥有私有成员</li>
-<li>只能通过特权方法修改私有属性</li>
-<li>使用了闭包来设计</li>
-<li><font color="red">私有成员不用this指向</font></li>
-<li><font color="red">特权方法用this指向</font>
-
-</li>
-</ol>
-</blockquote>
-<h4 id="代码设计：-1"><a href="#代码设计：-1" class="headerlink" title="代码设计："></a><font color="blue">代码设计：</font></h4><pre><code>var Book = function (isbn, name, author) {
-  // 私有属性
-  var isbn =isbn , name = name, author = author
-  // 特权方法，用来访问私有属性
-  this.setIsbn = function (newIsbn) {
-    // 对数据处理
-  }
-  this.getIsbn = function () {
-    return isbn
-  }
-  this.getName = function () {
-    return name
-  }
-  this.getAuthor = function () {
-    return author
-  }
-}
-Book.prototype.display = function () {}
-</code></pre><h5 id="总结：-私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向-每个实例都有一个副本，各不影响"><a href="#总结：-私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向-每个实例都有一个副本，各不影响" class="headerlink" title="总结： 私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向.每个实例都有一个副本，各不影响"></a><font color="red">总结：</font> 私有属性只能通过特权方法访问，私有属性不同this指向，特权方法要用this指向.每个实例都有一个副本，各不影响</h5><hr>
-<h3 id="1-静态成员设计模式"><a href="#1-静态成员设计模式" class="headerlink" title="1. 静态成员设计模式"></a>1. 静态成员设计模式</h3><h4 id="特点：-2"><a href="#特点：-2" class="headerlink" title="特点："></a><font color="blue">特点：</font></h4><blockquote>
-<ol>
-<li>拥有静态成员</li>
-<li>静态成员是作用在类上，不是实例上面</li>
-<li>通过立即调用函数和闭包方式创建</li>
-</ol>
-</blockquote>
-<h4 id="代码设计：-2"><a href="#代码设计：-2" class="headerlink" title="代码设计："></a><font color="blue">代码设计：</font></h4><pre><code>var Book = (function () {
-  // 私人静态成员
-  var bookNum = 0
-  // 私人静态方法
-  var total = function () {}
-
-  // 返回constructor
-  return function (isbn, name, author) {
-  // 私有属性
-  var isbn =isbn , name = name, author = author
-  // 特权方法，用来访问私有属性
-  this.setIsbn = function (newIsbn) {
-    // 对数据处理
-  }
-  this.getIsbn = function () {
-    return isbn
-  }
-  this.getName = function () {
-    return name
-  }
-  this.getAuthor = function () {
-    return author
-  }
-  this.getBookNum = function () {
-    return bookNum
-  }
-  bookNum++  // 静态成员值加一
-} 
-})();
-
-// 静态方法 (即每个实例都有一个副本)
-Book.borrow = function () {}
-
-// 公共方法 (所有实例共享的方法)
-Book.prototype.display = function () {}
-</code></pre><p>这个方法中 <code>bookNum</code> 是所有实例共享的数据</p>
-<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><h4 id="可以用静态成员方法模仿，只设置取值器"><a href="#可以用静态成员方法模仿，只设置取值器" class="headerlink" title="可以用静态成员方法模仿，只设置取值器"></a>可以用静态成员方法模仿，只设置取值器</h4><h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><h4 id="JavaScript设计模式-（2009年-美国-Rossharmes-哈梅斯-美国-DustinDiaz-迪亚斯-《JavaScript设计模式》"><a href="#JavaScript设计模式-（2009年-美国-Rossharmes-哈梅斯-美国-DustinDiaz-迪亚斯-《JavaScript设计模式》" class="headerlink" title="JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》"></a>JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》</h4>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2785,7 +2903,7 @@ Book.prototype.display = function () {}
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2798,7 +2916,7 @@ Book.prototype.display = function () {}
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

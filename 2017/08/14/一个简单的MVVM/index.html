@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="js," />
+  <meta name="keywords" content="MVVM," />
 
 
 
@@ -91,15 +91,15 @@
 
 
 <meta name="description" content="MVVM框架 前言：基于 Vue 数据绑定方式实现MVVM框架 这次基于MVVM框架实现的使用方法： // 定义监听对象 data = {   a: &amp;quot;before&amp;quot;,   b: [1, 2, 3, 4],   c: {     d: &amp;quot;child d&amp;quot;,     f: &amp;quot;child f&amp;quot;   } } var oberver = new">
-<meta name="keywords" content="js">
+<meta name="keywords" content="MVVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一个简单的MVVM">
+<meta property="og:title" content="一个简单的MVVM(一)">
 <meta property="og:url" content="http://yoursite.com/2017/08/14/一个简单的MVVM/index.html">
 <meta property="og:site_name" content="yezi">
 <meta property="og:description" content="MVVM框架 前言：基于 Vue 数据绑定方式实现MVVM框架 这次基于MVVM框架实现的使用方法： // 定义监听对象 data = {   a: &amp;quot;before&amp;quot;,   b: [1, 2, 3, 4],   c: {     d: &amp;quot;child d&amp;quot;,     f: &amp;quot;child f&amp;quot;   } } var oberver = new">
-<meta property="og:updated_time" content="2017-08-14T06:41:29.815Z">
+<meta property="og:updated_time" content="2017-09-01T12:42:17.739Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一个简单的MVVM">
+<meta name="twitter:title" content="一个简单的MVVM(一)">
 <meta name="twitter:description" content="MVVM框架 前言：基于 Vue 数据绑定方式实现MVVM框架 这次基于MVVM框架实现的使用方法： // 定义监听对象 data = {   a: &amp;quot;before&amp;quot;,   b: [1, 2, 3, 4],   c: {     d: &amp;quot;child d&amp;quot;,     f: &amp;quot;child f&amp;quot;   } } var oberver = new">
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <title>一个简单的MVVM | yezi</title>
+  <title>一个简单的MVVM(一) | yezi</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">一个简单的MVVM</h1>
+          <h1 class="post-title" itemprop="name headline">一个简单的MVVM(一)</h1>
         
 
         <div class="post-meta">
@@ -310,7 +310,7 @@
 
           
           
-             <span id="/2017/08/14/一个简单的MVVM/" class="leancloud_visitors" data-flag-title="一个简单的MVVM">
+             <span id="/2017/08/14/一个简单的MVVM/" class="leancloud_visitors" data-flag-title="一个简单的MVVM(一)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -394,7 +394,7 @@ data.b = &quot;after&quot;
 </code></pre><h3 id="结果："><a href="#结果：" class="headerlink" title="结果："></a>结果：</h3><blockquote>
 <p>oldVal=before — newVal=after<br>oldVal=1,2,3,4 — newVal=after</p>
 </blockquote>
-<p>好了，现在我们这个框架可以监听一级数据了，可是对于二级数据，比如 <code>data.b.c</code> ，修改它的值，却没有出现监听。<br>原因是代码里面只处理了一级数据，现在我们可以再加个判断，如果当前obj[key]是属于对象，则进行迭代</p>
+<p>好了，现在我们这个框架可以监听一级数据了，可是对于二级数据，比如 <code>data.c.d</code> ，修改它的值，却没有出现监听。<br>原因是代码里面只处理了一级数据，现在我们可以再加个判断，如果当前obj[key]是属于对象，则进行迭代</p>
 <h3 id="处理二级数据："><a href="#处理二级数据：" class="headerlink" title="处理二级数据："></a>处理二级数据：</h3><pre><code>if (Object.prototype.toString.call(obj[key]) === &apos;[object Object]&apos; || Object.prototype.toString.call(obj[key]) === &apos;[object Array]&apos;) {
           this.observe(obj[key])
         }
@@ -485,7 +485,7 @@ console.log(data.b)
       
         <div class="post-tags">
           
-            <a href="/tags/js/" rel="tag"># js</a>
+            <a href="/tags/MVVM/" rel="tag"># MVVM</a>
           
         </div>
       
@@ -582,7 +582,7 @@ console.log(data.b)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -595,7 +595,7 @@ console.log(data.b)
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
