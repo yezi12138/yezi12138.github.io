@@ -984,7 +984,8 @@ render () {
 <h3 id="在Router组件之外的跳转"><a href="#在Router组件之外的跳转" class="headerlink" title="在Router组件之外的跳转"></a>在Router组件之外的跳转</h3><p>在Router组件之外，导航到路由页面，可以使用浏览器的History API，像下面这样写：</p>
 <pre><code>import { browserHistory } from &apos;react-router&apos;;
 browserHistory.push(&apos;/some/path&apos;);
-</code></pre><p>更多用法请查阅这里 <a href="http://www.ruanyifeng.com/blog/2016/05/react_router.html?utm_source=tool.lu" target="_blank" rel="external">React Router 使用教程</a></p>
+</code></pre><p>踩坑点：使用<code>browserHistory</code> 刷新浏览器会找不到页面<br>原因是使用router,改变的url路径仅仅是在本地，他并没有向服务器发出请求。以往传统的网站都是向服务器发出请求，然后获取返回的页面。<br>解决方法： 使用 <code>hashHistory</code> ，因为他用了 <code>hash tag</code> 即浏览器url的#后面内容<br>比如 <code>host/#/path/params</code>  <code>/path/params</code>是hash，这样不管你刷新多少次，都是在想服务器请求主页内容，这样就不会返回错误页，同时在本地客户端，借用hash tag进行router跳转</p>
+<p>更多用法请查阅这里 <a href="http://www.ruanyifeng.com/blog/2016/05/react_router.html?utm_source=tool.lu" target="_blank" rel="external">React Router 使用教程</a></p>
 
           
         
