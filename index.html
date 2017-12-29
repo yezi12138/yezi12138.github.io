@@ -263,6 +263,327 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/29/PWA-notification使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/29/PWA-notification使用/" itemprop="url">PWA -- notification使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T17:38:12+08:00">
+                2017-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/29/PWA-notification使用/" class="leancloud_visitors" data-flag-title="PWA -- notification使用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="PWA-————-notification使用"><a href="#PWA-————-notification使用" class="headerlink" title="PWA ———— notification使用"></a>PWA ———— notification使用</h1><p>本文将主要介绍 service worker 的功能之一：通知 (notification)，它允许服务器向用户提示一些信息，并根据用户不同的行为进行一些简单的处理</p>
+<blockquote>
+<p>如何使用？</p>
+</blockquote>
+<h3 id="1-编写sw-register-js"><a href="#1-编写sw-register-js" class="headerlink" title="1.  编写sw.register.js"></a>1.  编写sw.register.js</h3><pre><code>/**
+ * @file serviceworker register
+ * @author yezi(18924400146@163.com)
+ */
+
+ /* eslint-disable */
+
+navigator.serviceWorker &amp;&amp; navigator.serviceWorker.register(&apos;/service-worker.js&apos;).then(() =&gt; {
+  navigator.serviceWorker.addEventListener(&apos;message&apos;, e =&gt; {
+
+    // service-worker.js 如果更新成功会 postMessage 给页面，内容为 &apos;sw.update&apos;
+    if (e.data === &apos;sw.update&apos;) {
+      createUpDateDiv()
+    }
+
+  })
+})
+// 创建提示信息
+function createUpDateDiv () {
+  let dom = document.createElement(&apos;div&apos;)
+  let themeColor = document.querySelector(&apos;meta[name=theme-color]&apos;)
+  themeColor &amp;&amp; (themeColor.content = &apos;#000&apos;)
+
+  /* eslint-disable max-len */
+  dom.innerHTML = `
+      &lt;style&gt;
+          .app-refresh{background:#000;height:0;line-height:52px;overflow:hidden;position:fixed;top:0;left:0;right:0;z-index:10001;padding:0 18px;transition:all .3s ease;-webkit-transition:all .3s ease;-moz-transition:all .3s ease;-o-transition:all .3s ease;}
+          .app-refresh-wrap{display:flex;color:#fff;font-size:15px;}
+          .app-refresh-wrap label{flex:1;}
+          .app-refresh-show{height:52px;}
+      &lt;/style&gt;
+      &lt;div class=&quot;app-refresh&quot; id=&quot;app-refresh&quot;&gt;
+          &lt;div class=&quot;app-refresh-wrap&quot; onclick=&quot;location.reload()&quot;&gt;
+              &lt;label&gt;已更新最新版本&lt;/label&gt;
+              &lt;span&gt;点击刷新&lt;/span&gt;
+          &lt;/div&gt;
+      &lt;/div&gt;
+  `
+  /* eslint-enable max-len */
+  document.body.appendChild(dom)
+  setTimeout(() =&gt; {
+    document.getElementById(&apos;app-refresh&apos;).className += &apos; app-refresh-show&apos;
+  }, 16)
+}
+</code></pre><p>这是注册service-worker</p>
+<h3 id="2-使用-sw-precache-webpack-plugin-sw-register-webpack-plugin"><a href="#2-使用-sw-precache-webpack-plugin-sw-register-webpack-plugin" class="headerlink" title="2. 使用 sw-precache-webpack-plugin sw-register-webpack-plugin"></a>2. 使用 <code>sw-precache-webpack-plugin</code> <code>sw-register-webpack-plugin</code></h3><p>在 <code>webpack.prod.conf</code>文件里面</p>
+<pre><code>const SWPrecacheWebpackPlugin = require(&apos;sw-precache-webpack-plugin&apos;)
+const SwRegisterWebpackPlugin = require(&apos;sw-register-webpack-plugin&apos;)
+// service worker caching
+new SWPrecacheWebpackPlugin(config.swPrecache),
+new SwRegisterWebpackPlugin({
+    filePath: path.resolve(__dirname, &apos;../src/sw-register.js&apos;)
+})
+</code></pre><h3 id="3-创建notification文件"><a href="#3-创建notification文件" class="headerlink" title="3. 创建notification文件"></a>3. 创建notification文件</h3><pre><code>/* eslint-disable */
+
+/**
+ * 获取通知权限
+ */
+exports.requestPermission = function () {
+  if (!(&apos;serviceWorker&apos; in navigator)) {
+    // Service Worker isn&apos;t supported on this browser, disable or hide UI.
+    return
+  }
+
+  if (!(&apos;PushManager&apos; in window)) {
+    // Push isn&apos;t supported on this browser, disable or hide UI.
+    return
+  }
+  var requset = window.Notification ? Notification : (window.webkitNotifications ? webkitNotifications : null)
+  var permission = requset.permission
+  if (permission === &apos;granted&apos; || permission === &apos;denied&apos;) {
+    return
+  }
+  let dom = document.createElement(&apos;div&apos;)
+
+  /* eslint-disable max-len */
+  dom.innerHTML = `
+      &lt;style&gt;
+          .notification{
+            background: #fff;
+            height: 200px;
+            overflow: hidden;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index:10001;
+            padding:0 18px;
+            box-shadow: 0 -2px 2px 1px rgba(0,0,0,.1);
+            animation:slideInto .5s ease;
+            -webkit-animation:slideInto .5s ease;
+            -moz-animation:slideInto .5s ease;
+            -o-transition:slideInto .5s ease;
+          }
+          .notification-body{
+            display:flex;
+            flex-direction: column;
+            padding: 16px 16px 0;
+          }
+          .notification-body-text1 {
+            font-size: 16px;
+            line-height: 24px;
+            margin-bottom: 12px;
+          }
+          .notification-body-text2 {
+            font-size: 12px;
+            line-height: 20px;
+            margin-bottom: 32px;
+          }
+          .button-group {
+            font-size: 14px;
+            font-weight: 700;
+            padding: 0 16px 16px;
+          }
+          .cancel-button {
+            float: right;
+            color: #4285f4;
+            padding: 8px;
+            margin-right: 24px;
+          }
+          .confirm-button {
+            float: right;
+            color: #fff;
+            background: #4285f4;
+            border-radius: 3px;
+            padding: 8px 16px;
+          }
+          @keyframes slideInto {
+            0% {
+              transform: translateY(100%)
+            }
+            100% {
+              transform: translateY(0)
+            }
+          }
+      &lt;/style&gt;
+      &lt;div class=&quot;notification&quot; id=&quot;notification&quot;&gt;
+          &lt;div class=&quot;notification-body&quot;&gt;
+              &lt;p class=&quot;notification-body-text1&quot;&gt;Enable notifications to optimize Alibaba.com features.&lt;/p&gt;
+              &lt;p class=&quot;notification-body-text2&quot;&gt;Receive real time notifications for seller reviews and product recommendations.&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;button-group&quot;&gt;
+            &lt;span class=&quot;confirm-button&quot; onclick=&quot;next()&quot;&gt;NEXT&lt;/span&gt;
+            &lt;span class=&quot;cancel-button&quot; onclick=&quot;cancel()&quot;&gt;NOT NOW&lt;/span&gt;
+          &lt;/div&gt;
+      &lt;/div&gt;
+  `
+  setTimeout(() =&gt; {
+    document.body.appendChild(dom)
+  }, 1500)
+  window.cancel = function () {
+    document.body.removeChild(dom)
+    window.cancel = null
+    window.next = null
+  }
+  window.next = function () {
+    document.body.removeChild(dom)
+    let dom1 = document.createElement(&apos;div&apos;)
+    dom1.innerHTML = `
+    &lt;style&gt;
+      .aaa{
+        dispaly: block;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+      }
+      .bbb{
+        dispaly: block;
+        position: fixed;
+        top: 140px;
+        left: 0;
+        right: 0;
+      }
+    &lt;/style&gt;&lt;h1 class=&quot;aaa&quot;&gt;
+    ${requset}permission:
+    ${permission}
+    &lt;/h1&gt;
+    `
+    document.body.insertBefore(dom1, document.body.firstChild)
+    const permissionPromise = requset &amp;&amp; requset.requestPermission(result =&gt; {
+      //dosome thing
+    })
+    window.cancel = null
+    window.next = null
+  }
+}
+</code></pre><h4 id="踩坑点："><a href="#踩坑点：" class="headerlink" title="踩坑点： "></a><font color="red">踩坑点： </font></h4><ol>
+<li>uc浏览器会请求requestPermission,但是permission写死了是<code>denied</code>，但是通过测试<code>m.alibaba.com</code>的PWA网页，证明在UC可以获取消息权限，只是我开启的项目不知道为什么会默认是denied； 猜想可能是我项目在本地开启，不是通过https协议开启，所以uc浏览器对此做出了限制</li>
+<li>目前手机端只有搜狐浏览器可以完整支持notification,其他可用的浏览器要么没有执行requestPermission，要么默认denied， chrome浏览器没测，我安卓手机版本太低了QaQ</li>
+</ol>
+<h3 id="4-打包项目"><a href="#4-打包项目" class="headerlink" title="4. 打包项目"></a>4. 打包项目</h3><blockquote>
+<p>npm run build</p>
+</blockquote>
+<p>然后运行打包后的项目就行了，建议在搜狐浏览器上面测试先</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/01/一个简单的MVVM-二/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2613,248 +2934,6 @@ module.exports = {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/31/js继承/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/31/js继承/" itemprop="url">js继承</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-31T16:22:50+08:00">
-                2017-07-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/31/js继承/" class="leancloud_visitors" data-flag-title="js继承">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="js继承"><a href="#js继承" class="headerlink" title="js继承"></a>js继承</h1><hr>
-<h2 id="类继承"><a href="#类继承" class="headerlink" title="类继承"></a>类继承</h2><h3 id="基于类继承的步骤："><a href="#基于类继承的步骤：" class="headerlink" title="基于类继承的步骤："></a>基于类继承的步骤：</h3><ol>
-<li>用一个类的声明定义对象的结构</li>
-<li>实例化该类以创建一个新对象，每个创建的对象都有一套该类的所有实例属性的副本</li>
-</ol>
-<h3 id="类继承与工厂模式的对比："><a href="#类继承与工厂模式的对比：" class="headerlink" title="类继承与工厂模式的对比："></a>类继承与<a href="https://yezi12138.github.io/2017/05/11/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8FVS%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/" target="_blank" rel="external">工厂模式</a>的对比：</h3><font color="red">工厂模式未能解决对象的类型，即由哪个构造函数创建的</font>
-
-<h3 id="类继承的例子："><a href="#类继承的例子：" class="headerlink" title="类继承的例子："></a>类继承的例子：</h3><pre><code>// 创建父类
-var Person = function (name) {
-    this.name = name
-  }
-  Person.prototype.getName = function () {
-    return this.name
-  }
-// 创建子类
-var Author = function (name, book) {
-    Person.call(this, name)
-    this.book = book
-  }
-  // 子类继承父类
-  Author.prototype = new Person()
-  Author.prototype.construtor = Author
-  // 子类的公共方法只能放在继承后面
-
-  // 这是改进方法
-  // extend(Author, Person)
-
-  Author.prototype.getBook = function () {
-    return this.book
-  }
-  var yezi = new Author(&apos;yezi&apos;, &apos;陪你度过漫长岁月&apos;)
-  console.log(yezi.getName()) // yezi
-  console.log(yezi.getBook()) // 陪你度过漫长岁月
-</code></pre><h3 id="改进代码："><a href="#改进代码：" class="headerlink" title="改进代码："></a>改进代码：</h3><pre><code>// 定义继承方法
-// 利用空函数作为中转，因为空函数几乎不占内存，而且可以避免构造函数的副作用
-// 主要是new操作符会执行一遍父类函数，如果父类函数过大，则耗费大
-  function extend (subClass, superClass) {
-    var F = function () {}
-    F.prototype = superClass.prototype
-    subClass.prototype = new F()
-    subClass.prototype.construtor = subClass
-  }
-</code></pre><h3 id="类继承的对象bug"><a href="#类继承的对象bug" class="headerlink" title="类继承的对象bug"></a>类继承的对象bug</h3><pre><code>// 重新定义父类
-var Person = function (name) {
-    this.name = name
-    this.behavior = {
-      foot: true,
-      eat: true
-    }
-  }
-// 其他代码同上
-// 创建两个实例
-var yezi = new Author(&apos;yezi&apos;, &apos;陪你度过漫长岁月&apos;)
-var feifei = new Author(&apos;feifei&apos;, &apos;岁月如歌&apos;)
-yezi.behavior = {
-    foot: false,
-    eat: false
-}
-console.log(yezi.behavior) // Object {foot: false, eat: false}
-console.log(feifei.behavior) // Object {foot: true, eat: true}
-</code></pre><font color="red">总结：</font> 直接改变继承的对象值，相当于给实例添加新的属性behavior<br><br>接下来看看另外一个改变对象测试<br><br>    yezi.behavior.foot = false<br>    yezi.behavior.eat = false<br>    console.log(yezi.behavior) // Object {foot: false, eat: false}<br>    console.log(feifei.behavior) // Object {foot: true, eat: true}<br><br><font color="red">总结：</font> 通过这种方式，原理是实例会向上查找behavior属性，再找到foot和eat的值进行修改，而不是给实例直接添加新的behavior属性，这可以说是一个bug.<br><br>—<br><br><br>## 原型链继承<br><br>### 原型链继承区别之前提到的类继承，类继承沿用的是java面向对象的思维，而原型链则是利用js设计的思维<br><font color="blue">相对于类继承，原型链继承更加简单，但是依然避免不了引用类型的共享bug，原型链继承我理解为是浅复制，对于简单类型进行复制副本，引用类型则用‘指针’指向</font>
-
-<h3 id="代码设计"><a href="#代码设计" class="headerlink" title="代码设计:"></a>代码设计:</h3><pre><code>// 原型链继承的主要函数
-function clone (object) {
-    var fn = function () {}
-    fn.prototype = object
-    return new fn()
-}
-</code></pre><p>测试代码：</p>
-<pre><code>var person = {
-    name: &apos;default name&apos;,
-    behavior: {
-      foot: true,
-      eat: true
-    },
-    hands: [1, 2, 3, 4, 5]
-  }
-
-  var author1 = clone(person)
-  var author2 = clone(person)
-  author1.name = &apos;yezi&apos;
-  author2.name = &apos;feifei&apos;
-  console.log(&apos;author1.name=&apos;, author1.name)
-  console.log(&apos;author1.behavior=&apos;, author1.behavior)
-  author2.behavior = {
-    foot: false,
-      eat: false
-  }
-  author2.hands.push(5)
-  console.log(&apos;author1 hasownpropety&apos;, author1.hasOwnProperty(&apos;behavior&apos;))
-  console.log(&apos;author2 hasownpropety&apos;, author2.hasOwnProperty(&apos;behavior&apos;))
-  console.log(&apos;author2.name=&apos;, author2.name)
-  console.log(&apos;author2.behavior=&apos;, author2.behavior)
-  console.log(&apos;author1.hands=&apos;, author1.hands)
-  console.log(&apos;author2.hands=&apos;, author2.hands)
-</code></pre><h3 id="结果："><a href="#结果：" class="headerlink" title="结果："></a>结果：</h3><p><img src="http://wx4.sinaimg.cn/mw690/a359ab18gy1fi354qbexwj207y06r0st.jpg" alt="此处输入图片的描述"></p>
-<h3 id="分析："><a href="#分析：" class="headerlink" title="分析："></a>分析：</h3><ol>
-<li>利用 obj.hasOwnProperty(prop) 可以看出，将author2.behavior的值改变，<font color="red">相当于给author2添加新的behavior属性，而author1自身不存在behavior属性</font>，author1通过原型链向上查找父类的behavior属性</li>
-<li>同时author1.hands的改变影响了author2.hands的值，所以这是一个浅复制</li>
-</ol>
-<hr>
-<h2 id="new操作符的实现步骤"><a href="#new操作符的实现步骤" class="headerlink" title="new操作符的实现步骤"></a>new操作符的实现步骤</h2><p>new共经历四个过程</p>
-<pre><code>var fn = function () {}
-var fnObj = new fn()
-</code></pre><ol>
-<li><p>创建一个空对象</p>
-<p>  var obj = new object()</p>
-</li>
-<li><p>设置原型链</p>
-<p> obj.<em>proto</em> = fn.prototype</p>
-</li>
-<li><p>让fn的this指向obj，并执行fn的函数体</p>
-<p> var result = fn.call(obj)</p>
-</li>
-<li><p>判断fn的返回值类型，如果是值类型，返回obj。如果是引用类型，就返回这个引用类型的对象</p>
-<p> if (typeof(result) === ‘object’) {<br>   fnObj = result<br> } else {<br>   fnObj = obj<br> }</p>
-</li>
-</ol>
-<hr>
-<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p>JavaScript设计模式 （2009年+(美国)(Rossharmes)哈梅斯(美国)(DustinDiaz)迪亚斯+《JavaScript设计模式》</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2904,7 +2983,7 @@ var fnObj = new fn()
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2917,7 +2996,7 @@ var fnObj = new fn()
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
