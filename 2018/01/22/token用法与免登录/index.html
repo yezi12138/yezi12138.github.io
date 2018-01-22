@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="-node," />
+  <meta name="keywords" content="token," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="node+vue实现记住密码功能 首先要引入依赖 var session = require(&amp;apos;express-session&amp;apos;); var cookieParser = require(&amp;apos;cookie-parser&amp;apos;); var MongoStore = require(&amp;apos;connect-mongo&amp;apos;)(session);//用来将se">
-<meta name="keywords" content="-node">
+<meta name="description" content="token用法与免登录功能 简介： 使用node搭建得后台，前端请求登录，后端验证登录信息，并且返回token值，然后前端之后得操作都携带这个token，作为校验用户  实现场景： 免登录验证 使用技术： node + vue + vue-router + express + axios 思路: 前端发出登录请求，并且把用户信息传给后台，后台获取用户信息，与数据库对比，发现存在该用户，则返回一个带">
+<meta name="keywords" content="token">
 <meta property="og:type" content="article">
-<meta property="og:title" content="node保存登陆信息">
-<meta property="og:url" content="http://yoursite.com/2017/06/17/node保存登陆信息/index.html">
+<meta property="og:title" content="token用法与免登录">
+<meta property="og:url" content="http://yoursite.com/2018/01/22/token用法与免登录/index.html">
 <meta property="og:site_name" content="yezi">
-<meta property="og:description" content="node+vue实现记住密码功能 首先要引入依赖 var session = require(&amp;apos;express-session&amp;apos;); var cookieParser = require(&amp;apos;cookie-parser&amp;apos;); var MongoStore = require(&amp;apos;connect-mongo&amp;apos;)(session);//用来将se">
-<meta property="og:updated_time" content="2017-06-21T07:53:07.943Z">
+<meta property="og:description" content="token用法与免登录功能 简介： 使用node搭建得后台，前端请求登录，后端验证登录信息，并且返回token值，然后前端之后得操作都携带这个token，作为校验用户  实现场景： 免登录验证 使用技术： node + vue + vue-router + express + axios 思路: 前端发出登录请求，并且把用户信息传给后台，后台获取用户信息，与数据库对比，发现存在该用户，则返回一个带">
+<meta property="og:updated_time" content="2018-01-22T09:43:42.384Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="node保存登陆信息">
-<meta name="twitter:description" content="node+vue实现记住密码功能 首先要引入依赖 var session = require(&amp;apos;express-session&amp;apos;); var cookieParser = require(&amp;apos;cookie-parser&amp;apos;); var MongoStore = require(&amp;apos;connect-mongo&amp;apos;)(session);//用来将se">
+<meta name="twitter:title" content="token用法与免登录">
+<meta name="twitter:description" content="token用法与免登录功能 简介： 使用node搭建得后台，前端请求登录，后端验证登录信息，并且返回token值，然后前端之后得操作都携带这个token，作为校验用户  实现场景： 免登录验证 使用技术： node + vue + vue-router + express + axios 思路: 前端发出登录请求，并且把用户信息传给后台，后台获取用户信息，与数据库对比，发现存在该用户，则返回一个带">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/17/node保存登陆信息/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/22/token用法与免登录/"/>
 
 
 
 
 
-  <title>node保存登陆信息 | yezi</title>
+  <title>token用法与免登录 | yezi</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -263,7 +263,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/17/node保存登陆信息/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/22/token用法与免登录/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yezi">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">node保存登陆信息</h1>
+          <h1 class="post-title" itemprop="name headline">token用法与免登录</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-17T20:18:58+08:00">
-                2017-06-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-22T17:43:14+08:00">
+                2018-01-22
               </time>
             
 
@@ -310,7 +310,7 @@
 
           
           
-             <span id="/2017/06/17/node保存登陆信息/" class="leancloud_visitors" data-flag-title="node保存登陆信息">
+             <span id="/2018/01/22/token用法与免登录/" class="leancloud_visitors" data-flag-title="token用法与免登录">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -338,78 +338,203 @@
       
 
       
-        <h1 id="node-vue实现记住密码功能"><a href="#node-vue实现记住密码功能" class="headerlink" title="node+vue实现记住密码功能"></a>node+vue实现记住密码功能</h1><hr>
-<p>首先要引入依赖</p>
-<pre><code>var session = require(&apos;express-session&apos;);
-var cookieParser = require(&apos;cookie-parser&apos;);
-var MongoStore = require(&apos;connect-mongo&apos;)(session);//用来将session添加到mongodb数据库，实现长时间保存
-</code></pre><p>使用session（在build\dev-server.js）</p>
-<pre><code>app.use(cookieParser());
-   app.use(session({
-     secret:&apos;secret&apos;,
-     resave:true, // don&apos;t save session if unmodified
-     saveUninitialized:false,// don&apos;t create session until something stored
-     cookie:{
-       maxAge:1000*60*10 //过期时间设置(单位毫秒)
-     },
-     store: new MongoStore({   //创建新的mongodb数据库
-           host: &apos;localhost&apos;,    //数据库的地址，本机的话就是127.0.0.1，也可以是网络主机
-           port: 27017,          //数据库的端口号
-           db: &apos;test&apos;        //数据库的名称。
-         })
-   }));
-</code></pre><h3 id="这样子的代码有一个报错："><a href="#这样子的代码有一个报错：" class="headerlink" title="这样子的代码有一个报错："></a>这样子的代码有一个报错：</h3><blockquote>
-<p>Error: Connection strategy not found MongoDB</p>
+        <h1 id="token用法与免登录功能"><a href="#token用法与免登录功能" class="headerlink" title="token用法与免登录功能"></a>token用法与免登录功能</h1><blockquote>
+<p>简介： 使用node搭建得后台，前端请求登录，后端验证登录信息，并且返回token值，<br>然后前端之后得操作都携带这个token，作为校验用户</p>
 </blockquote>
-<p>解决方法是store里面要有url，不知道是不是版本问题：</p>
-<pre><code>store: new MongoStore({   //创建新的mongodb数据库
-    url: &apos;mongodb://localhost/test&apos; 
-  })
-</code></pre><h3 id="再次有一个报错："><a href="#再次有一个报错：" class="headerlink" title="再次有一个报错："></a>再次有一个报错：</h3><blockquote>
-<p> Cannot set property ‘user’ of undefined</p>
-</blockquote>
-<p>百度了一下原因是要把sesson的配置放在路由之前。</p>
-<pre><code>app.use(cookieParser());
+<p>实现场景： 免登录验证</p>
+<p>使用技术： node + vue + vue-router + express + axios</p>
+<p>思路: 前端发出登录请求，并且把用户信息传给后台，后台获取用户信息，与数据库对比，发现存在该用户，则返回一个带有这个用户信息（一般是id）的token<br>前端接受这个token，并且保存起来（一般使用cookie）,然后跳转到登录前的页面，完成登录。下一次登录时候，先检查是否存在token，并将这个token发送到后台进行校验，校验通过，就直接进入主页面，否则调到登录页面按重新登录</p>
+<p><em>这里存在一个问题，因为是在router跳转前进行校验，如果不区分页面的话，那么每次跳转路由都会经过token校验，可能会带来效率上问题。<font color="red">通常的做法是划分需要验证的路由页面，仅对这些页面进行用户校验</font></em></p>
+<h2 id="使用node搭建服务器后台"><a href="#使用node搭建服务器后台" class="headerlink" title="使用node搭建服务器后台"></a>使用node搭建服务器后台</h2><pre><code>var express = require(&apos;express&apos;)
+var bodyParser = require(&apos;body-parser&apos;)
+var session = require(&apos;express-session&apos;)
+var cookieParser = require(&apos;cookie-parser&apos;)
+var MongoStore = require(&apos;connect-mongo&apos;)(session)
+var app = express()
+// 使用session
+app.use(cookieParser())
 app.use(session({
-  ~
-}));
-app.use(api) //使用路由
-</code></pre><h3 id="增加一个路由，用来返回session的值"><a href="#增加一个路由，用来返回session的值" class="headerlink" title="增加一个路由，用来返回session的值"></a>增加一个路由，用来返回session的值</h3><pre><code>router.get(&apos;/auth&apos;,(req,res) =&gt; {
-    if(req.session.user){
-        res.send(req.session.user)
-    }
-});
-</code></pre><h4 id="在index主页下增加方法，用来获取用户信息"><a href="#在index主页下增加方法，用来获取用户信息" class="headerlink" title="在index主页下增加方法，用来获取用户信息"></a>在index主页下增加方法，用来获取用户信息</h4><pre><code>/*************************************************
-获取登录信息
-@ 允许自动登录则返回登陆状态码 1
-@ 不允许则返回登陆状态码 2
-**************************************************/
-router.get(&apos;/auth&apos;,(req,res) =&gt; {
-    let token = {
-        account: req.session.user,
-        loginCode:req.session.loginCode
-}
-if(token){
-    res.send(token)
-}
-});
-</code></pre><h4 id="添加自动登录的函数"><a href="#添加自动登录的函数" class="headerlink" title="添加自动登录的函数"></a>添加自动登录的函数</h4><pre><code>autoLogin(){
-    this.$http.get(&apos;/auth&apos;).then((res) =&gt; {
-      // console.log(res.data)
-      var token = res.data;
-      if(token &amp;&amp; token.loginCode === 1){
-        this.account = token.account;
-        this.isLogin = true;
-      }else{
-        this.account = token.account;
-        this.isLogin = false;
+  secret: &apos;secret&apos;,
+  resave: true,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 10 * 10 // 过期时间设置(单位毫秒)
+  },
+  store: new MongoStore({   // 创建新的mongodb数据库
+    url: &apos;mongodb://localhost/test&apos;
+  })
+}))
+
+// 解析post过来的数据
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+// 引入编写好的api
+const api = require(&apos;./api.js&apos;)
+app.use(api)
+app.listen(9000)
+</code></pre><p>这里使用mongodb作为数据库，使用方法可以看我之前博客文章:<em><br><a href="https://yezi12138.github.io/2017/06/13/mongodb%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/" target="_blank" rel="external">https://yezi12138.github.io/2017/06/13/mongodb%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/</a></em></p>
+<h3 id="后台接口-api-js"><a href="#后台接口-api-js" class="headerlink" title="后台接口(api.js)"></a>后台接口(api.js)</h3><h4 id="依赖项"><a href="#依赖项" class="headerlink" title="依赖项"></a>依赖项</h4><pre><code>const User = require(&apos;./db&apos;) // 一个mongodb 实例
+const express = require(&apos;express&apos;)
+const router = express.Router()  // 使用express开启的后台接口路由
+const generateToken = require(&apos;./auth&apos;).generateToken // 产生token
+const decodeToken = require(&apos;./auth&apos;).decodeToken  // 反编译token
+</code></pre><h4 id="登录接口"><a href="#登录接口" class="headerlink" title="登录接口"></a>登录接口</h4><pre><code>/**
+ * 登录验证
+ */
+router.post(&apos;/auth/login&apos;, (req, res) =&gt; {
+  let newAccount = new User({
+    username: req.body.username,
+    password: req.body.password
+  })
+  // 查找用户
+  User.find({username: newAccount.username, password: newAccount.password}, (err, data) =&gt; {
+    if (err) {
+      error(res, 500, err)
+    } else {
+      if (data.length === 0) {
+        error(res, 500, &apos;No message available&apos;)
+      } else {
+      // 生成token
+        let token = generateToken(data[0])
+        res.json({
+          token: token
+        })
       }
+    }
+  })
+})
+</code></pre><blockquote>
+<p>登录验证： 当存在该用户时候，返回后台产生得一个<code>token</code></p>
+</blockquote>
+<h4 id="验证登录接口"><a href="#验证登录接口" class="headerlink" title="验证登录接口"></a>验证登录接口</h4><pre><code>/**
+ * 验证token
+ * 验证成功返回true， 验证失败返回false
+ */
+router.get(&apos;/auth/token&apos;, (req, res) =&gt; {
+  let token = req.query.token
+  if (token) {
+      // 反编译token，获取用户id值
+    let result = decodeToken(token)
+    if (result) {
+      User.find({_id: result}, (err, data) =&gt; {
+        if (err) {
+          error(res, 500, err)
+        } else {
+          if (data.length === 0) {
+            console.log(&apos;No this user&apos;, &apos;come from /auth/token&apos;)
+            res.send(false)
+          } else {
+            res.send(true)
+          }
+        }
+      })
+    } else {
+      res.send(false)
+    }
+  } else {
+    res.send(false)
+  }
+})
+</code></pre><blockquote>
+<p>注意：get方法和post传递方法方式不同，get需要把参数挡在请求头参数里面，而post方法则将参数放在body<br>在axios中，get方法传参形式是<code>{ params: { token: token } }</code>,后台获取参数如下<code>req.query.token</code><br>在axios中，post方法传参形式是<code>{ token: token }</code>, 后台获取参数如下<code>req.body.token</code></p>
+</blockquote>
+<h4 id="token相关方法（auth-js）"><a href="#token相关方法（auth-js）" class="headerlink" title="token相关方法（auth.js）"></a>token相关方法（auth.js）</h4><pre><code>var express = require(&apos;express&apos;)
+var jwt = require(&apos;jwt-simple&apos;) // 一个产生token的插件
+var moment = require(&apos;moment&apos;) // 时间格式化的插件
+var app = express()
+app.set(&apos;jwtTokenSecret&apos;, &apos;doubanjwtbyyezi&apos;)
+
+var expires = moment().add(&apos;days&apos;, 7).valueOf() // 过期时间
+
+// 产生token
+exports.generateToken = function (user) {
+  return jwt.encode({
+    iss: user._id,
+    exp: expires
+  }, app.get(&apos;jwtTokenSecret&apos;))
+}
+
+/**
+ * 解析token
+ * @param {*} token
+ * @return decoded.iss 返回用户id
+ */
+exports.decodeToken = function (token) {
+  try {
+    let decoded = jwt.decode(token, app.get(&apos;jwtTokenSecret&apos;))
+    if (decoded) {
+    // token过期处理
+      if (decoded.exp &lt;= Date.now()) {
+        return false
+      }
+      if (decoded.iss) {
+        return decoded.iss
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  } catch (err) {
+    return false
+  }
+}
+</code></pre><blockquote>
+<p>这个用法没什么好说的，可以百度查查 jwt用法</p>
+</blockquote>
+<h3 id="前端代码"><a href="#前端代码" class="headerlink" title="前端代码"></a>前端代码</h3><h4 id="登录函数"><a href="#登录函数" class="headerlink" title="登录函数"></a>登录函数</h4><pre><code>login () {
+    let params = {
+      username: this.formData.username,
+      password: this.formData.password
+    }
+    this.$http.post(&apos;/auth/login&apos;, params)
+    .then((res) =&gt; {
+      console.log(res)
+      // 添加cookies
+      setToken(res.data.token)
+      // 跳转之前得页面
+      let path = this.$route.query.url
+      this.$router.push({ path: path })
     })
   }
-</code></pre><h4 id="在页面创建时候判断是否自动登录"><a href="#在页面创建时候判断是否自动登录" class="headerlink" title="在页面创建时候判断是否自动登录"></a>在页面创建时候判断是否自动登录</h4><pre><code>created(){
-  this.autoLogin();
+</code></pre><p>这是使用 <code>mint-ui</code> 和 <code>axios</code> 的语法，详情可以不用在意<br>关键是登录时候，获取后台返回的token ，然后保存起来 <code>setToken(res.data.token)</code><br><code>setToken(res.data.token) === document.cookie = &#39;token=xzcsada&#39;</code>,这里使用了一个插件，简化了这个步骤</p>
+<pre><code>import Cookies from &apos;js-cookie&apos;
+/**
+ * 设置token
+ */
+export function setToken (token) {
+  return Cookies.set(&apos;Token&apos;, token)
 }
-</code></pre><p>这样就可以在页面创建时候验证用户信息，实现免登录。</p>
+</code></pre><h4 id="路由处理"><a href="#路由处理" class="headerlink" title="路由处理"></a>路由处理</h4><pre><code>// 在跳转前的处理
+router.beforeEach(checkAuth)
+
+function checkAuth (to, from, next) {
+  let token = getToken()
+  if (to.name) document.title = to.name
+  if (to.path !== &apos;/login&apos;) {
+    if (to.path === &apos;/register&apos;) {
+      next()
+    } else if (token) {
+      // 验证token
+      axios.get(&apos;/auth/token&apos;, {
+        params: {
+          token
+        }
+      })
+      .then(res =&gt; {
+        res.data ? next() : next({path: `/login?url=${to.path}`})
+      })
+    } else {
+      next({path: `/login?url=${to.path}`})
+    }
+  } else {
+    next()
+  }
+}
+</code></pre><blockquote>
+<p>在页面跳转前对token进行验证</p>
+</blockquote>
+<p>项目地址:  (<a href="https://github.com/yezi12138/douban" target="_blank" rel="external">https://github.com/yezi12138/douban</a>)</p>
 
       
     </div>
@@ -439,7 +564,7 @@ if(token){
       
         <div class="post-tags">
           
-            <a href="/tags/node/" rel="tag"># -node</a>
+            <a href="/tags/token/" rel="tag"># token</a>
           
         </div>
       
@@ -452,8 +577,8 @@ if(token){
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/13/mongodb安装和使用/" rel="next" title="mongodb安装和使用">
-                <i class="fa fa-chevron-left"></i> mongodb安装和使用
+              <a href="/2018/01/08/vue全局配置页面切换动画/" rel="next" title="vue全局配置页面切换动画">
+                <i class="fa fa-chevron-left"></i> vue全局配置页面切换动画
               </a>
             
           </div>
@@ -461,10 +586,6 @@ if(token){
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/10/backdrop-filter/" rel="prev" title="backdrop-filter">
-                backdrop-filter <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -584,7 +705,7 @@ if(token){
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#node-vue实现记住密码功能"><span class="nav-number">1.</span> <span class="nav-text">node+vue实现记住密码功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#这样子的代码有一个报错："><span class="nav-number">1.0.1.</span> <span class="nav-text">这样子的代码有一个报错：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#再次有一个报错："><span class="nav-number">1.0.2.</span> <span class="nav-text">再次有一个报错：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加一个路由，用来返回session的值"><span class="nav-number">1.0.3.</span> <span class="nav-text">增加一个路由，用来返回session的值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在index主页下增加方法，用来获取用户信息"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">在index主页下增加方法，用来获取用户信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加自动登录的函数"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">添加自动登录的函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在页面创建时候判断是否自动登录"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">在页面创建时候判断是否自动登录</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#token用法与免登录功能"><span class="nav-number">1.</span> <span class="nav-text">token用法与免登录功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用node搭建服务器后台"><span class="nav-number">1.1.</span> <span class="nav-text">使用node搭建服务器后台</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#后台接口-api-js"><span class="nav-number">1.1.1.</span> <span class="nav-text">后台接口(api.js)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖项"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">依赖项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#登录接口"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">登录接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证登录接口"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">验证登录接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#token相关方法（auth-js）"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">token相关方法（auth.js）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前端代码"><span class="nav-number">1.1.2.</span> <span class="nav-text">前端代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#登录函数"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">登录函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#路由处理"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">路由处理</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
