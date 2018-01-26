@@ -263,6 +263,233 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/26/vux的v-transfer-dom指令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yezi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yezi">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/26/vux的v-transfer-dom指令/" itemprop="url">vux的v-transfer-dom指令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-26T14:36:43+08:00">
+                2018-01-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/26/vux的v-transfer-dom指令/" class="leancloud_visitors" data-flag-title="vux的v-transfer-dom指令">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="vux的v-transfer-dom指令"><a href="#vux的v-transfer-dom指令" class="headerlink" title="vux的v-transfer-dom指令"></a>vux的v-transfer-dom指令</h2><p>源码： </p>
+<pre><code>// Thanks to: https://github.com/calebroseland/vue-dom-portal
+
+const objectAssign = require(&apos;object-assign&apos;)
+
+function getTarget (node) {
+ // void 0 === undefined
+ // 在ES5之前，window下的undefined是可以被重写的，于是导致了某些极端情况下使用undefined会出现一定的差错。所以，用void 0是为了防止undefined被重写而出现判断不准确的情况
+  if (node === void 0) {
+    return document.body
+  }
+
+  if (typeof node === &apos;string&apos; &amp;&amp; node.indexOf(&apos;?&apos;) === 0) {
+    return document.body
+  } else if (typeof node === &apos;string&apos; &amp;&amp; node.indexOf(&apos;?&apos;) &gt; 0) {
+    node = node.split(&apos;?&apos;)[0]
+  }
+
+  if (node === &apos;body&apos; || node === true) {
+    return document.body
+  }
+// node instanceof window.Node 判断是否window的节点类型
+  return node instanceof window.Node ? node : document.querySelector(node)
+}
+
+function getShouldUpdate (node) {
+  // do not updated by default
+  if (!node) {
+    return false
+  }
+  if (typeof node === &apos;string&apos; &amp;&amp; node.indexOf(&apos;?&apos;) &gt; 0) {
+    try {
+      const config = JSON.parse(node.split(&apos;?&apos;)[1])
+      return config.autoUpdate || false
+    } catch (e) {
+      return false
+    }
+  }
+  return false
+}
+
+const directive = {
+  inserted (el, { value }, vnode) {
+    el.className = el.className ? el.className + &apos; v-transfer-dom&apos; : &apos;v-transfer-dom&apos;
+    const parentNode = el.parentNode
+    // 用评论片段代替节点
+    var home = document.createComment(&apos;&apos;)
+    var hasMovedOut = false
+
+    if (value !== false) {
+      parentNode.replaceChild(home, el) // moving out, el is no longer in the document
+      getTarget(value).appendChild(el) // moving into new place
+      hasMovedOut = true
+    }
+    // 保存替换节点的信息
+    if (!el.__transferDomData) {
+      el.__transferDomData = {
+        parentNode: parentNode,
+        home: home,
+        target: getTarget(value),
+        hasMovedOut: hasMovedOut
+      }
+    }
+  },
+  componentUpdated (el, { value }) {
+    const shouldUpdate = getShouldUpdate(value)
+    if (!shouldUpdate) {
+      return
+    }
+    // need to make sure children are done updating (vs. `update`)
+    var ref$1 = el.__transferDomData
+    // homes.get(el)
+    var parentNode = ref$1.parentNode
+    var home = ref$1.home
+    var hasMovedOut = ref$1.hasMovedOut // recall where home is
+
+    if (!hasMovedOut &amp;&amp; value) {
+      // remove from document and leave placeholder
+      parentNode.replaceChild(home, el)
+      // append to target
+      getTarget(value).appendChild(el)
+      el.__transferDomData = objectAssign({}, el.__transferDomData, { hasMovedOut: true, target: getTarget(value) })
+    } else if (hasMovedOut &amp;&amp; value === false) {
+      // previously moved, coming back home
+      parentNode.replaceChild(el, home)
+      el.__transferDomData = objectAssign({}, el.__transferDomData, { hasMovedOut: false, target: getTarget(value) })
+    } else if (value) {
+      // already moved, going somewhere else
+      getTarget(value).appendChild(el)
+    }
+  },
+  unbind: function unbind (el, binding) {
+    el.className = el.className.replace(&apos;v-transfer-dom&apos;, &apos;&apos;)
+    if (el.__transferDomData &amp;&amp; el.__transferDomData.hasMovedOut === true) {
+      el.__transferDomData.parentNode &amp;&amp; el.__transferDomData.parentNode.appendChild(el)
+    }
+    el.__transferDomData = null
+  }
+}
+
+module.exports = directive
+</code></pre><h3 id="关键知识点"><a href="#关键知识点" class="headerlink" title="关键知识点"></a>关键知识点</h3><ol>
+<li>void 0 代替undefined</li>
+<li>node instanceof window.Node可以用来判断节点类型</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/22/token用法与免登录/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2665,282 +2892,6 @@ export default class HeaderTpl extends React.Component {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/10/从零开始学习react第二天/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yezi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yezi">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/10/从零开始学习react第二天/" itemprop="url">从零开始学习react第二天</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T21:56:05+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/08/10/从零开始学习react第二天/" class="leancloud_visitors" data-flag-title="从零开始学习react第二天">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="从零开始学习react第二天"><a href="#从零开始学习react第二天" class="headerlink" title="从零开始学习react第二天"></a>从零开始学习react第二天</h1><hr>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>首先我们先完善第一天留下来的问题，之前我们用 <code>babel-loader</code> <code>babel-preset-react</code> <code>babel-preset-es2005</code> 三个包将ES6语法转换为ES5，相对于大多数浏览器，这样的设置可能已经足够了，但是对于少数不支持ES5语法的浏览器，这样的设置可能还不够，而且 <code>babel-loader</code> 对于ES6的 <code>promise</code> <code>fetch</code>，ES5的新方法 <code>Object.assign</code> ,虽然能正确运行，但是对于IE9以下的浏览器来说并不能兼容<br>这个时候就需要 <code>polyfill</code></p>
-<p>为了能随心所欲地使用ES6语法，这里我推荐使用  <code>babel-polyfill</code> <code>babel-preset-env</code><br>关于 <code>babel-preset-env</code> 的选择原理看这里：<br><a href="https://segmentfault.com/a/1190000010106158" target="_blank" rel="external">21 分钟精通前端 Polyfill 方案</a><br><a href="https://segmentfault.com/q/1010000005596587" target="_blank" rel="external">babel-polyfill和babel-runtime对比</a></p>
-<h3 id="安装-babel-polyfill"><a href="#安装-babel-polyfill" class="headerlink" title="安装  babel-polyfill"></a>安装  <code>babel-polyfill</code></h3><blockquote>
-<p>npm install babel-polyfill –save</p>
-</blockquote>
-<h3 id="修改pakage-json配置，让-babel-polyfill-单独插入到html"><a href="#修改pakage-json配置，让-babel-polyfill-单独插入到html" class="headerlink" title="修改pakage.json配置，让 babel-polyfill 单独插入到html"></a>修改pakage.json配置，让 <code>babel-polyfill</code> 单独插入到html</h3><p>为了实现多入口的注入，我们用到 <code>new webpack.optimize.CommonsChunkPlugin(options)</code><br>代码如下：</p>
-<pre><code>plugins: [
-    // ...
-    new webpack.optimize.CommonsChunkPlugin({
-        name: &apos;verdor&apos;,
-        filename: &apos;polyfill.js&apos;
-    }) 
-]
-// 修改入口文件,增加vendor
-entry: {
-    app: &apos;./src/index.js&apos;,
-    verdor: &apos;babel-polyfill&apos;
-}
-</code></pre><p>这样运行webpack，可以看到编译后的html下面有两个script文件引用了</p>
-<hr>
-<p>回到正题，今天学习的是<code>babel-plugin-react-transform</code>的热加载</p>
-<h2 id="babel-plugin-react-transform-热加载的实现"><a href="#babel-plugin-react-transform-热加载的实现" class="headerlink" title="babel-plugin-react-transform 热加载的实现"></a>babel-plugin-react-transform 热加载的实现</h2><p>之前我们已经实现了页面的自动刷新，用的命令是：</p>
-<blockquote>
-<p>webpack-dev-server –inline</p>
-</blockquote>
-<p>原本想用 <code>react-hot-loader</code> 可是官方已经停止维护，推荐我们使用 <code>babel-plugin-react-transform</code></p>
-<h3 id="于是我们先安装包"><a href="#于是我们先安装包" class="headerlink" title="于是我们先安装包"></a>于是我们先安装包</h3><blockquote>
-<p>npm install –save-dev babel-plugin-react-transform</p>
-</blockquote>
-<p>还有一些转换器搭配使用</p>
-<blockquote>
-<p>npm install –save-dev react-transform-hmr<br>npm install –save-dev react-transform-catch-errors redbox-react</p>
-</blockquote>
-<p><code>babel-plugin-react-transform</code> 这是个基本的架子<br><code>react-transform-hmr</code> 是真正实现热更新的插件<br><code>react-transform-catch-errors</code> <code>redbox-react</code>  是实现在页面上显示错误，不用每次都打开控制台,可以不安装</p>
-<p>要让新建的两个transform生效,只需再安装一个present</p>
-<blockquote>
-<p>npm install babel-preset-react-hmre –save-dev</p>
-</blockquote>
-<h3 id="第一次启动"><a href="#第一次启动" class="headerlink" title="第一次启动"></a>第一次启动</h3><blockquote>
-<p>npm run dev</p>
-</blockquote>
-<p>发现结果并不是和我们想象中一样，达到了热刷新，结果还是和以前一样，全面刷新。<br>于是我各种百度，还是不得其解，只好去他们的官网下载了一个<a href="https://github.com/gaearon/react-transform" target="_blank" rel="external">demo</a></p>
-<p>发现，他们的demo并不是用 <code>webpack-dev-server</code> 作为服务器，而是用 <code>webpack-dev-middleware</code> 和 <code>webpack-hot-middleware</code> 开启热刷新</p>
-<p>于是我开始仿照他们的demo，重构了我的目录结构</p>
-<h3 id="重构项目结构"><a href="#重构项目结构" class="headerlink" title="重构项目结构"></a>重构项目结构</h3><p>安装这两个模块</p>
-<blockquote>
-<p>npm install –save-dev webpack-dev-middleware webpack-hot-middleware</p>
-</blockquote>
-<p>然后新建一个文件夹build，<font color="blue">把webpack.config.js放进去并且改名为webpack.base.conf.js</font>，然后新建两个文件 <code>webpack.dev.conf.js</code> <code>webpack.prod.conf.js</code></p>
-<p>目录结构如下：<br><img src="http://wx1.sinaimg.cn/mw690/a359ab18gy1fieycd93xaj20he08jaa6.jpg" alt="目录结构"></p>
-<h4 id="webpack-dev-conf-js-文件主要是在开发环境所要用到的配置，代码如下："><a href="#webpack-dev-conf-js-文件主要是在开发环境所要用到的配置，代码如下：" class="headerlink" title="webpack.dev.conf.js 文件主要是在开发环境所要用到的配置，代码如下："></a><code>webpack.dev.conf.js</code> 文件主要是在开发环境所要用到的配置，代码如下：</h4><pre><code>var webpack = require(&apos;webpack&apos;)
-var merge = require(&apos;webpack-merge&apos;)
-var HtmlwebpackPlugin = require(&apos;html-webpack-plugin&apos;)
-var path = require(&apos;path&apos;)
-var config = require(&apos;./webpack.config&apos;)
-module.exports = merge(config, {
-  // cheap-module-eval-source-map is faster for development
-  devtool: &apos;#cheap-module-eval-source-map&apos;,
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new HtmlwebpackPlugin({
-    template: path.resolve(__dirname, &apos;../index.html&apos;),
-    inject: true
-    }),
-  ]
-})
-</code></pre><p>这里必须用到 <code>new webpack.HotModuleReplacementPlugin()</code> ，不然无法启用热更新<br>主要把仅在开发过程用到的配置写在这里，然后合并<code>webpack.base.conf.js</code>的参数</p>
-<h4 id="webpack-base-conf-js-的配置如下："><a href="#webpack-base-conf-js-的配置如下：" class="headerlink" title="webpack.base.conf.js 的配置如下："></a><code>webpack.base.conf.js</code> 的配置如下：</h4><pre><code>var path = require(&apos;path&apos;)
-module.exports = {
-  devtool: &apos;eval-source-map&apos;,
-  entry: {
-    index: &apos;./src/index.js&apos;
-  },
-  output: {
-    path: __dirname + &apos;/dist&apos;,
-    filename: &apos;bundle.js&apos;,
-    publicPath: &apos;/&apos;
-  },
-  resolve: {
-    extensions: [&apos;.js&apos;, &apos;.jsx&apos;],
-    alias: {
-      &apos;src&apos;: path.resolve(__dirname, &apos;/src&apos;)
-    }
-  },
-  module: {
-    loaders: [
-    {
-      test: /\.jsx?$/,
-      loader: &apos;babel-loader&apos;,
-      exclude: path.resolve(__dirname, &apos;/node_modules&apos;)
-    }
-    ]
-  }
-}
-</code></pre><p>这里只留下entry，resolve，output三个属性</p>
-<h4 id="在-webpack-dev-conf-js-中添加这么一段代码，将-webpack-hot-middleware-注入到entry里面去"><a href="#在-webpack-dev-conf-js-中添加这么一段代码，将-webpack-hot-middleware-注入到entry里面去" class="headerlink" title="在 webpack.dev.conf.js 中添加这么一段代码，将 webpack-hot-middleware 注入到entry里面去"></a>在 <code>webpack.dev.conf.js</code> 中添加这么一段代码，将 <code>webpack-hot-middleware</code> 注入到entry里面去</h4><pre><code>Object.keys(config.entry).forEach(function (name) {
-  config.entry[name] = [&apos;webpack-hot-middleware/client&apos;].concat(config.entry[name])
-})
-</code></pre><p>当然你也可以直接在 <code>webpack.base.conf.js</code> 中的entry里面这样写：</p>
-<pre><code>entry: [
-    webpack-hot-middleware/client,
-    &apos;./src/index.js&apos;
-]
-</code></pre><p>但是为了开发和生产环境分离，我们还是推荐选择第一种写法，<font color="red">注意第一种写法entry是对象，而第二种写法则是数组</font></p>
-<h2 id="创建dev-server-js文件，开启服务"><a href="#创建dev-server-js文件，开启服务" class="headerlink" title="创建dev-server.js文件，开启服务"></a>创建dev-server.js文件，开启服务</h2><p>在 build 文件夹下面创建 <code>dev-server.js</code><br>代码如下：</p>
-<pre><code>var path = require(&apos;path&apos;)
-var express = require(&apos;express&apos;)
-var webpack = require(&apos;webpack&apos;)
-var config = require(&apos;./webpack.dev.conf&apos;)
-var app = express()
-var compiler = webpack(config)
-app.use(require(&apos;webpack-dev-middleware&apos;)(compiler, {
-  noInfo: true,
-  publicPath: config.output.publicPath
-}))
-app.use(require(&apos;webpack-hot-middleware&apos;)(compiler))
-app.listen(3000, function(err) {
-  if (err) {
-    console.log(err)
-    return
-  }
-  console.log(&apos;Listening at http://localhost:3000&apos;)
-})
-</code></pre><p>这个文件引进 <code>webpack.base.conf.js</code> 的配置，用express开启了一个服务器，监听端口3000</p>
-<p>修改script中的配置：</p>
-<pre><code>&quot;scripts&quot;: {
- &quot;dev&quot;: &quot;node build/dev-server.js&quot;
-}
-</code></pre><p>然后命令行输入： npm run dev<br>等待几秒，你就会发现我们的页面正常显示了！</p>
-<h3 id="热刷新"><a href="#热刷新" class="headerlink" title="热刷新"></a>热刷新</h3><p>问题来了，当你修改index.js 里面的值的时候，你会发现页面根本没有自动刷新，而且控制台输出了这样一段信息</p>
-<blockquote>
-<p>following modules couldn’t be hot updated: (Full reload needed)<br>This is usually because the modules which have changed (and their parents) do not know how to hot reload themselves.</p>
-</blockquote>
-<p>这是因为我们仅仅是运用了 <code>webpack-dev-middleware</code> 和 <code>webpack-hot-middleware</code><br>一开始说过的 <code>babel-plugin-react-transform</code> 这三个包还没有用上<br>怎么用呢？我们可以直接在 <code>.babelrc</code> 中添加：</p>
-<pre><code>{
-  &quot;presets&quot;: [&quot;react&quot;, &quot;es2015&quot;],
-  &quot;env&quot;: {
-   &quot;development&quot;: {
-     &quot;presets&quot;: [&quot;react-hmre&quot;]
-   }
-  }
-}
-</code></pre><p>这样子就行了，然后重启一次服务，这样子就可以实现热刷新了！</p>
-<h3 id="8月12日更新"><a href="#8月12日更新" class="headerlink" title="8月12日更新"></a>8月12日更新</h3><p>对于文件入口，要加入以下代码: </p>
-<pre><code>if(module.hot)
- {
-     module.hot.accept();
- }
-</code></pre><p>不然对于主入口的数据无法进行热更新，当更改主入口数据时候会报错</p>
-<blockquote>
-<p>following modules couldn’t be hot updated: (Full reload needed)<br>This is usually because the modules which have changed (and their parents) do not know how to hot reload themselves.</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2990,7 +2941,7 @@ app.listen(3000, function(err) {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3003,7 +2954,7 @@ app.listen(3000, function(err) {
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
